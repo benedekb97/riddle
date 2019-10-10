@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use PhpParser\Node\Expr\Closure;
 
 class Authenticate extends Middleware
 {
