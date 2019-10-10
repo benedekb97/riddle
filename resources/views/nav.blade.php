@@ -15,6 +15,14 @@
                 <li><a href="{{ route('riddles.fresh') }}">Friss hús</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                @if(Auth::user()->moderator)
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Moderálás <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('riddles.unapproved') }}">Elfogadásra váró Riddle-k</a></li>
+                        </ul>
+                    </li>
+                @endif
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
                     <ul class="dropdown-menu">

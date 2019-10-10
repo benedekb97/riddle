@@ -40,7 +40,7 @@ class RiddleController extends Controller
         ],
         7 => [
             'name' => 'all',
-            'message' => 'Konkrétan mindent elbasztál tesó... maximum 5MB-os lehet a fájl, aminek jp(e)g, gif, vagy png kiterjesztésűnek kell lennie, és adjál már egy címet a gyökér riddle-ödnek.'
+            'message' => 'Konkrétan mindent elbasztál tesó... maximum 5MB-os lehet a fájl, aminek jp(e)g, gif, vagy png kiterjesztésűnek kell lennie, és adjál már egy címet a gyökér riddle-ödnek barátom.'
         ],
         8 => [
             'name' => 'file',
@@ -60,12 +60,21 @@ class RiddleController extends Controller
             return redirect(route('index', ['error' => 1]));
         }
 
+        if(!Auth::user()->approved){
+            $approved=false;
+        }else{
+            $approved=true;
+        }
+
         if($error != null){
             return view('riddles.new', [
-                'error_message' => $this->errors[$error]['message']
+                'error_message' => $this->errors[$error]['message'],
+                'approved' => $approved
             ]);
         }else{
-            return view('riddles.new');
+            return view('riddles.new', [
+                'approved' => $approved
+            ]);
         }
 
     }
@@ -111,6 +120,8 @@ class RiddleController extends Controller
             $riddle->image = $file_name;
             $riddle->user_id = Auth::id();
             $riddle->answer = $answer;
+            $riddle->approved = Auth::user()->approved;
+
             $riddle->save();
 
 

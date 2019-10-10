@@ -3,6 +3,17 @@
 @section('title','Új Riddle')
 
 @section('content')
+    @if($approved==false)
+        <div class="row">
+            <div class="col-md-4 col-md-push-4">
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p style="font-weight:bold; font-size:13pt;">Egy kis infó:</p>
+                    Amíg nem kaptad meg a <strong>certified riddle-making street nigga</strong> címet addig egy moderátornak el kell fogadnia a riddle-jeid
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
         @if( isset($error_message))
             <div class="col-md-4 col-md-push-4">
@@ -14,6 +25,7 @@
         @endif
         <div class="col-md-12">
             <form action="{{ route('riddles.save') }}" method="POST" enctype="multipart/form-data">
+                {{ csrf_field() }}
                 <div class="panel panel-default">
                     <div class="panel-header">
                         <h3 class="panel-heading">Új riddle feltöltése</h3>

@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->bigInteger('points')->nullable()->default(0);
             $table->boolean('moderator')->default(false);
+            $table->boolean('approved')->default(false)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
