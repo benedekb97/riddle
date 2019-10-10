@@ -3,17 +3,50 @@
 @section('title','Új Riddle')
 
 @section('content')
-    @if( isset($error_message))
-        <div class="error">
-            {{ $error_message }}
+    <div class="row">
+        @if( isset($error_message))
+            <div class="col-md-4 col-md-push-4">
+                <div class="alert alert-dismissable alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ $error_message }}
+                </div>
+            </div>
+        @endif
+        <div class="col-md-12">
+            <form action="{{ route('riddles.save') }}" method="POST" enctype="multipart/form-data">
+                <div class="panel panel-default">
+                    <div class="panel-header">
+                        <h3 class="panel-heading">Új riddle feltöltése</h3>
+                    </div>
+                    <div class="panel-body">
+
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon" for="title">Cím</label>
+                                <input class="form-control" type="text" placeholder="Cím" name="title" id="title" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon" for="answer">Megoldás</label>
+                                <input class="form-control" type="text" placeholder="Megoldás" name="answer" id="answer" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon" for="riddle">Riddle</label>
+                                <input class="form-control" type="file" name="riddle" id="riddle" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+                        <input type="submit" class="btn btn-primary" value="Mentés">
+                    </div>
+                </div>
+            </form>
+
         </div>
-    @endif
-{{ Auth::user()->unsolvedRiddles() }}
-    <form action="{{ route('riddles.save') }}" method="POST" enctype="multipart/form-data">
-        {{ csrf_field() }}
-        <label for="title">Cím</label><input type="text" placeholder="Cím" name="title" id="title">
-        <label for="answer">Megoldás</label><input type="text" placeholder="Megoldás" name="answer" id="answer">
-        <label for="riddle">Riddle</label><input type="file" name="riddle" id="riddle">
-        <input type="submit" value="Mentés">
-    </form>
+    </div>
 @endsection

@@ -8,7 +8,7 @@
     <body>
         @include('nav')
 
-        <div class="container">
+        <div class="container" role="main">
             @yield('content')
         </div>
 
