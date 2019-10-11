@@ -58,7 +58,7 @@ class RiddleController extends Controller
     public function new($error = null)
     {
 
-        if(Auth::user()->unsolvedRiddles()>4)
+        if(Auth::user()->unsolvedRiddles()>4 && !Auth::user()->moderator)
         {
             return redirect(route('index', ['error' => 1]));
         }
