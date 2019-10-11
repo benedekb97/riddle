@@ -358,13 +358,14 @@ class RiddleController extends Controller
 //        $prev_diff = $previous_riddle->difficulty;
         if($unsolved_riddles!=null){
             $next_riddle = $unsolved_riddles->first();
+
+            Auth::user()->current_riddle = $next_riddle->id;
+            Auth::user()->save();
+
+            return redirect(route('riddle.current'));
         }else{
             return redirect(route('riddle.noneleft'));
         }
 
-        Auth::user()->current_riddle = $next_riddle->id;
-        Auth::user()->save();
-
-        return redirect(route('riddle.current'));
     }
 }
