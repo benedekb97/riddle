@@ -3,6 +3,15 @@
 @section('content')
     <div class="row">
         <div class="col-md-6 col-md-push-3">
+            <div class="alert alert-danger">
+                <h4><i class="fa fa-exclamation-triangle"></i> Fejlesztés alatt!</h4>
+
+                <p>Ha bármilyen hibát észlelsz, írj nekem egy email a benedekb97@gmail.com email címre :P</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-push-3">
             <div class="alert alert-info">
                 <h4><i class="fa fa-info-circle"></i> Hasznos információk:</h4>
 
