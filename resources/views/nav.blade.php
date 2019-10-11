@@ -14,6 +14,7 @@
                 <li><a href="{{ route('index') }}">Home</a></li>
                 <li><a href="{{ route('riddles.all') }}">Eddigiek</a></li>
                 <li><a href="{{ route('riddles.current') }}">Aktuális</a></li>
+                <li><a href="{{ route('users.list') }}">Rangsor</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::user()->moderator)
@@ -22,6 +23,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ route('riddles.unapproved') }}">Elfogadásra váró Riddle-k</a></li>
                             <li><a href="{{ route('riddles.blocked') }}">Tiltott Riddle-k</a></li>
+                            <li><a href="{{ route('users.creators') }}">Riddle készítők</a></li>
                         </ul>
                     </li>
                 @endif

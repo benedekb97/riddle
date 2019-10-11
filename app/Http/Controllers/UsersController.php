@@ -48,4 +48,21 @@ class UsersController extends Controller
 
         return redirect(route('users.profile'));
     }
+
+    public function creators()
+    {
+        $users = User::all();
+
+        return view('users.creators', [
+            'users' => $users
+        ]);
+    }
+
+    public function modify(User $user)
+    {
+        $user->approved = !$user->approved;
+        $user->save();
+
+        return redirect()->back();
+    }
 }

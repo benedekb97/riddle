@@ -48,14 +48,14 @@
 {{--        </div>--}}
 {{--    @endif--}}
     <div class="row">
-        <div class="col-md-6 col-md-push-3">
+        <div class="col-md-8 col-md-push-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ $riddle->title }}</h3>
                 </div>
                 <div style="text-align:center;" class="panel-body">
-                    <a href="{{ route('riddles.get', ['riddle' => $riddle]) }}">
-                        <img style="width:50%; margin:auto;" alt="{{ $riddle->title }}" class="img-responsive" src="{{ route('riddles.get', ['riddle' => $riddle]) }}">
+                    <a target="_blank" href="{{ route('riddles.get', ['riddle' => $riddle]) }}">
+                        <img style="width:75%; margin:auto;" alt="{{ $riddle->title }}" class="img-responsive" src="{{ route('riddles.get', ['riddle' => $riddle]) }}">
                     </a>
                 </div>
                 <div class="table-responsive">

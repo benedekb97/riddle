@@ -12,6 +12,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('profile/edit','UsersController@edit')->name('profile.edit');
 
         Route::post('profile/save','UsersController@save')->name('profile.save');
+
+        Route::get('creators','UsersController@creators')->name('creators')->middleware('moderator');
+        Route::get('user/modify/{user}','UsersController@modify')->name('user.modify')->middleware('moderator');
     });
 
     Route::group(['prefix' => 'riddles', 'as' => 'riddles.'], function(){
