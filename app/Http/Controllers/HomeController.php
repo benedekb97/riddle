@@ -61,4 +61,9 @@ class HomeController extends Controller
             'points' => $points
         ]);
     }
+
+    public function current()
+    {
+        return redirect(route('riddle', ['riddle' => Auth::user()->current_riddle]));
+    }
 }

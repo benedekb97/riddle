@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riddle;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +78,7 @@ class LoginController extends Controller
             $user->password = bcrypt('kuki');
             $user->given_names = $result->givenName;
             $user->internal_id = $result->internal_id;
+            $user->current_riddle = Riddle::all()->first();
 
             $user->save();
         }

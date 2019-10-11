@@ -283,10 +283,16 @@ class RiddleController extends Controller
         $riddle->approved = 1;
         $riddle->approved_by = Auth::user()->id;
         $riddle->approved_at = date("Y-m-d H:i:s");
+        $riddle->blocked = 0;
+        $riddle->blocked_by = null;
+        $riddle->blocked_at = null;
+        $riddle->block_reason = null;
         $riddle->save();
 
         if($return == 'mod') {
             return redirect(route('riddles.unapproved'));
+        }elseif($return == 'blocked') {
+            return redirect(route('riddles.blocked'));
         }else{
             return redirect(route('riddle',['riddle' => $riddle]));
         }
@@ -335,5 +341,22 @@ class RiddleController extends Controller
 
         return redirect(route('users.riddles'));
 
+    }
+
+    public function next()
+    {
+        $riddles = Riddle::all();
+        $solvedRiddles = Auth::user()->solvedRiddles()->get();
+        $unsolved_riddles = $riddles->diff($solvedRiddles);
+
+//        $previous_riddle = Auth::user()->solvedRiddles()->get()->last();
+//        $prev_diff = $previous_riddle->difficulty;
+
+        $next_riddle = $unsolved_riddles->random();
+
+        Auth::user()->current_riddle = $next_riddle->id;
+        Auth::user()->save();
+
+        return redirect(route('riddle.current'));
     }
 }
