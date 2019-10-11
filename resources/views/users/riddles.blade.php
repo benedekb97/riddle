@@ -104,6 +104,20 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">{{ $riddle->title }} - Információk</h4>
                     </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Próba</th>
+                                <th>Hányszor próbálták</th>
+                            </tr>
+                            @foreach($riddle->guesses as $guess)
+                                <tr>
+                                    <td>{{ $guess->guess }}</td>
+                                    <td>{{ $guess->count }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
 
             </div>
