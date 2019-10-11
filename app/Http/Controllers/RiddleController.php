@@ -57,12 +57,6 @@ class RiddleController extends Controller
 
     public function new($error = null)
     {
-
-        if(Auth::user()->unsolvedRiddles()>4 && !Auth::user()->moderator)
-        {
-            return redirect(route('index', ['error' => 1]));
-        }
-
         if(!Auth::user()->approved){
             $approved=false;
         }else{
@@ -116,7 +110,7 @@ class RiddleController extends Controller
             Storage::disk()->put($file_name, File::get($file));
 
             $title = $request->input('title');
-            $answer = $request->input('answer');
+            $answer = strtolower($request->input('answer'));
             $difficulty = $request->input('difficulty');
 
             if($difficulty>5 || $difficulty<1) {

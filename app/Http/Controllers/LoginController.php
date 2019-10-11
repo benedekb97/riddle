@@ -56,6 +56,7 @@ class LoginController extends Controller
         curl_close($curl);
 
         $result = json_decode($result);
+        dd($result);
 
         $access_token = $result->access_token;
 
@@ -78,7 +79,7 @@ class LoginController extends Controller
             $user->password = bcrypt('kuki');
             $user->given_names = $result->givenName;
             $user->internal_id = $result->internal_id;
-            $user->current_riddle = Riddle::all()->first();
+            $user->current_riddle = Riddle::all()->first()->id;
 
             $user->save();
         }
