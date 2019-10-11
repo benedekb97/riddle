@@ -56,7 +56,6 @@ class LoginController extends Controller
         curl_close($curl);
 
         $result = json_decode($result);
-        dd($result);
 
         $access_token = $result->access_token;
 
