@@ -172,7 +172,7 @@ class RiddleController extends Controller
         if(Auth::user() == $riddle->user) {
 //            abort(403);
         }
-        if(Auth::user()->current_riddle != $riddle) {
+        if(Auth::user()->current_riddle != $riddle->id) {
 //            abort(403);
         }
         if($riddle->approved!=1 && Auth::user()->moderator!=1){
