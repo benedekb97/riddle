@@ -351,8 +351,7 @@ class RiddleController extends Controller
 
 //        $previous_riddle = Auth::user()->solvedRiddles()->get()->last();
 //        $prev_diff = $previous_riddle->difficulty;
-
-        $next_riddle = $unsolved_riddles->random();
+        $next_riddle = $unsolved_riddles->first();
 
         Auth::user()->current_riddle = $next_riddle->id;
         Auth::user()->save();
