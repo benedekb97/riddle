@@ -7,6 +7,7 @@
                 <h4><i class="fa fa-exclamation-triangle"></i> Fejlesztés alatt!</h4>
 
                 <p>Ha bármilyen hibát észlelsz, írj nekem egy email a benedekb97@gmail.com email címre :P</p>
+                <p>Github: <a href="http://github.com/benedekb97/riddle">github.com/benedekb97/riddle</a></p>
             </div>
         </div>
     </div>
