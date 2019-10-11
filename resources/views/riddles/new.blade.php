@@ -52,6 +52,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <div style="width:100%;" class="input-group">
+                                <label for="difficulty">Nehézség: <span style="font-style:italic;" id="diff_value">1</span></label>
+                                <input class="slider" type="range" name="difficulty" id="difficulty" min="1" max ="5">
+                            </div>
+                        </div>
+
                     </div>
                     <div class="panel-footer">
                         <input type="submit" class="btn btn-primary" value="Mentés">
@@ -61,4 +68,22 @@
 
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    var slider = document.getElementById("difficulty");
+    var output = document.getElementById("diff_value");
+
+    var difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
+
+    console.log(slider.value);
+
+    output.innerHTML = difficulties[slider.value-1]; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+        output.innerHTML = difficulties[this.value-1];
+    }
+</script>
 @endsection

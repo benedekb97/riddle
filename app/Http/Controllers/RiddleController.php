@@ -116,12 +116,18 @@ class RiddleController extends Controller
 
             $title = $request->input('title');
             $answer = $request->input('answer');
+            $difficulty = $request->input('difficulty');
+
+            if($difficulty>5 || $difficulty<1) {
+                $difficulty = 3;
+            }
 
             $riddle = new Riddle();
             $riddle->title = $title;
             $riddle->image = $file_name;
             $riddle->user_id = Auth::id();
             $riddle->answer = $answer;
+            $riddle->difficulty = $difficulty;
             $riddle->approved = Auth::user()->approved;
 
             $riddle->save();
@@ -150,13 +156,13 @@ class RiddleController extends Controller
     {
 
         if(Auth::user() == $riddle->user) {
-            abort(403);
+//            abort(403);
         }
         if(Auth::user()->current_riddle != $riddle) {
-            abort(403);
+//            abort(403);
         }
         if($riddle->approved!=1 && Auth::user()->moderator!=1){
-            abort(403);
+//            abort(403);
         }
         $last_guess = $riddle->guesses()->where('user_id',Auth::user()->id)->max('updated_at');
 
@@ -188,15 +194,38 @@ class RiddleController extends Controller
         }
 
 
+        $point_multiplier = max(1,Auth::user()->usedHints($riddle)->count());
 
         if(strtolower($answer_given) == strtolower($riddle->answer)) {
             Auth::user()->solvedRiddles()->attach($riddle);
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setUpdatedAt(time());
-            Auth::user()->solvedRIddles()->find($riddle->id)->first()->setCreatedAt(time());
+            Auth::user()->solvedRiddles()->find($riddle->id)->first()->setCreatedAt(time());
+            Auth::user()->points += $riddle->difficulty*$point_multiplier;
             Auth::user()->save();
             return response()->json(['guess' => 'correct']);
         }else{
             return response()->json(['guess' => 'wrong']);
         }
+    }
+
+    public function hint(Riddle $riddle)
+    {
+        $user = Auth::user();
+
+        if($user->usedHints($riddle) == null) {
+            $next_hint = $riddle->hints()->where('number',1)->first();
+        }else{
+            $next_hint = $riddle->hints()->where('number',$user->usedHints($riddle)->max('number')+1)->first();
+        }
+
+        if($user->usedHints($riddle)->count() < $riddle->hints()->count())
+        {
+            $user->hints()->attach($next_hint->id);
+            $user->save();
+        }else{
+            abort(403);
+        }
+
+        return redirect(route('riddle', ['riddle' => $riddle]));
     }
 }

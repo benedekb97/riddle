@@ -40,9 +40,12 @@ class HomeController extends Controller
             $solved = false;
         }
 
+        $hints = Auth::user()->usedHints($riddle)->get();
+
         return view('riddle', [
             'riddle' => $riddle,
-            'solved' => $solved
+            'solved' => $solved,
+            'hints' => $hints
         ]);
     }
 }

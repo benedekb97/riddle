@@ -25,11 +25,22 @@
                             <input type="text" name="answer" id="answer" placeholder="Megoldás" class="form-control">
                         </div>
                         <input id="submit" type="button" class="btn btn-primary" value="Próba">
+                        <form style="display:inline;" action="{{ route('riddles.hintme', ['riddle' => $riddle]) }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="submit" class="btn btn-default" value="Hint kérése ({{ $riddle->hints()->count()-Auth::user()->usedHints($riddle)->count() }})" @if($riddle->hints()->count()-Auth::user()->usedHints($riddle)->count()==0) disabled @endif>
+                        </form>
                     </div>
                     @else
                     Megoldás: <i data-toggle="tooltip" title="{{ $riddle->answer }}" class="fa fa-eye"></i>
                     @endif
                 </div>
+                @if($hints->count()>0)
+                    @foreach($hints as $hint)
+                        <div class="panel-footer">
+                            Hint {{ $hint->number }}: {{ $hint->hint }}
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

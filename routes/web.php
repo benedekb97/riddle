@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('fresh', 'RiddkeController@fresh')->name('fresh');
 
         Route::get('next','RiddleController@next')->name('next');
+
+        Route::post('hintme/{riddle}','RiddleController@hint')->name('hintme');
     });
 
     Route::get('riddle/{riddle}','HomeController@riddle')->name('riddle');

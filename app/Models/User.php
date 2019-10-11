@@ -63,4 +63,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Riddle::class,'current_riddle');
     }
+
+    public function usedHints(Riddle $riddle)
+    {
+        return $this->belongsToMany(Hint::class,'user_hint','user_id','hint_id')->where('riddle_id',$riddle->id);
+    }
+
+    public function hints()
+    {
+        return $this->belongsToMany(Hint::class,'user_hint','user_id','hint_id');
+    }
 }

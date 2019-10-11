@@ -27,6 +27,7 @@ $('#submit').click(function(){
     $('#submit').attr('disabled','true');
     setTimeout(function(){
         $('#submit').removeAttr('disabled');
+        $('#answer').val("");
     },3000);
 });
 $('#answer').keypress(function (e) {
@@ -56,6 +57,7 @@ $('#answer').keypress(function (e) {
         $('#submit').attr('disabled','true');
         setTimeout(function(){
             $('#submit').removeAttr('disabled');
+            $('#answer').val("");
         },3000);
         return false;
 
