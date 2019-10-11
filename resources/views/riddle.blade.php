@@ -54,7 +54,9 @@
                     <h3 class="panel-title">{{ $riddle->title }}</h3>
                 </div>
                 <div style="text-align:center;" class="panel-body">
-                    <img style="width:50%; margin:auto;" alt="{{ $riddle->title }}" class="img-responsive" src="{{ route('riddles.get', ['riddle' => $riddle]) }}">
+                    <a href="{{ route('riddles.get', ['riddle' => $riddle]) }}">
+                        <img style="width:50%; margin:auto;" alt="{{ $riddle->title }}" class="img-responsive" src="{{ route('riddles.get', ['riddle' => $riddle]) }}">
+                    </a>
                 </div>
                 <div class="table-responsive">
                     <table class="table">
