@@ -13,7 +13,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ route('index') }}">Home</a></li>
                 <li><a href="{{ route('riddles.all') }}">Eddigiek</a></li>
-                <li><a href="{{ route('riddles.current') }}">AKtuális</a></li>
+                <li><a href="{{ route('riddles.current') }}">Aktuális</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::user()->moderator)
