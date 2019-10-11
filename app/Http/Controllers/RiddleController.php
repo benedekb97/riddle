@@ -186,7 +186,7 @@ class RiddleController extends Controller
         if($last_guess !=null){
 
             $last_guess_time =  strtotime($last_guess);
-            if(time()-$last_guess_time<4){
+            if(time()-$last_guess_time<2){
                 abort(403);
             }
 

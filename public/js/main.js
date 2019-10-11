@@ -25,10 +25,12 @@ $('#submit').click(function(){
 
 
     $('#submit').attr('disabled','true');
+    $('#answer').attr('readonly','true');
     setTimeout(function(){
         $('#submit').removeAttr('disabled');
         $('#answer').val("");
-    },3000);
+        $('#answer').removeAttr('readonly');
+    },1000);
 });
 $('#answer').keypress(function (e) {
     if (e.which === 13) {
@@ -55,10 +57,12 @@ $('#answer').keypress(function (e) {
 
         });
         $('#submit').attr('disabled','true');
+        $('#answer').attr('readonly','true');
         setTimeout(function(){
             $('#submit').removeAttr('disabled');
             $('#answer').val("");
-        },3000);
+            $('#answer').removeAttr('readonly');
+        },1000);
         return false;
 
     }
