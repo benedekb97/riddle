@@ -6,7 +6,7 @@ Route::get('','HomeController@index')->name('index');
 Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix' => 'users','as' => 'users.'], function(){
         Route::get('list','UsersController@list')->name('list');
-        Route::get('riddles', 'UsersController@riddles')->name('riddles');
+        Route::get('riddles/{riddle?}/{option?}', 'UsersController@riddles')->name('riddles');
         Route::get('profile','UsersController@profile')->name('profile');
     });
 
@@ -25,9 +25,17 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('next','RiddleController@next')->name('next');
 
         Route::post('hintme/{riddle}','RiddleController@hint')->name('hintme');
+
+        Route::get('{riddle}/hints/{hint}/delete', 'RiddleController@deleteHint')->name('hint.delete');
+        Route::post('{riddle}/hints/add', 'RiddleController@addHint')->name('hint.add');
+
+        Route::get('{riddle}/approve', 'RiddleController@approve')->name('approve');
+        Route::post('{riddle}/block', 'RiddleController@block')->name('block');
+
+        Route::post('{riddle}/edit', 'RiddleController@edit')->name('edit');
     });
 
-    Route::get('riddle/{riddle}','HomeController@riddle')->name('riddle');
+    Route::get('riddle/{riddle}/','HomeController@riddle')->name('riddle');
 
     Route::post('api/riddle/check/{riddle}', 'RiddleController@check')->name('api.riddle.check');
 

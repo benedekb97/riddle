@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guess;
+use App\Models\Hint;
 use App\Models\Riddle;
 use Faker\Provider\Image;
 use File;
@@ -128,7 +129,7 @@ class RiddleController extends Controller
             $riddle->user_id = Auth::id();
             $riddle->answer = $answer;
             $riddle->difficulty = $difficulty;
-            $riddle->approved = Auth::user()->approved;
+            $riddle->approved = Auth::user()->approved || Auth::user()->moderator;
 
             $riddle->save();
 
@@ -194,7 +195,7 @@ class RiddleController extends Controller
         }
 
 
-        $point_multiplier = max(1,Auth::user()->usedHints($riddle)->count());
+        $point_multiplier = max(1,5-Auth::user()->usedHints($riddle)->count());
 
         if(strtolower($answer_given) == strtolower($riddle->answer)) {
             Auth::user()->solvedRiddles()->attach($riddle);
@@ -227,5 +228,66 @@ class RiddleController extends Controller
         }
 
         return redirect(route('riddle', ['riddle' => $riddle]));
+    }
+
+    public function deleteHint(Riddle $riddle, Hint $hint)
+    {
+        if($riddle->user == Auth::user())
+        {
+            $hint->delete();
+        }else{
+            abort(403);
+        }
+
+        return redirect(route('users.riddles', ['riddle' => $riddle, 'option' => 'hint']));
+    }
+
+    public function addHint(Riddle $riddle, Request $request)
+    {
+        $hint_number = $riddle->hints()->count()+1;
+
+        if($riddle->user == Auth::user())
+        {
+            $hint = new Hint();
+            $hint->riddle_id = $riddle->id;
+            $hint->hint = $request->input('hint');
+            $hint->number = $hint_number;
+            $hint->save();
+        }else{
+            abort(403);
+        }
+
+        return redirect(route('users.riddles', ['riddle' => $riddle, 'option' => 'hint']));
+    }
+
+    public function approve(Riddle $riddle)
+    {
+        if(Auth::user()->moderator!=1)
+        {
+            abort(403);
+        }
+
+        $riddle->approved = 1;
+        $riddle->approved_by = Auth::user()->id;
+        $riddle->approved_at = date("Y-m-d H:i:s");
+        $riddle->save();
+
+        return redirect(route('riddle',['riddle' => $riddle]));
+    }
+
+    public function block(Riddle $riddle, Request $request)
+    {
+        if(Auth::user()->moderator!=1)
+        {
+            abort(403);
+        }
+
+        $riddle->blocked = 1;
+        $riddle->blocked_by = Auth::user()->id;
+        $riddle->blocked_at = date("Y-m-d H:i:s");
+        $riddle->block_reason = $request->input('reason');
+        $riddle->save();
+
+        return redirect(route('riddle',['riddle' => $riddle]));
     }
 }

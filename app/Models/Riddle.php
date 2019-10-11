@@ -8,7 +8,7 @@ class Riddle extends Model
 {
     protected $table = 'riddles';
     protected $fillable = [
-        'title', 'image','difficulty','answer','approved'
+        'title', 'image','difficulty','answer','approved','number','blocked','approved_by','approved_at','blocked_by','blocked_at','block_reason'
     ];
 
     public function user()
@@ -23,7 +23,7 @@ class Riddle extends Model
 
     public function solvedBy()
     {
-        return $this->belongsToMany(User::class,'user_riddle','user_id','riddle_id');
+        return $this->belongsToMany(User::class,'user_riddle','riddle_id','user_id');
     }
 
     public function isUnsolved()
@@ -38,5 +38,15 @@ class Riddle extends Model
     public function guesses()
     {
         return $this->hasMany(Guess::class);
+    }
+
+    public function blocker()
+    {
+        return $this->belongsTo(User::class,'blocked_by');
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class,'approved_by');
     }
 }

@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div style="width:100%;" class="input-group">
+                            <div style="width:33%;" class="input-group">
                                 <label for="difficulty">Nehézség: <span style="font-style:italic;" id="diff_value">1</span></label>
                                 <input class="slider" type="range" name="difficulty" id="difficulty" min="1" max ="5">
                             </div>

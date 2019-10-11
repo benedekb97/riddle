@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function solvedRiddles()
     {
-        return $this->belongsToMany(Riddle::class, 'user_riddle','riddle_id','user_id');
+        return $this->belongsToMany(Riddle::class, 'user_riddle','user_id','riddle_id');
     }
 
     public function unsolvedRiddles()
