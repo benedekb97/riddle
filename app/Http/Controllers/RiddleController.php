@@ -150,7 +150,20 @@ class RiddleController extends Controller
 
     public function unapproved()
     {
-        return view('riddles.unapproved');
+        $riddles = Riddle::all()->where('approved','0')->where('blocked','0')->all();
+
+        return view('riddles.unapproved', [
+            'riddles' => $riddles
+        ]);
+    }
+
+    public function blocked()
+    {
+        $riddles = Riddle::all()->where('blocked','1')->all();
+
+        return view('riddles.blocked', [
+            'riddles' => $riddles
+        ]);
     }
 
     public function check(Riddle $riddle, Request $request)
@@ -260,7 +273,7 @@ class RiddleController extends Controller
         return redirect(route('users.riddles', ['riddle' => $riddle, 'option' => 'hint']));
     }
 
-    public function approve(Riddle $riddle)
+    public function approve(Riddle $riddle, $return = null)
     {
         if(Auth::user()->moderator!=1)
         {
@@ -272,10 +285,15 @@ class RiddleController extends Controller
         $riddle->approved_at = date("Y-m-d H:i:s");
         $riddle->save();
 
-        return redirect(route('riddle',['riddle' => $riddle]));
+        if($return == 'mod') {
+            return redirect(route('riddles.unapproved'));
+        }else{
+            return redirect(route('riddle',['riddle' => $riddle]));
+        }
+
     }
 
-    public function block(Riddle $riddle, Request $request)
+    public function block(Riddle $riddle, Request $request, $return = null)
     {
         if(Auth::user()->moderator!=1)
         {
@@ -288,6 +306,34 @@ class RiddleController extends Controller
         $riddle->block_reason = $request->input('reason');
         $riddle->save();
 
-        return redirect(route('riddle',['riddle' => $riddle]));
+        if($return == 'mod') {
+            return redirect(route('riddles.unapproved'));
+        }else{
+            return redirect(route('riddle',['riddle' => $riddle]));
+        }
+
+    }
+
+    public function edit(Riddle $riddle, Request $request)
+    {
+        if(Auth::user()->moderator!=1 || Auth::user()->id != $riddle->user_id)
+        {
+            abort(403);
+        }
+
+        $riddle->title = $request->input('title'.$riddle->id);
+        $riddle->answer = $request->input('answer'.$riddle->id);
+        $riddle->difficulty = $request->input('difficulty'.$riddle->id);
+        $riddle->blocked = false;
+        $riddle->blocked_by = null;
+        $riddle->blocked_at = null;
+        $riddle->block_reason = null;
+        $riddle->approved = false;
+        $riddle->approved_by = null;
+        $riddle->approved_at = null;
+        $riddle->save();
+
+        return redirect(route('users.riddles'));
+
     }
 }

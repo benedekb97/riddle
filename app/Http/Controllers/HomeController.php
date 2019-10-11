@@ -49,11 +49,16 @@ class HomeController extends Controller
 
         $hints = Auth::user()->usedHints($riddle)->get();
 
+        $point_multiplier = max(1,5-$hints->count());
+
+        $points = $riddle->difficulty * $point_multiplier;
+
         return view('riddle', [
             'riddle' => $riddle,
             'solved' => $solved,
             'hints' => $hints,
-            'approved' => $approved
+            'approved' => $approved,
+            'points' => $points
         ]);
     }
 }

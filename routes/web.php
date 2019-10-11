@@ -18,6 +18,9 @@ Route::group(['middleware' => 'auth'], function(){
 
         Route::group(['middleware' => 'moderator'], function(){
             Route::get('unapproved','RiddleController@unapproved')->name('unapproved');
+            Route::get('blocked','RiddleController@blocked')->name('blocked');
+            Route::get('{riddle}/approve/{return?}', 'RiddleController@approve')->name('approve');
+            Route::post('{riddle}/block/{return?}', 'RiddleController@block')->name('block');
         });
 
         Route::get('fresh', 'RiddkeController@fresh')->name('fresh');
@@ -28,9 +31,6 @@ Route::group(['middleware' => 'auth'], function(){
 
         Route::get('{riddle}/hints/{hint}/delete', 'RiddleController@deleteHint')->name('hint.delete');
         Route::post('{riddle}/hints/add', 'RiddleController@addHint')->name('hint.add');
-
-        Route::get('{riddle}/approve', 'RiddleController@approve')->name('approve');
-        Route::post('{riddle}/block', 'RiddleController@block')->name('block');
 
         Route::post('{riddle}/edit', 'RiddleController@edit')->name('edit');
     });

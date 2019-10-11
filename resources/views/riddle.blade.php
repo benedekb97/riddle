@@ -56,6 +56,14 @@
                 <div style="text-align:center;" class="panel-body">
                     <img style="width:50%; margin:auto;" alt="{{ $riddle->title }}" class="img-responsive" src="{{ route('riddles.get', ['riddle' => $riddle]) }}">
                 </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <td>Készítette:</td>
+                            <td style="text-align:right; font-weight:bold;">{{ $riddle->user->name }}</td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="panel-footer">
                     @if($solved==false && !(!$approved && Auth::user()->moderator) /*&& $riddle->user_id != Auth::user()->id*/)
                     <div class="form-inline">
@@ -107,6 +115,8 @@
                 </div>
                 <div class="modal-body">
                     Sikerült megoldanod ezt a rendkívül nehéz riddle-t!
+                    <p>Kaptál érte <strong>{{ $points }}</strong> pontot</p>
+                    <p>Így a pontszámod: {{ Auth::user()->points + $points }}</p>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-primary" href="{{ route('riddles.next') }}">Következő</a>

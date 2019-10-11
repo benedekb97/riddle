@@ -20,6 +20,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Moderálás <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ route('riddles.unapproved') }}">Elfogadásra váró Riddle-k</a></li>
+                            <li><a href="{{ route('riddles.blocked') }}">Tiltott Riddle-k</a></li>
                         </ul>
                     </li>
                 @endif
