@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('{riddle}/edit', 'RiddleController@edit')->name('edit');
     });
 
-    Route::get('riddle/{riddle}/','HomeController@riddle')->name('riddle');
+    Route::get('riddles/{riddle}/','HomeController@riddle')->name('riddle');
 
     Route::get('riddle/current','HomeController@current')->name('riddle.current');
 
