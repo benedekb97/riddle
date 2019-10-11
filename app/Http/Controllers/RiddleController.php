@@ -365,4 +365,12 @@ class RiddleController extends Controller
         }
 
     }
+
+    public function all()
+    {
+        $riddles = Auth::user()->solvedRiddles()->get();
+        $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
+
+        return view('riddles.all', ['riddles' => $riddles, 'difficulties' => $difficulties]);
+    }
 }

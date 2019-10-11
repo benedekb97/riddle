@@ -23,8 +23,6 @@ Route::group(['middleware' => 'auth'], function(){
             Route::post('{riddle}/block/{return?}', 'RiddleController@block')->name('block');
         });
 
-        Route::get('fresh', 'RiddkeController@fresh')->name('fresh');
-
         Route::get('next','RiddleController@next')->name('next');
 
         Route::post('hintme/{riddle}','RiddleController@hint')->name('hintme');
@@ -37,6 +35,8 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('current','HomeController@current')->name('current');
 
         Route::get('noneleft','HomeController@noneLeft')->name('noneleft');
+
+        Route::get('all','RiddleController@all')->name('all');
     });
 
     Route::get('riddles/view/{riddle}/','HomeController@riddle')->name('riddle');

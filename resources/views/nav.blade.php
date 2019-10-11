@@ -11,8 +11,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ route('index') }}">Home</a></li>
-                <li><a href="{{ route('riddles.fresh') }}">Friss hús</a></li>
+                <li><a href="{{ route('index') }}">Home</a></li>
+                <li><a href="{{ route('riddles.all') }}">Eddigiek</a></li>
+                <li><a href="{{ route('riddles.current') }}">AKtuális</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::user()->moderator)
