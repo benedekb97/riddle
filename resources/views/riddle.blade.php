@@ -38,15 +38,15 @@
             </div>
         </div>
     @endif
-    @if($approved && Auth::user()->id == $riddle->user_id)
-        <div class="row">
-            <div class="col-md-4 col-md-push-4">
-                <div class="alert alert-info">
-                    <i class="fa fa-info"></i>Nem oldhatod meg a saját riddle-öd.
-                </div>
-            </div>
-        </div>
-    @endif
+{{--    @if($approved && Auth::user()->id == $riddle->user_id)--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-md-4 col-md-push-4">--}}
+{{--                <div class="alert alert-info">--}}
+{{--                    <i class="fa fa-info"></i>Nem oldhatod meg a saját riddle-öd.--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    @endif--}}
     <div class="row">
         <div class="col-md-6 col-md-push-3">
             <div class="panel panel-default">
@@ -57,7 +57,7 @@
                     <img style="width:50%; margin:auto;" alt="{{ $riddle->title }}" class="img-responsive" src="{{ route('riddles.get', ['riddle' => $riddle]) }}">
                 </div>
                 <div class="panel-footer">
-                    @if($solved==false && !(!$approved && Auth::user()->moderator) && $riddle->user_id != Auth::user()->id)
+                    @if($solved==false && !(!$approved && Auth::user()->moderator) /*&& $riddle->user_id != Auth::user()->id*/)
                     <div class="form-inline">
                         <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="post_url" id="post_url" value="{{ route('api.riddle.check', ['riddle' => $riddle]) }}">

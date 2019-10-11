@@ -163,7 +163,7 @@ class RiddleController extends Controller
 //            abort(403);
         }
         if($riddle->approved!=1 && Auth::user()->moderator!=1){
-//            abort(403);
+            abort(403);
         }
         $last_guess = $riddle->guesses()->where('user_id',Auth::user()->id)->max('updated_at');
 
