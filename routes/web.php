@@ -33,13 +33,13 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('{riddle}/hints/add', 'RiddleController@addHint')->name('hint.add');
 
         Route::post('{riddle}/edit', 'RiddleController@edit')->name('edit');
+
+        Route::get('current','HomeController@current')->name('current');
+
+        Route::get('noneleft','HomeController@noneLeft')->name('noneleft');
     });
 
-    Route::get('/riddle/view/{riddle}/','HomeController@riddle')->name('riddle');
-
-    Route::get('riddle/current','HomeController@current')->name('riddle.current');
-
-    Route::get('riddle/noneleft','HomeController@noneLeft')->name('riddle.noneleft');
+    Route::get('riddles/view/{riddle}/','HomeController@riddle')->name('riddle');
 
     Route::post('api/riddle/check/{riddle}', 'RiddleController@check')->name('api.riddle.check');
 

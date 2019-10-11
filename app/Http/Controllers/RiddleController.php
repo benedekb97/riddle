@@ -347,7 +347,7 @@ class RiddleController extends Controller
     public function next()
     {
         if(Auth::user()->current_riddle != null) {
-            return redirect(route('riddle.current'));
+            return redirect(route('riddles.current'));
         }
 
         $riddles = Riddle::all();
@@ -359,9 +359,9 @@ class RiddleController extends Controller
             Auth::user()->current_riddle = $next_riddle->id;
             Auth::user()->save();
 
-            return redirect(route('riddle.current'));
+            return redirect(route('riddles.current'));
         }else{
-            return redirect(route('riddle.noneleft'));
+            return redirect(route('riddles.noneleft'));
         }
 
     }
