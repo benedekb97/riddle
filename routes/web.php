@@ -38,7 +38,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/riddle/view/{riddle}/','HomeController@riddle')->name('riddle');
 
     Route::get('riddle/current','HomeController@current')->name('riddle.current');
-    Route::get('riddle/next', 'HomeController@next')->name('riddle.next');
 
     Route::get('riddle/noneleft','HomeController@noneLeft')->name('riddle.noneleft');
 

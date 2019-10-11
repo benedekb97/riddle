@@ -65,7 +65,7 @@ class HomeController extends Controller
     public function current()
     {
         if(Auth::user()->current_riddle == null) {
-            return redirect(route('riddle.next'));
+            return redirect(route('riddles.next'));
         }else{
             return redirect(route('riddle', ['riddle' => Auth::user()->current_riddle]));
         }
