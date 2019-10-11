@@ -352,7 +352,11 @@ class RiddleController extends Controller
 
         $riddles = Riddle::all();
         $solvedRiddles = Auth::user()->solvedRiddles()->get();
+        $unapproved_riddles = Riddle::all()->where('approved','0');
+        $blocked_riddles = Riddle::all()->where('blocked','1');
         $unsolved_riddles = $riddles->diff($solvedRiddles);
+        $unsolved_riddles = $unsolved_riddles->diff($unapproved_riddles);
+        $unsolved_riddles = $unsolved_riddles->diff($blocked_riddles);
         if($unsolved_riddles->count() != 0){
             $next_riddle = $unsolved_riddles->first();
 

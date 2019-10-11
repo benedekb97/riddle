@@ -10,7 +10,7 @@
                     <li>Jelenleg bárki feltölthet riddle-t.</li>
                     <li>Ezt el kell fogadnia egy moderátornak
                         <ul>
-                            <li>Ha elfogadja akkor a /riddle/ID címen érhető el</li>
+                            <li>Ha elfogadja akkor bekerül a riddle listába</li>
                             <li>Ha nem akkor kapsz egy indokot hogy miért szar</li>
                             <li>Miután kijavítottad megint el kell fogadnia/visszadobni</li>
                             <li>stb.</li>

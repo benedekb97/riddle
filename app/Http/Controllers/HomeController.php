@@ -34,12 +34,19 @@ class HomeController extends Controller
 
     public function riddle(Riddle $riddle)
     {
-        if($riddle->approved==0 && Auth::user()->id != $riddle->user_id && Auth::user()->moderator==0)
-        {
+        if($riddle->approved==0 && (Auth::user()->id != $riddle->user_id || !Auth::user()->moderator)) {
             abort(403);
         }
 
-        if(Auth::user()->solvedRIddles()->find($riddle->id) != null){
+        if($riddle->approved && Auth::user()->id == $riddle->user_id && !Auth::user()->moderator) {
+            abort(403);
+        }
+
+        if((Auth::user()->current_riddle != $riddle->id) && (!Auth::user()->moderator)) {
+            abort(403);
+        }
+
+        if(Auth::user()->solvedRiddles()->find($riddle->id) != null){
             $solved = true;
         }else{
             $solved = false;
