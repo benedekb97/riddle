@@ -66,7 +66,7 @@
                         </tr>
                         <tr>
                             <td>Nehézség:</td>
-                            <td style="text-align:right; font-weight:bold;">{{ $difficulties[$riddle->difficulty+1] }}</td>
+                            <td style="text-align:right; font-weight:bold;">{{ $difficulties[$riddle->difficulty-1] }}</td>
                         </tr>
                     </table>
                 </div>
