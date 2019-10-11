@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->bigInteger('points')->nullable()->default(0);
             $table->boolean('moderator')->default(false);
             $table->boolean('approved')->default(false)->nullable();
+            $table->bigInteger('current_riddle')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

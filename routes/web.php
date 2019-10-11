@@ -21,9 +21,13 @@ Route::group(['middleware' => 'auth'], function(){
         });
 
         Route::get('fresh', 'RiddkeController@fresh')->name('fresh');
+
+        Route::get('next','RiddleController@next')->name('next');
     });
 
     Route::get('riddle/{riddle}','HomeController@riddle')->name('riddle');
+
+    Route::post('api/riddle/check/{riddle}', 'RiddleController@check')->name('api.riddle.check');
 
 });
 

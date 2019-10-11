@@ -53,4 +53,14 @@ class User extends Authenticatable
 
         return $riddles;
     }
+
+    public function guesses()
+    {
+        return $this->hasMany(Guess::class);
+    }
+
+    public function riddle()
+    {
+        return $this->belongsTo(Riddle::class,'current_riddle');
+    }
 }

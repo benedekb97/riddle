@@ -27,8 +27,8 @@
             <form action="{{ route('riddles.save') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="panel panel-default">
-                    <div class="panel-header">
-                        <h3 class="panel-heading">Új riddle feltöltése</h3>
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Új riddle feltöltése</h3>
                     </div>
                     <div class="panel-body">
 

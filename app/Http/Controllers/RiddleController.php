@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guess;
 use App\Models\Riddle;
 use Faker\Provider\Image;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -142,5 +144,59 @@ class RiddleController extends Controller
     public function unapproved()
     {
         return view('riddles.unapproved');
+    }
+
+    public function check(Riddle $riddle, Request $request)
+    {
+
+        if(Auth::user() == $riddle->user) {
+            abort(403);
+        }
+        if(Auth::user()->current_riddle != $riddle) {
+            abort(403);
+        }
+        if($riddle->approved!=1 && Auth::user()->moderator!=1){
+            abort(403);
+        }
+        $last_guess = $riddle->guesses()->where('user_id',Auth::user()->id)->max('updated_at');
+
+        $answer_given = $request->input('answer');
+
+
+        if($last_guess !=null){
+
+            $last_guess_time =  strtotime($last_guess);
+            if(time()-$last_guess_time<4){
+                abort(403);
+            }
+
+        }
+
+        $same_guess = Auth::user()->guesses()->where('riddle_id',$riddle->id)->where('guess',$answer_given)->first();
+
+        if($same_guess!=null)
+        {
+            $same_guess->count++;
+            $same_guess->updated_at = date("Y-m-d H:i:s",time());
+            $same_guess->save();
+        }else{
+            $guess = new Guess();
+            $guess->guess = $answer_given;
+            $guess->user_id = Auth::user()->id;
+            $guess->riddle_id = $riddle->id;
+            $guess->save();
+        }
+
+
+
+        if(strtolower($answer_given) == strtolower($riddle->answer)) {
+            Auth::user()->solvedRiddles()->attach($riddle);
+            Auth::user()->solvedRiddles()->find($riddle->id)->first()->setUpdatedAt(time());
+            Auth::user()->solvedRIddles()->find($riddle->id)->first()->setCreatedAt(time());
+            Auth::user()->save();
+            return response()->json(['guess' => 'correct']);
+        }else{
+            return response()->json(['guess' => 'wrong']);
+        }
     }
 }

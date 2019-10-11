@@ -34,4 +34,9 @@ class Riddle extends Model
             return false;
         }
     }
+
+    public function guesses()
+    {
+        return $this->hasMany(Guess::class);
+    }
 }
