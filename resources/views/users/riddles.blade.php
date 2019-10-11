@@ -21,7 +21,7 @@
                         </tr>
                         @foreach($riddles as $riddle)
                             <tr>
-                                <td>$riddle->number @if($riddle->blocked==true) <span data-toggle="tooltip" title="Javításra vár" class="btn btn-danger btn-xs"><i class="fa fa-exclamation-triangle"></i></span>@endif
+                                <td>{{ $riddle->id }} @if($riddle->blocked==true) <span data-toggle="tooltip" title="Javításra vár" class="btn btn-danger btn-xs"><i class="fa fa-exclamation-triangle"></i></span>@endif
                                                     @if(!$riddle->blocked && !$riddle->approved) <span data-toggle="tooltip" title="Elfogadásra vár" class="btn btn-warning btn-xs"><i class="fa fa-info-circle"></i></span> @endif</td>
                                 <td>{{ $riddle->title }}</td>
                                 <td>{{ $riddle->answer }}</td>

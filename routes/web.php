@@ -8,6 +8,10 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('list','UsersController@list')->name('list');
         Route::get('riddles/{riddle?}/{option?}', 'UsersController@riddles')->name('riddles');
         Route::get('profile','UsersController@profile')->name('profile');
+
+        Route::get('profile/edit','UsersController@edit')->name('profile.edit');
+
+        Route::post('profile/save','UsersController@save')->name('profile.save');
     });
 
     Route::group(['prefix' => 'riddles', 'as' => 'riddles.'], function(){

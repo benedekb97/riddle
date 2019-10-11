@@ -33,4 +33,19 @@ class UsersController extends Controller
             'option' => $option
         ]);
     }
+
+    public function edit()
+    {
+        $user = Auth::user();
+
+        return view('users.edit');
+    }
+
+    public function save(Request $request)
+    {
+        Auth::user()->nickname = $request->input('nickname');
+        Auth::user()->save();
+
+        return redirect(route('users.profile'));
+    }
 }

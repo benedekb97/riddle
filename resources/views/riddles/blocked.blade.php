@@ -23,7 +23,7 @@
                         </tr>
                         @foreach($riddles as $riddle)
                             <tr>
-                                <td>{{ $riddle->number }}</td>
+                                <td>{{ $riddle->id }}</td>
                                 <td>{{ $riddle->title }}</td>
                                 <td>{{ $riddle->answer }}</td>
                                 <td>{{ $riddle->difficulty }}</td>

@@ -204,7 +204,7 @@ class RiddleController extends Controller
 
         $point_multiplier = max(1,5-Auth::user()->usedHints($riddle)->count());
 
-        if(strtolower($answer_given) == strtolower($riddle->answer)) {
+        if(str_replace(' ','',strtolower($answer_given)) == str_replace(' ','',strtolower($riddle->answer))) {
             Auth::user()->solvedRiddles()->attach($riddle);
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setUpdatedAt(time());
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setCreatedAt(time());
@@ -323,7 +323,7 @@ class RiddleController extends Controller
         }
 
         $riddle->title = $request->input('title'.$riddle->id);
-        $riddle->answer = $request->input('answer'.$riddle->id);
+        $riddle->answer = str_replace(' ','',strtolower($request->input('answer'.$riddle->id)));
         $riddle->difficulty = $request->input('difficulty'.$riddle->id);
         $riddle->blocked = false;
         $riddle->blocked_by = null;
