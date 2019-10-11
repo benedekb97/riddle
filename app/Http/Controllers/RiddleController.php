@@ -329,9 +329,11 @@ class RiddleController extends Controller
         $riddle->blocked_by = null;
         $riddle->blocked_at = null;
         $riddle->block_reason = null;
-        $riddle->approved = false;
-        $riddle->approved_by = null;
-        $riddle->approved_at = null;
+        if(!Auth::user()->moderator){
+            $riddle->approved = false;
+            $riddle->approved_by = null;
+            $riddle->approved_at = null;
+        }
         $riddle->save();
 
         return redirect(route('users.riddles'));
