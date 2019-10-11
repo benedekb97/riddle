@@ -128,9 +128,7 @@ class RiddleController extends Controller
             $riddle->save();
 
 
-            return redirect(route('riddle', [
-                'riddle' => $riddle
-            ]));
+            return redirect(route('users.riddles'));
         }else{
             return redirect(Route('riddles.new', ['error' => 8]));
         }
