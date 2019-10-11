@@ -60,12 +60,15 @@ class HomeController extends Controller
 
         $points = $riddle->difficulty * $point_multiplier;
 
+        $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
+
         return view('riddle', [
             'riddle' => $riddle,
             'solved' => $solved,
             'hints' => $hints,
             'approved' => $approved,
-            'points' => $points
+            'points' => $points,
+            'difficulties' => $difficulties
         ]);
     }
 

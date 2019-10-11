@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guess;
 use App\Models\Riddle;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,11 +27,13 @@ class UsersController extends Controller
     public function riddles(Riddle $riddle = null, $option = null)
     {
         $riddles = Auth::user()->riddles;
+        $guesses = Guess::all()->groupBy('riddle_id');
 
         return view('users.riddles', [
             'riddles' => $riddles,
             'view_hints' => $riddle,
-            'option' => $option
+            'option' => $option,
+            'guesses' => $guesses
         ]);
     }
 

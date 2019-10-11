@@ -64,6 +64,10 @@
                             <td>Készítette:</td>
                             <td style="text-align:right; font-weight:bold;">{{ $riddle->user->name }} @if($riddle->user->nickname!="") ({{ $riddle->user->nickname }}) @endif</td>
                         </tr>
+                        <tr>
+                            <td>Nehézség:</td>
+                            <td style="text-align:right; font-weight:bold;">{{ $difficulties[$riddle->difficulty+1] }}</td>
+                        </tr>
                     </table>
                 </div>
                 <div class="panel-footer">
