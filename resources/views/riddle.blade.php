@@ -62,7 +62,7 @@
                     <table class="table">
                         <tr>
                             <td>Készítette:</td>
-                            <td style="text-align:right; font-weight:bold;">{{ $riddle->user->name }}</td>
+                            <td style="text-align:right; font-weight:bold;">{{ $riddle->user->name }} @if($riddle->user->nickname!="") ({{ $riddle->user->nickname }}) @endif</td>
                         </tr>
                     </table>
                 </div>
