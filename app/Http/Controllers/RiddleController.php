@@ -214,6 +214,7 @@ class RiddleController extends Controller
             Auth::user()->solvedRiddles()->attach($riddle);
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setUpdatedAt(time());
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setCreatedAt(time());
+            Auth::user()->current_riddle = null;
             Auth::user()->points += $riddle->difficulty*$point_multiplier;
             Auth::user()->save();
             return response()->json(['guess' => 'correct']);
@@ -345,13 +346,21 @@ class RiddleController extends Controller
 
     public function next()
     {
+        if(Auth::user()->current_riddle != null) {
+            return redirect(route('riddle.current'));
+        }
+
         $riddles = Riddle::all();
         $solvedRiddles = Auth::user()->solvedRiddles()->get();
         $unsolved_riddles = $riddles->diff($solvedRiddles);
 
 //        $previous_riddle = Auth::user()->solvedRiddles()->get()->last();
 //        $prev_diff = $previous_riddle->difficulty;
-        $next_riddle = $unsolved_riddles->first();
+        if($unsolved_riddles!=null){
+            $next_riddle = $unsolved_riddles->first();
+        }else{
+            return redirect(route('riddle.noneleft'));
+        }
 
         Auth::user()->current_riddle = $next_riddle->id;
         Auth::user()->save();

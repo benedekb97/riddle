@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('riddle/current','HomeController@current')->name('riddle.current');
 
+    Route::get('riddle/noneleft','HomeController@noneLeft')->name('riddle.noneleft');
+
     Route::post('api/riddle/check/{riddle}', 'RiddleController@check')->name('api.riddle.check');
 
 });
