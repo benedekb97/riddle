@@ -16,9 +16,11 @@
                         <th>Pontszám</th>
                         <th>Megoldott riddle-ök</th>
                     </tr>
-                    @foreach($users as $id => $user)
+                    <?php $i = 0; ?>
+                    @foreach($users as $user)
+                        <?php $i++; ?>
                         <tr>
-                            <td>{{ $id+1 }}.</td>
+                            <td>{{ $i }}.</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->points }}</td>
                             <td>{{ $user->solvedRiddles()->count() }}</td>
