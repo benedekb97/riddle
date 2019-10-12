@@ -18,6 +18,31 @@ class HomeController extends Controller
         return view('index');
     }
 
+    public function login($error = null)
+    {
+        if(Auth::check()){
+            abort(403);
+        }
+
+        $error_codes = [
+            1 => 'A megadott jelszavak nem egyeznek!',
+            2 => 'Ez az email már szerepel az adatbázisban!',
+            3 => 'A jelszavadnak minimum 8 karakter hosszúnak kell lennie!'
+        ];
+
+        if($error != null)
+        {
+            $error_message = $error_codes[$error];
+        }else{
+            $error_message = null;
+        }
+
+        return view('login', [
+            'error' => $error,
+            'error_message' => $error_message
+        ]);
+    }
+
     public function riddle(Riddle $riddle)
     {
         if($riddle->approved==0 && (Auth::user()->id != $riddle->user_id || !Auth::user()->moderator)) {

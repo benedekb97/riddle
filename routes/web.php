@@ -2,6 +2,12 @@
 
 
 Route::get('','HomeController@index')->name('index');
+Route::get('login/{error?}','HomeController@login')->name('login');
+
+Route::post('login/check/user','LoginController@check')->name('login.check');
+Route::post('register','LoginController@register')->name('register');
+
+Route::get('logout', 'LoginController@logout')->name('logout');
 
 // Admin routes
 Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function(){
@@ -15,7 +21,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('riddles/{riddle?}/{option?}', 'UsersController@riddles')->name('riddles');
         Route::get('profile','UsersController@profile')->name('profile');
 
-        Route::get('profile/edit','UsersController@edit')->name('profile.edit');
+        Route::get('profile/edit/{error?}','UsersController@edit')->name('profile.edit');
 
         Route::post('profile/save','UsersController@save')->name('profile.save');
 
@@ -71,5 +77,5 @@ Route::group(['middleware' => 'auth'], function(){
 });
 
 Route::get('auth/login','LoginController@authSchCallback')->name('auth_sch_callback');
-Route::get('auth/redirect','LoginController@authSchRedirect')->name('login');
+Route::get('auth/redirect','LoginController@authSchRedirect')->name('auth_sch_login');
 

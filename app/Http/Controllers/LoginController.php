@@ -67,7 +67,7 @@ class LoginController extends Controller
 
         $result = json_decode($result);
 
-        $user = User::where('internal_id',$result->internal_id)->get();
+        $user = User::where('email',$result->mail)->get();
 
         if($user->isEmpty()) {
             $user = new User();
@@ -75,17 +75,77 @@ class LoginController extends Controller
             $user->name = $result->displayName;
             $user->surname = $result->sn;
             $user->email = $result->mail;
-            $user->password = bcrypt('kuki');
             $user->given_names = $result->givenName;
             $user->internal_id = $result->internal_id;
-            $user->current_riddle = Riddle::all()->first()->id;
+            $user->current_riddle = null;
 
             $user->save();
+        }elseif($user->first()->internal_id==null){
+            $user = $user->first();
+            $user->internal_id = $result->internal_id;
+            $user->name = $result->displayName;
+            $user->surname = $result->sn;
+            $user->given_names = $result->givenName;
+            $user->save();
+        }else{
+            $user = $user->first();
         }
 
+        Auth::loginUsingId($user->id);
+
+        return redirect(route('index'));
+    }
+
+    public function register(Request $request)
+    {
+        if(Auth::check()){
+            abort(403);
+        }
+
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $password2 = $request->input('password2');
+
+        if($password!=$password2){
+            return redirect(route('login', ['error' => 1]));
+        }
+        if(User::where('email',$email)->count()!=0) {
+            return redirect(route('login',['error' => 2]));
+        }
+        if(strlen($password)<8){
+            return redirect(route('login',['error' => 3]));
+        }
+
+        $user = new User();
+        $user->email = $email;
+        $user->password = bcrypt($password);
+        $user->surname = $request->input('surname');
+        $user->given_names = $request->input('given_names');
+        $user->name = $user->surname." ".$user->given_names;
+        $user->save();
+        Auth::login($user);
+
+        return redirect(route('index'));
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect(route('login'));
+    }
+
+    public function check(Request $request)
+    {
+        if(Auth::check()){
+            abort(403);
+        }
+
+        $email = $request->input('email');
+        $password = $request->input('password');
         $credentials = [
-            'email' => $result->mail,
-            'password' => 'kuki'
+            'email' => $email,
+            'password' => $password
         ];
 
         Auth::attempt($credentials);

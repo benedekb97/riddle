@@ -37,16 +37,43 @@ class UsersController extends Controller
         ]);
     }
 
-    public function edit()
+    public function edit($error = null)
     {
         $user = Auth::user();
 
-        return view('users.edit');
+        $error_messages = [
+            1 => 'Nem egyeznek a megadott jelszavak!',
+            2 => 'A jelszónak minimim 8 karakter hosszúnak kell lennie'
+        ];
+
+        if($error != null) {
+            $error_message = $error_messages[$error];
+        }else{
+            $error_message = null;
+        }
+
+        return view('users.edit',[
+            'error_message' => $error_message
+        ]);
     }
 
     public function save(Request $request)
     {
         Auth::user()->nickname = $request->input('nickname');
+
+        $password = $request->input('password');
+        $password2 = $request->input('password2');
+
+        if($password!='') {
+            if($password!=$password2) {
+                return redirect(route('users.profile.edit',['error' => 1]));
+            }
+            if(strlen($password)<8) {
+                return redirect(route('users.profile.edit', ['error' => 2]));
+            }
+            Auth::user()->password = bcrypt($password);
+        }
+
         Auth::user()->save();
 
         return redirect(route('users.profile'));

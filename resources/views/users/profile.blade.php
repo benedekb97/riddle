@@ -28,6 +28,24 @@
                             <th>Pontok</th>
                             <td>{{ Auth::user()->points }}</td>
                         </tr>
+                        <tr>
+                            <th>Jelszavas bejelentkezés</th>
+                            <td>
+                                @if(Auth::user()->password!=null)
+                                    <i class="fa fa-check"></i>
+                                @else
+                                    <i class="fa fa-times"></i>
+                                @endif
+                            </td>
+                            <th>AuthSCH csatlakoztatva</th>
+                            <td>
+                                @if(Auth::user()->internal_id!=null)
+                                    <i class="fa fa-check"></i>
+                                @else
+                                    <i class="fa fa-times"></i>
+                                @endif
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>

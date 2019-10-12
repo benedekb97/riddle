@@ -62,6 +62,7 @@
                                 @endif
                             </a></li>
                         <li><a href="{{ route('riddles.new') }}">Riddle feltöltése</a></li>
+                        <li><a href="{{ route('logout') }}">Kijelentkezés</a></li>
                     </ul>
                 </li>
             </ul>
