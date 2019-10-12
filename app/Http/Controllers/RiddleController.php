@@ -491,7 +491,17 @@ class RiddleController extends Controller
 
     public function deleteRiddle(Riddle $riddle)
     {
-        $riddle->delete();
+        if($riddle->number!=null)
+        {
+            $riddles_after = Riddle::all()->where('number','>',$riddle->number)->all();
+            $riddle->delete();
+            foreach($riddles_after as $riddle_after){
+                $riddle_after->number = $riddle_after->number-1;
+                $riddle_after->save();
+            }
+        }else{
+            $riddle->delete();
+        }
 
         return redirect()->back();
     }
