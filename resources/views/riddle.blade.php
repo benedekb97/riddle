@@ -38,15 +38,15 @@
             </div>
         </div>
     @endif
-{{--    @if($approved && Auth::user()->id == $riddle->user_id)--}}
-{{--        <div class="row">--}}
-{{--            <div class="col-md-4 col-md-push-4">--}}
-{{--                <div class="alert alert-info">--}}
-{{--                    <i class="fa fa-info"></i>Nem oldhatod meg a saját riddle-öd.--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    @endif--}}
+    @if($approved && Auth::user()->id == $riddle->user_id)
+        <div class="row">
+            <div class="col-md-4 col-md-push-4">
+                <div class="alert alert-info">
+                    <i class="fa fa-info"></i>A saját riddle-ödért nem kapsz pontot :'(
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-8 col-md-push-2">
             <div class="panel panel-default">
@@ -155,8 +155,8 @@
                 </div>
                 <div class="modal-body">
                     Sikerült megoldanod ezt a rendkívül nehéz riddle-t!
-                    <p>Kaptál érte <strong>{{ $points }}</strong> pontot</p>
-                    <p>Így a pontszámod: {{ Auth::user()->points + $points }}</p>
+                    <p>Kaptál érte @if(Auth::user()->id == $riddle->user_id) <strong>0</strong> @else <strong>{{ $points }}</strong> @endif pontot</p>
+                    <p>Így a pontszámod: @if(Auth::user()->id == $riddle->user_id) {{ Auth::user()->points }} @else {{ Auth::user()->points + $points }} @endif </p>
                 </div>
                 <div class="modal-footer">
                     <button onclick="$('#success_modal').modal('toggle');" type="button" data-toggle="modal" data-target="#duplicate" class="btn btn-warning">Mótvá?</button>
