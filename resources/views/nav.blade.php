@@ -49,10 +49,18 @@
                     </li>
                 @endif
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        @if(Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles()>0)
+                            <span class="link-number-o">{{ Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles() }}</span>
+                        @endif
+                        {{ Auth::user()->name }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ route('users.profile') }}">Profilom</a></li>
-                        <li><a href="{{ route('users.riddles') }}">Riddle-jeim</a></li>
+                        <li><a href="{{ route('users.riddles') }}">Riddle-jeim
+                                @if(Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles()>0)
+                                    <span class="link-number">{{ Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles() }}</span>
+                                @endif
+                            </a></li>
                         <li><a href="{{ route('riddles.new') }}">Riddle feltöltése</a></li>
                     </ul>
                 </li>

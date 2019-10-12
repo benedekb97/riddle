@@ -78,4 +78,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Duplicate::class);
     }
+
+    public function unapprovedRiddles()
+    {
+        return $this->riddles->where('approved','0')->where('blocked','0')->count();
+    }
+
+    public function blockedRiddles()
+    {
+        return $this->riddles->where('blocked','1')->count();
+    }
 }
