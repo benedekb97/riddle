@@ -20,7 +20,11 @@
                         @foreach($unsequenced_riddles as $riddle)
                             <tr>
                                 <td>{{ $riddle->title }}</td>
-                                <td></td>
+                                <td>
+                                    <a data-toggle="tooltip" title="Kép megtekintése" class="btn btn-xs btn-primary" href="{{ route('riddles.get', ['riddle' => $riddle]) }}">
+                                        <i class="fa fa-image"></i>
+                                    </a>
+                                </td>
                                 <td>{{ $riddle->hints()->count() }}</td>
                                 <td style="text-align:right;">
                                     <a data-toggle="tooltip" title="Sorrendhez hozzáadás" href="{{ route('riddles.sequence.add', ['riddle' => $riddle]) }}" class="btn btn-sm btn-default">
@@ -55,7 +59,11 @@
                             <tr>
                                 <td>{{ $riddle->number }}</td>
                                 <td>{{ $riddle->title }}</td>
-                                <td></td>
+                                <td>
+                                    <a data-toggle="tooltip" title="Kép megtekintése" class="btn btn-xs btn-primary" href="{{ route('riddles.get', ['riddle' => $riddle]) }}">
+                                        <i class="fa fa-image"></i>
+                                    </a>
+                                </td>
                                 <td>{{ $riddle->difficulty }}</td>
                                 <td>{{ $riddle->hints()->count() }}</td>
                                 <td style="text-align:right;">
