@@ -52,6 +52,7 @@
                             <th>Cím</th>
                             <th>Kép</th>
                             <th>Nehézség</th>
+                            <th>Készítő</th>
                             <th>Hintek száma</th>
                             <th style="text-align:right";>Műveletek</th>
                         </tr>
@@ -65,6 +66,7 @@
                                     </a>
                                 </td>
                                 <td>{{ $riddle->difficulty }}</td>
+                                <td>{{ $riddle->user->name }}</td>
                                 <td>{{ $riddle->hints()->count() }}</td>
                                 <td style="text-align:right;">
                                     @if($riddle->number != 1)
