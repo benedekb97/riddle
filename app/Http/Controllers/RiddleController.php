@@ -350,10 +350,14 @@ class RiddleController extends Controller
         $solvedRiddles = Auth::user()->solvedRiddles()->get();
         $unapproved_riddles = Riddle::all()->where('approved','0');
         $blocked_riddles = Riddle::all()->where('blocked','1');
+        $unsequenced_riddles = Riddle::all()->where('number',null);
         $unsolved_riddles = $riddles->diff($solvedRiddles);
         $unsolved_riddles = $unsolved_riddles->diff($unapproved_riddles);
         $unsolved_riddles = $unsolved_riddles->diff($blocked_riddles);
+        $unsolved_riddles = $unsolved_riddles->diff($unsequenced_riddles);
         if($unsolved_riddles->count() != 0){
+
+            $unsolved_riddles = $unsolved_riddles->sortBy('number');
             $next_riddle = $unsolved_riddles->first();
 
             Auth::user()->current_riddle = $next_riddle->id;
@@ -372,5 +376,56 @@ class RiddleController extends Controller
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
         return view('riddles.all', ['riddles' => $riddles, 'difficulties' => $difficulties]);
+    }
+
+    public function sequence()
+    {
+        $sequenced_riddles = Riddle::all()->where('number','!=',null)->sortByDesc('number');
+        $unsequenced_riddles = Riddle::all()->diff($sequenced_riddles)->where('approved','1')->where('blocked','0');
+        $last_number = Riddle::all()->max('number');
+
+        return view('riddles.sequence', [
+            'sequenced_riddles' => $sequenced_riddles,
+            'unsequenced_riddles' => $unsequenced_riddles,
+            'last_number' => $last_number
+        ]);
+    }
+
+    public function addToSequence(Riddle $riddle)
+    {
+        $last_number = Riddle::all()->max('number');
+
+        $riddle->number = $last_number + 1;
+        $riddle->save();
+
+        return redirect()->back();
+    }
+
+    public function sequenceUp(Riddle $riddle)
+    {
+        $next_riddle = Riddle::where('number',$riddle->number+1)->first();
+        $next_number = $riddle->number+1;
+        $next_riddle->number = null;
+        $next_riddle->save();
+        $riddle->number = $next_number;
+        $riddle->save();
+        $next_riddle->number = $next_number-1;
+        $next_riddle->save();
+
+        return redirect()->back();
+    }
+
+    public function sequenceDown(Riddle $riddle)
+    {
+        $prev_riddle = Riddle::where('number',$riddle->number-1)->first();
+        $prev_number = $riddle->number-1;
+        $prev_riddle->number = Null;
+        $prev_riddle->save();
+        $riddle->number = $prev_number;
+        $riddle->save();
+        $prev_riddle->number = $prev_number+1;
+        $prev_riddle->save();
+
+        return redirect()->back();
     }
 }

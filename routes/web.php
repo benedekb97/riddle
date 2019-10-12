@@ -28,6 +28,11 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get('blocked','RiddleController@blocked')->name('blocked');
             Route::get('{riddle}/approve/{return?}', 'RiddleController@approve')->name('approve');
             Route::post('{riddle}/block/{return?}', 'RiddleController@block')->name('block');
+
+            Route::get('sequence', 'RiddleController@sequence')->name('sequence');
+            Route::get('sequence/{riddle}/add','RiddleController@addToSequence')->name('sequence.add');
+            Route::get('sequence/{riddle}/down', 'RiddleController@sequenceDown')->name('sequence.down');
+            Route::get('sequence/{riddle}/up', 'RiddleController@sequenceUp')->name('sequence.up');
         });
 
         Route::get('next','RiddleController@next')->name('next');

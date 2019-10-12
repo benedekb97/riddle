@@ -24,6 +24,7 @@
                             <li><a href="{{ route('riddles.unapproved') }}">Elfogadásra váró Riddle-k</a></li>
                             <li><a href="{{ route('riddles.blocked') }}">Tiltott Riddle-k</a></li>
                             <li><a href="{{ route('users.creators') }}">Riddle készítők</a></li>
+                            <li><a href="{{ route('riddles.sequence') }}">Sorrend</a></li>
                         </ul>
                     </li>
                 @endif
