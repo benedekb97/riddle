@@ -33,6 +33,8 @@
                 <h4><i class="fa fa-info-circle"></i>&nbsp;&nbsp;Újítások:</h4>
 
                 <ul>
+                    <li><strong>Mótvá</strong> gomb: Ha megoldasz egy riddle-t akkor van rá lehetőség, hogy jelentsd a moderátoroknak, hogy ez mótvá.</li>
+                    <li>Ezt megnézi egy moderátor és ha tényleg mótvá akkor törli a riddle-t, ha nem akkor a seggét törli a jelentéseddel</li>
                     <li>Rossz próbálkozásnál kiírja hogy rossz</li>
                     <li>Ékezeteket nem veszi figyelembe</li>
                     <li>Riddle-ket moderátorok sorrendbe tudják helyezni miután elfogadták őket, csak akkor lehet őket megoldani ha már benne vannak a listában</li>
