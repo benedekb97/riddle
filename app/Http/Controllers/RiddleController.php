@@ -456,7 +456,10 @@ class RiddleController extends Controller
 
     public function duplicate(Request $request)
     {
-        $riddle = Auth::user()->current_riddle;
+        $riddle = $request->input('riddle_id');
+        if(!Auth::user()->solvedRiddles->contains($riddle) || !Auth::user()->solvedRiddles->contains($request->input('similar_to'))) {
+            abort(403);
+        }
 
         $duplicate = new Duplicate();
         $duplicate->duplicate_id = $riddle;
@@ -464,7 +467,7 @@ class RiddleController extends Controller
         $duplicate->user_id = Auth::user()->id;
         $duplicate->save();
 
-        return redirect()->back();
+        return redirect(route('riddles.next'));
     }
 
     public function duplicates()

@@ -103,11 +103,6 @@
                         </div>
                     @endforeach
                 @endif
-                @if(!$reported)
-                <div class="panel-footer">
-                    <button type="button" data-toggle="modal" data-target="#duplicate" class="btn btn-warning">Mótvá?</button>
-                </div>
-                @endif
             </div>
         </div>
     </div>
@@ -116,6 +111,7 @@
 @section('modals')
     @if(!$reported)
     <form action="{{ route('riddles.duplicate') }}" method="POST">
+        <input type="hidden" name="riddle_id" value="{{ $riddle->id }}">
         {{ csrf_field() }}
         <div class="modal fade" id="duplicate">
             <div class="modal-dialog">
@@ -163,6 +159,7 @@
                     <p>Így a pontszámod: {{ Auth::user()->points + $points }}</p>
                 </div>
                 <div class="modal-footer">
+                    <button onclick="$('#success_modal').modal('toggle');" type="button" data-toggle="modal" data-target="#duplicate" class="btn btn-warning">Mótvá?</button>
                     <a class="btn btn-primary" href="{{ route('riddles.next') }}">Következő</a>
                 </div>
             </div>

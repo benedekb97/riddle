@@ -18,20 +18,6 @@ class HomeController extends Controller
         return view('index');
     }
 
-    public function team()
-    {
-        $user = Auth::user();
-        if($user == null || $user->team_id == null) {
-            return redirect(route('index'));
-        }
-
-        $team = $user->team;
-
-        return view('team', [
-            'team' => $team
-        ]);
-    }
-
     public function riddle(Riddle $riddle)
     {
         if($riddle->approved==0 && (Auth::user()->id != $riddle->user_id || !Auth::user()->moderator)) {

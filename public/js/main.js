@@ -104,5 +104,7 @@ $('#answer').keypress(function (e) {
 });
 
 $('#success_modal').on('hidden.bs.modal', function (e) {
-    $('#next_riddle').submit();
+    $('#duplicate').on('hidden.bs.modal',function(e){
+        $('#next_riddle').submit();
+    });
 });
