@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Hint::class,'user_hint','user_id','hint_id');
     }
+
+    public function duplicates()
+    {
+        return $this->hasMany(Duplicate::class);
+    }
 }

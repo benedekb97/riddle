@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Duplicate;
 use App\Models\Guess;
 use App\Models\Hint;
 use App\Models\Riddle;
@@ -161,10 +162,10 @@ class RiddleController extends Controller
     public function check(Riddle $riddle, Request $request)
     {
 
-        if(Auth::user() == $riddle->user) {
+        if(Auth::user() == $riddle->user && !Auth::user()->moderator) {
             abort(403);
         }
-        if(Auth::user()->current_riddle != $riddle->id) {
+        if(Auth::user()->current_riddle != $riddle->id && !Auth::user()->moderator) {
             abort(403);
         }
         if($riddle->approved!=1 && Auth::user()->moderator!=1){
@@ -425,6 +426,19 @@ class RiddleController extends Controller
         $riddle->save();
         $prev_riddle->number = $prev_number+1;
         $prev_riddle->save();
+
+        return redirect()->back();
+    }
+
+    public function duplicate(Request $request)
+    {
+        $riddle = Auth::user()->current_riddle;
+
+        $duplicate = new Duplicate();
+        $duplicate->duplicate_id = $riddle;
+        $duplicate->riddle_id = $request->input('similar_to');
+        $duplicate->user_id = Auth::user()->id;
+        $duplicate->save();
 
         return redirect()->back();
     }

@@ -60,6 +60,10 @@ class HomeController extends Controller
 
         $points = $riddle->difficulty * $point_multiplier;
 
+        $solved_riddles = Auth::user()->solvedRiddles;
+
+        $reported = Auth::user()->duplicates()->where('duplicate_id',$riddle->id)->count() != 0;
+
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
         return view('riddle', [
@@ -68,7 +72,9 @@ class HomeController extends Controller
             'hints' => $hints,
             'approved' => $approved,
             'points' => $points,
-            'difficulties' => $difficulties
+            'difficulties' => $difficulties,
+            'solved_riddles' => $solved_riddles,
+            'reported' => $reported
         ]);
     }
 

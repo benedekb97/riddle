@@ -103,12 +103,50 @@
                         </div>
                     @endforeach
                 @endif
+                @if(!$reported)
+                <div class="panel-footer">
+                    <button type="button" data-toggle="modal" data-target="#duplicate" class="btn btn-warning">Mótvá?</button>
+                </div>
+                @endif
             </div>
         </div>
     </div>
 @endsection
 
 @section('modals')
+    @if(!$reported)
+    <form action="{{ route('riddles.duplicate') }}" method="POST">
+        {{ csrf_field() }}
+        <div class="modal fade" id="duplicate">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Mótvá</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Válaszd ki, hogy melyik riddle-re hasonlít</p>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon" for="similar_to">Riddle:</label>
+                                <select class="form-control" name="similar_to" id="similar_to">
+                                    <option value="" selected>Válassz ki egy riddle-t</option>
+                                    @foreach($solved_riddles as $solved_riddle)
+                                        <option value="{{ $solved_riddle->id }}">{{ $solved_riddle->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Küldés">
+                        <input type="button" class="btn btn-default" value="Mégse" data-dismiss="modal">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    @endif
     <form id="next_riddle" action="{{ route('riddles.next') }}" method="GET">
         {{ csrf_field() }}
     </form>

@@ -49,4 +49,9 @@ class Riddle extends Model
     {
         return $this->belongsTo(User::class,'approved_by');
     }
+
+    public function duplicates()
+    {
+        return $this->hasMany(Duplicate::class,'riddle_id','id');
+    }
 }

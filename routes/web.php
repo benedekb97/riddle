@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function(){
 
         Route::get('get/{riddle}', 'RiddleController@get')->name('get');
 
+        Route::post('duplicate','RiddleController@duplicate')->name('duplicate');
+
         Route::group(['middleware' => 'moderator'], function(){
             Route::get('unapproved','RiddleController@unapproved')->name('unapproved');
             Route::get('blocked','RiddleController@blocked')->name('blocked');
