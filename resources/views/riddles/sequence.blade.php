@@ -77,6 +77,9 @@
                                         <i class="fa fa-caret-up"></i>
                                     </a>
                                     @endif
+                                    <a data-toggle="tooltip" title="Törlés" href="{{ route('riddles.delete', ['riddle' => $riddle]) }}" class="btn btn-xs btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
