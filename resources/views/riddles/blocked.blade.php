@@ -40,6 +40,9 @@
                                             <i class="fa fa-check"></i>
                                         </a>
                                     </span>
+                                    <a href="{{ route('riddles.delete',['riddle' => $riddle]) }}" class="btn btn-xs btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
