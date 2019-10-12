@@ -24,7 +24,9 @@
                                 <td>{{ $riddle->id }} @if($riddle->blocked==true) <span data-toggle="tooltip" title="Javításra vár" class="btn btn-danger btn-xs"><i class="fa fa-exclamation-triangle"></i></span>@endif
                                                     @if(!$riddle->blocked && !$riddle->approved) <span data-toggle="tooltip" title="Elfogadásra vár" class="btn btn-warning btn-xs"><i class="fa fa-info-circle"></i></span> @endif</td>
                                 <td>{{ $riddle->title }}</td>
-                                <td>{{ $riddle->answer }}</td>
+                                <td>
+                                    <i class="fa fa-eye" data-toggle="tooltip" title="{{ $riddle->answer }}"></i>
+                                </td>
                                 <td><a target="_blank" data-toggle="tooltip" title="Kép megtekintése" class="btn btn-sm btn-primary" href="{{ route('riddles.get', ['riddle' => $riddle]) }}"><i class="fa fa-image"></i></a></td>
                                 <td>{{ $riddle->solvedBy()->count() }}</td>
                                 <td>
