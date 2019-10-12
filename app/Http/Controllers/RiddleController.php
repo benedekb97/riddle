@@ -162,10 +162,10 @@ class RiddleController extends Controller
     {
 
         if(Auth::user() == $riddle->user) {
-//            abort(403);
+            abort(403);
         }
         if(Auth::user()->current_riddle != $riddle->id) {
-//            abort(403);
+            abort(403);
         }
         if($riddle->approved!=1 && Auth::user()->moderator!=1){
             abort(403);
@@ -317,7 +317,7 @@ class RiddleController extends Controller
 
     public function edit(Riddle $riddle, Request $request)
     {
-        if(Auth::user()->moderator!=1 || Auth::user()->id != $riddle->user_id)
+        if(Auth::user()->moderator!=1 && Auth::user()->id != $riddle->user_id)
         {
             abort(403);
         }

@@ -33,7 +33,7 @@
                                 {{ Auth::user()->solvedRiddles()->where('riddle_id',$riddle->id)->first()->created_at }}
                             </td>
                             <td>{{ $riddle->guesses()->where('user_id',Auth::user()->id)->count() }}</td>
-                            <td>{{ $difficulties[$riddle->difficulty] }}</td>
+                            <td>{{ $difficulties[$riddle->difficulty-1] }}</td>
                         </tr>
                     @endforeach
                 </table>
