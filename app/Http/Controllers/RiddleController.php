@@ -475,4 +475,21 @@ class RiddleController extends Controller
             'duplicates' => $duplicates
         ]);
     }
+
+    public function deleteReport(Duplicate $duplicate)
+    {
+        $duplicates = Duplicate::all()->where('riddle_id',$duplicate->riddle_id)->where('duplicate_id',$duplicate->duplicate_id)->all();
+        foreach($duplicates as $duplicate){
+            $duplicate->delete();
+        }
+
+        return redirect()->back();
+    }
+
+    public function deleteRiddle(Riddle $riddle)
+    {
+        $riddle->delete();
+
+        return redirect()->back();
+    }
 }

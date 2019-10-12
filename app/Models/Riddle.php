@@ -54,4 +54,37 @@ class Riddle extends Model
     {
         return $this->hasMany(Duplicate::class,'riddle_id','id');
     }
+
+    public function compare(Riddle $riddle)
+    {
+        $answer1 = $this->answer;
+        $answer2 = $riddle->answer;
+
+
+        $answer1 = strtolower($answer1);
+        $answer1 = str_replace(' ','',$answer1);
+        $answer1 = str_replace('é','e',$answer1);
+        $answer1 = str_replace('á','a',$answer1);
+        $answer1 = str_replace('í','i',$answer1);
+        $answer1 = str_replace('ó','o',$answer1);
+        $answer1 = str_replace('ő','o',$answer1);
+        $answer1 = str_replace('ö','o',$answer1);
+        $answer1 = str_replace('ú','u',$answer1);
+        $answer1 = str_replace('ü','u',$answer1);
+        $answer1 = str_replace('ű','u',$answer1);
+
+        $answer2 = strtolower($answer2);
+        $answer2 = str_replace(' ','',$answer2);
+        $answer2 = str_replace('é','e',$answer2);
+        $answer2 = str_replace('á','a',$answer2);
+        $answer2 = str_replace('í','i',$answer2);
+        $answer2 = str_replace('ó','o',$answer2);
+        $answer2 = str_replace('ő','o',$answer2);
+        $answer2 = str_replace('ö','o',$answer2);
+        $answer2 = str_replace('ú','u',$answer2);
+        $answer2 = str_replace('ü','u',$answer2);
+        $answer2 = str_replace('ű','u',$answer2);
+
+        return $answer1 == $answer2;
+    }
 }
