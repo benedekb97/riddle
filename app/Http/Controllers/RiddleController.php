@@ -442,4 +442,13 @@ class RiddleController extends Controller
 
         return redirect()->back();
     }
+
+    public function duplicates()
+    {
+        $duplicates = Duplicate::all()->groupBy('duplicate_id','riddle_id')->all();
+
+        return view('riddles.duplicates',[
+            'duplicates' => $duplicates
+        ]);
+    }
 }

@@ -35,6 +35,8 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get('sequence/{riddle}/add','RiddleController@addToSequence')->name('sequence.add');
             Route::get('sequence/{riddle}/down', 'RiddleController@sequenceDown')->name('sequence.down');
             Route::get('sequence/{riddle}/up', 'RiddleController@sequenceUp')->name('sequence.up');
+
+            Route::get('duplicates','RiddleController@duplicates')->name('duplicates');
         });
 
         Route::get('next','RiddleController@next')->name('next');
