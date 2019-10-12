@@ -200,10 +200,34 @@ class RiddleController extends Controller
             $guess->save();
         }
 
+        $answer_given = strtolower($answer_given);
+
+        $answer_given = str_replace('é','e',$answer_given);
+        $answer_given = str_replace('á','a',$answer_given);
+        $answer_given = str_replace('í','i',$answer_given);
+        $answer_given = str_replace('ó','o',$answer_given);
+        $answer_given = str_replace('ő','o',$answer_given);
+        $answer_given = str_replace('ö','o',$answer_given);
+        $answer_given = str_replace('ú','u',$answer_given);
+        $answer_given = str_replace('ü','u',$answer_given);
+        $answer_given = str_replace('ű','u',$answer_given);
+
+        $answer = $riddle->answer;
+        $answer = strtolower($answer);
+        $answer = str_replace(' ','',$answer);
+        $answer = str_replace('é','e',$answer);
+        $answer = str_replace('á','a',$answer);
+        $answer = str_replace('í','i',$answer);
+        $answer = str_replace('ó','o',$answer);
+        $answer = str_replace('ő','o',$answer);
+        $answer = str_replace('ö','o',$answer);
+        $answer = str_replace('ú','u',$answer);
+        $answer = str_replace('ü','u',$answer);
+        $answer = str_replace('ű','u',$answer);
 
         $point_multiplier = max(1,5-Auth::user()->usedHints($riddle)->count());
 
-        if(str_replace(' ','',strtolower($answer_given)) == str_replace(' ','',strtolower($riddle->answer))) {
+        if(str_replace(' ','',$answer_given) == $answer) {
             Auth::user()->solvedRiddles()->attach($riddle);
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setUpdatedAt(time());
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setCreatedAt(time());
