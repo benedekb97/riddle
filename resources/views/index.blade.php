@@ -46,6 +46,7 @@
                 <h4><i class="fa fa-info-circle"></i>&nbsp;&nbsp;Pontozás:</h4>
 
                 <ul>
+                    <li>Saját riddle-ért nem kapsz pontot</li>
                     <li>Minden riddle-nek van egy <strong>nehézsége</strong> (1-5ig)</li>
                     <li>Alapból ez <strong>5-el szorzódik</strong></li>
                     <li>Az elhasznált hintek száma <strong>levonódik</strong> az 5-ből</li>
