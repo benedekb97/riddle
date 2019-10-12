@@ -20,7 +20,7 @@ $('#submit').click(function(){
             }else{
                 $('#submit').attr('disabled','true');
                 $('#submit').attr('class','btn btn-danger');
-                $('#submit').val('Rossz válasz')
+                $('#submit').val('Közel volt, próbálkozz még!')
                 $('#answer').attr('readonly','true');
                 setTimeout(function(){
                     $('#submit').removeAttr('disabled');
@@ -35,7 +35,7 @@ $('#submit').click(function(){
         error:function(e){
             $('#submit').attr('disabled','true');
             $('#submit').attr('class','btn btn-danger');
-            $('#submit').val('Rossz válasz')
+            $('#submit').val('Közel volt, próbálkozz még!')
             $('#answer').attr('readonly','true');
             setTimeout(function(){
                 $('#submit').removeAttr('disabled');
@@ -71,7 +71,7 @@ $('#answer').keypress(function (e) {
                 }else{
                     $('#submit').attr('disabled','true');
                     $('#submit').attr('class','btn btn-danger');
-                    $('#submit').val('Rossz válasz')
+                    $('#submit').val('Közel volt, próbálkozz még!');
                     $('#answer').attr('readonly','true');
                     setTimeout(function(){
                         $('#submit').removeAttr('disabled');
@@ -85,7 +85,7 @@ $('#answer').keypress(function (e) {
             error:function(e){
                 $('#submit').attr('disabled','true');
                 $('#submit').attr('class','btn btn-danger');
-                $('#submit').val('Rossz válasz')
+                $('#submit').val('Közel volt, próbálkozz még!');
                 $('#answer').attr('readonly','true');
                 setTimeout(function(){
                     $('#submit').removeAttr('disabled');
