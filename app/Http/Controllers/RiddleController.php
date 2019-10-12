@@ -197,6 +197,7 @@ class RiddleController extends Controller
             $guess->guess = $answer_given;
             $guess->user_id = Auth::user()->id;
             $guess->riddle_id = $riddle->id;
+            $guess->count = 1;
             $guess->save();
         }
 
