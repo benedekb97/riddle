@@ -14,23 +14,39 @@ $('#submit').click(function(){
         success:function(d){
             if(d.guess === "correct") {
                 $('#success_modal').modal('show');
+                $('#submit').attr('class','btn btn-success');
+                $('#submit').val('Siker!');
+                $('#submit').attr('disabled','true');
+            }else{
+                $('#submit').attr('disabled','true');
+                $('#submit').attr('class','btn btn-danger');
+                $('#submit').val('Rossz válasz')
+                $('#answer').attr('readonly','true');
+                setTimeout(function(){
+                    $('#submit').removeAttr('disabled');
+                    $('#submit').attr('class','btn btn-primary');
+                    $('#submit').val('Próba');
+                    $('#answer').val("");
+                    $('#answer').removeAttr('readonly');
+                },1000);
             }
 
         },
         error:function(e){
-            console.log(e);
+            $('#submit').attr('disabled','true');
+            $('#submit').attr('class','btn btn-danger');
+            $('#submit').val('Rossz válasz')
+            $('#answer').attr('readonly','true');
+            setTimeout(function(){
+                $('#submit').removeAttr('disabled');
+                $('#submit').attr('class','btn btn-primary');
+                $('#submit').val('Próba');
+                $('#answer').val("");
+                $('#answer').removeAttr('readonly');
+            },1000);
         }
 
     });
-
-
-    $('#submit').attr('disabled','true');
-    $('#answer').attr('readonly','true');
-    setTimeout(function(){
-        $('#submit').removeAttr('disabled');
-        $('#answer').val("");
-        $('#answer').removeAttr('readonly');
-    },1000);
 });
 $('#answer').keypress(function (e) {
     if (e.which === 13) {
@@ -49,20 +65,38 @@ $('#answer').keypress(function (e) {
             success:function(d){
                 if(d.guess === "correct") {
                     $('#success_modal').modal('show');
+                    $('#submit').attr('class','btn btn-success');
+                    $('#submit').val('Siker!');
+                    $('#submit').attr('disabled','true');
+                }else{
+                    $('#submit').attr('disabled','true');
+                    $('#submit').attr('class','btn btn-danger');
+                    $('#submit').val('Rossz válasz')
+                    $('#answer').attr('readonly','true');
+                    setTimeout(function(){
+                        $('#submit').removeAttr('disabled');
+                        $('#submit').attr('class','btn btn-primary');
+                        $('#submit').val('Próba');
+                        $('#answer').val("");
+                        $('#answer').removeAttr('readonly');
+                    },1000);
                 }
             },
             error:function(e){
-                console.log(e);
+                $('#submit').attr('disabled','true');
+                $('#submit').attr('class','btn btn-danger');
+                $('#submit').val('Rossz válasz')
+                $('#answer').attr('readonly','true');
+                setTimeout(function(){
+                    $('#submit').removeAttr('disabled');
+                    $('#submit').attr('class','btn btn-primary');
+                    $('#submit').val('Próba');
+                    $('#answer').val("");
+                    $('#answer').removeAttr('readonly');
+                },1000);
             }
 
         });
-        $('#submit').attr('disabled','true');
-        $('#answer').attr('readonly','true');
-        setTimeout(function(){
-            $('#submit').removeAttr('disabled');
-            $('#answer').val("");
-            $('#answer').removeAttr('readonly');
-        },1000);
         return false;
 
     }
