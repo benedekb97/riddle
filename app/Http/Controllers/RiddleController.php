@@ -137,7 +137,7 @@ class RiddleController extends Controller
 
     public function get(Riddle $riddle)
     {
-        if(Auth::user()->solvedRiddles->contains($riddle) || Auth::user()->moderator || Auth::user()->current_riddle == $riddle){
+        if(Auth::user()->solvedRiddles->contains($riddle) || Auth::user()->moderator || Auth::user()->current_riddle == $riddle->id || Auth::user()->riddles->contains($riddle)){
             $path = $riddle->image;
             return response()->file(storage_path("app/" . $path));
         }else{
