@@ -26,9 +26,17 @@
                         @foreach($duplicates as $duplicate)
                             <tr>
                                 <td style="text-align:center;">{{ $duplicate->first()->riddle->title }}</td>
-                                <td style="text-align:center; border-right:1px solid rgba(0,0,0,0.2);">{{ $duplicate->first()->riddle->title }}</td>
+                                <td style="text-align:center; border-right:1px solid rgba(0,0,0,0.2);">
+                                    <a href="{{ route('riddles.get', ['riddle' => $duplicate->first()->riddle_id]) }}" target="_blank" data-toggle="tooltip" title="Kép megtekintése" class="btn btn-xs btn-primary">
+                                        <i class="fa fa-image"></i>
+                                    </a>
+                                </td>
                                 <td style="text-align:center;">{{ $duplicate->first()->duplicate->title }}</td>
-                                <td style="text-align:center; border-right:1px solid rgba(0,0,0,0.2);">{{ $duplicate->first()->duplicate->title }}</td>
+                                <td style="text-align:center; border-right:1px solid rgba(0,0,0,0.2);">
+                                    <a href="{{ route('riddles.get', ['riddle' => $duplicate->first()->duplicate_id]) }}" target="_blank" data-toggle="tooltip" title="Kép megtekintése" class="btn btn-xs btn-primary">
+                                        <i class="fa fa-image"></i>
+                                    </a>
+                                </td>
                                 <td style="text-align:center; border-right:1px solid rgba(0,0,0,0.2);">
                                     @if($duplicate->first()->riddle->compare($duplicate->first()->duplicate))
                                         Igen
