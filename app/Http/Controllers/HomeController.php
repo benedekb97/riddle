@@ -84,10 +84,6 @@ class HomeController extends Controller
 
     public function noneLeft()
     {
-        if(Auth::user()->solvedRiddles()->count() != Riddle::all()->count()) {
-            return redirect(route('riddles.next'));
-        }
-
         return view('noneleft');
     }
 }

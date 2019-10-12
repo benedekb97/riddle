@@ -32,3 +32,15 @@
     background: #006699; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
+
+.footer {
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    font-size: 10pt;
+    background:rgba(0,0,0,0.8);
+    color:rgba(255,255,255,0.7);
+    display:block;
+    text-align:center;
+}
