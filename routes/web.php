@@ -3,6 +3,12 @@
 
 Route::get('','HomeController@index')->name('index');
 
+// Admin routes
+Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::get('', 'AdminController@index')->name('index');
+});
+
+
 Route::group(['middleware' => 'auth'], function(){
     Route::group(['prefix' => 'users','as' => 'users.'], function(){
         Route::get('list','UsersController@list')->name('list');
