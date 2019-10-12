@@ -19,13 +19,32 @@
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::user()->moderator)
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Moderálás <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            @if(App\Models\Riddle::all()->where('approved','0')->where('blocked','0')->count()+App\Models\Riddle::all()->where('blocked','1')->count()+App\Models\Duplicate::all()->count()>0)
+                                <span class="link-number-o">{{ App\Models\Riddle::all()->where('approved','0')->where('blocked','0')->count()+App\Models\Riddle::all()->where('blocked','1')->count()+App\Models\Duplicate::all()->count() }}</span>
+                                @endif  Moderálás
+                            <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ route('riddles.unapproved') }}">Elfogadásra váró Riddle-k</a></li>
-                            <li><a href="{{ route('riddles.blocked') }}">Tiltott Riddle-k</a></li>
+                            <li><a href="{{ route('riddles.unapproved') }}">
+                                    Elfogadásra váró Riddle-k
+                                    @if(App\Models\Riddle::all()->where('approved','0')->where('blocked','0')->count()>0)
+                                    <span class="link-number">{{ \App\Models\Riddle::all()->where('approved','0')->where('blocked','0')->count() }}</span>
+                                    @endif
+                                </a></li>
+                            <li><a href="{{ route('riddles.blocked') }}">
+                                    Tiltott Riddle-k
+                                    @if(App\Models\Riddle::all()->where('blocked','1')->count()>0)
+                                        <span class="link-number">{{ App\Models\Riddle::all()->where('blocked','1')->count() }}</span>
+                                    @endif
+                                </a></li>
                             <li><a href="{{ route('users.creators') }}">Riddle készítők</a></li>
                             <li><a href="{{ route('riddles.sequence') }}">Sorrend</a></li>
-                            <li><a href="{{ route('riddles.duplicates') }}">Duplikált Riddle-k</a></li>
+                            <li><a href="{{ route('riddles.duplicates') }}">
+                                    Duplikált Riddle-k
+                                    @if(App\Models\Duplicate::all()->count()>0)
+                                        <span class="link-number">{{ App\Models\Duplicate::all()->count() }}</span>
+                                    @endif
+                                </a></li>
                         </ul>
                     </li>
                 @endif

@@ -44,3 +44,19 @@
     display:block;
     text-align:center;
 }
+
+.link-number{
+    background:red;
+    color:white;
+    border-radius:3px;
+    padding:1px;
+    padding-right:2px;
+}
+
+.link-number-o{
+    background:white;
+    color:black;
+    border-radius:3px;
+    padding:1px;
+    padding-right:2px;
+}
