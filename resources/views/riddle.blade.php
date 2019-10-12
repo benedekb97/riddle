@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-md-4 col-md-push-4">
                 <div class="alert alert-info">
-                    <i class="fa fa-info"></i>A saját riddle-ödért nem kapsz pontot :'(
+                    <i class="fa fa-info"></i>&nbsp;&nbsp;A saját riddle-ödért nem kapsz pontot :'(
                 </div>
             </div>
         </div>
