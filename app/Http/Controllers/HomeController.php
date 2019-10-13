@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Riddle;
+use App\Models\StaticMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,15 @@ class HomeController extends Controller
             return redirect(route('login'));
         }
 
-        return view('index');
+        $messages = StaticMessage::all();
+        $message_types = ['info','danger','warning','success','primary','default'];
+        $message_icons = ['fa-info-circle','fa-exclamation-triangle','fa-exclamation-circle','fa-check','fa-info-circle','fa-info-circle'];
+
+        return view('index',[
+            'messages' => $messages,
+            'message_types' => $message_types,
+            'message_icons' => $message_icons
+        ]);
     }
 
     public function login($error = null)

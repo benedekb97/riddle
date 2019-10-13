@@ -12,6 +12,18 @@ Route::get('logout', 'LoginController@logout')->name('logout');
 // Admin routes
 Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::get('', 'AdminController@index')->name('index');
+
+    Route::group(['prefix'=>'static_messages'], function(){
+        Route::get('','AdminController@staticMessages')->name('static_messages');
+        Route::post('edit','AdminController@editStaticMessage')->name('static_messages.edit');
+        Route::post('delete','AdminController@deleteStaticMessage')->name('static_messages.delete');
+        Route::post('new','AdminController@newStaticMEssage')->name('static_messages.new');
+    });
+
+
+    Route::get('settings','AdminController@settings')->name('settings');
+
+    Route::get('profile','AdminControler@profile')->name('profile');
 });
 
 
