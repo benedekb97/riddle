@@ -19,7 +19,7 @@ class AddForeignKeysUserRiddle extends Migration
         });
 
         Schema::table('users', function(Blueprint $table){
-            $table->foreign('current_riddle')->references('id')->on('riddles')->onDelete('cascade');
+            $table->foreign('current_riddle')->references('id')->on('riddles')->onDelete('set null');
         });
     }
 
