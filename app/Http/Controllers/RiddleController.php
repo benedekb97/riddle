@@ -498,7 +498,7 @@ class RiddleController extends Controller
     {
         if($riddle->number!=null)
         {
-            $riddles_after = Riddle::all()->where('number','>',$riddle->number)->where('number', '!=', null)->all();
+            $riddles_after = Riddle::all()->where('number','>',$riddle->number)->all();
             $riddle->delete();
             foreach($riddles_after as $riddle_after){
                 $riddle_after->number = $riddle_after->number-1;

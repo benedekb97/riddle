@@ -58,10 +58,6 @@ class HomeController extends Controller
             abort(403);
         }
 
-        if($riddle->approved && Auth::user()->id == $riddle->user_id && !Auth::user()->moderator) {
-            abort(403);
-        }
-
         if((Auth::user()->current_riddle != $riddle->id) && (!Auth::user()->moderator)) {
             abort(403);
         }
