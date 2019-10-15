@@ -72,6 +72,14 @@
                                 <th>Cím</th>
                                 <td>{{ $help->riddle->title }}</td>
                             </tr>
+                            <tr>
+                                <th>Készítette</th>
+                                <td>{{ $help->riddle->user->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nehézség</th>
+                                <td>{{ $help->riddle->difficulty }}</td>
+                            </tr>
                             @if($help->riddle->user_id==Auth::user()->id || $help->riddle->approved_by == Auth::user()->id || Auth::user()->solvedRiddles()->get()->contains($help->riddle))
                             <tr>
                                 <th>Megoldás</th>
