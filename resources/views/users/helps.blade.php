@@ -72,10 +72,12 @@
                                 <th>Cím</th>
                                 <td>{{ $help->riddle->title }}</td>
                             </tr>
+                            @if($help->riddle->user_id==Auth::user()->id || $help->riddle->approved_by == Auth::user()->id)
                             <tr>
                                 <th>Megoldás</th>
                                 <td>{{ $help->riddle->answer }}</td>
                             </tr>
+                            @endif
                         </table>
                     </div>
                     <div class="modal-footer">
