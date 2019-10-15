@@ -27,7 +27,7 @@
                                 </td>
                                 <td>
                                     <span data-toggle="tooltip" title="Hintek">
-                                        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#hints_{{ $riddle->d }}">
+                                        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#hints_{{ $riddle->id }}">
                                             <i class="fa fa-lightbulb"></i>
                                         </button>
                                     </span>
@@ -75,7 +75,7 @@
                                 <td>{{ $riddle->user->name }}</td>
                                 <td>
                                     <span data-toggle="tooltip" title="Hintek">
-                                        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#hints_{{ $riddle->d }}">
+                                        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#hints_{{ $riddle->id }}">
                                             <i class="fa fa-lightbulb"></i>
                                         </button>
                                     </span>
