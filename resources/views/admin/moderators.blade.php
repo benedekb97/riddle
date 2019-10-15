@@ -26,47 +26,50 @@
         </form>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tr>
-                <th>Név</th>
-                <th>Email cím</th>
-                <th>AuthSCH</th>
-                <th>Jelszó</th>
-                <th>Elfogadott riddle-ök</th>
-                <th>Visszadobott riddle-ök</th>
-                <th>Műveletek</th>
-            </tr>
-            @foreach($moderators as $moderator)
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped">
                 <tr>
-                    <td>{{ $moderator->name }}</td>
-                    <td>{{ $moderator->email }}</td>
-                    <td>
-                        @if($moderator->internal_id!=null)
-                            <i class="fa fa-check"></i>
-                        @else
-                            <i class="fa fa-times"></i>
-                        @endif
-                    </td>
-                    <td>
-                        @if($moderator->password!=null)
-                            <i class="fa fa-check"></i>
-                        @else
-                            <i class="fa fa-times"></i>
-                        @endif
-                    </td>
-                    <td>{{ $moderator->approvedRiddles()->count() }}</td>
-                    <td>{{ $moderator->riddlesBlockedBy()->count() }}</td>
-                    <td>
+                    <th>Név</th>
+                    <th>Email cím</th>
+                    <th>AuthSCH</th>
+                    <th>Jelszó</th>
+                    <th>Elfogadott riddle-ök</th>
+                    <th>Visszadobott riddle-ök</th>
+                    <th>Műveletek</th>
+                </tr>
+                @foreach($moderators as $moderator)
+                    <tr>
+                        <td>{{ $moderator->name }}</td>
+                        <td>{{ $moderator->email }}</td>
+                        <td>
+                            @if($moderator->internal_id!=null)
+                                <i class="fa fa-check"></i>
+                            @else
+                                <i class="fa fa-times"></i>
+                            @endif
+                        </td>
+                        <td>
+                            @if($moderator->password!=null)
+                                <i class="fa fa-check"></i>
+                            @else
+                                <i class="fa fa-times"></i>
+                            @endif
+                        </td>
+                        <td>{{ $moderator->approvedRiddles()->count() }}</td>
+                        <td>{{ $moderator->riddlesBlockedBy()->count() }}</td>
+                        <td>
                         <span data-toggle="tooltip" title="Törlés">
                             <a type="button" class="btn btn-xs btn-danger" href="{{ route('admin.moderators.delete', ['user' => $moderator]) }}">
                                 <i class="fa fa-times"></i>
                             </a>
                         </span>
-                    </td>
-                </tr>
-            @endforeach
-        </table>
+                        </td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+
     </div>
 @endsection
 

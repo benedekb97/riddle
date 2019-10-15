@@ -4,20 +4,23 @@
 @section('active.static_messages','active')
 
 @section('content')
-    <h2 class="page-header">Statikus Üzenetek</h2>
-    <input class="btn btn-primary" type="button" data-toggle="modal" data-target="#new_message" value="Új üzenet"><br><br>
-    @foreach($messages as $message)
-        <div class="alert alert-{{ $message_types[$message->type] }}">
-            <a class="close" href="#" data-toggle="modal" data-target="#delete_message_{{ $message->id }}">
-                <i class="fa fa-trash"></i>
-            </a>
-            <a class="close" href="#" data-toggle="modal" data-target="#edit_message_{{ $message->id }}">
-                <i class="fa fa-edit"></i>&nbsp;&nbsp;
-            </a>
-            <h4><i class="fa {{ $message_icons[$message->type] }}"></i>&nbsp;&nbsp;{{ $message->title }}</h4><br>
-            {{ $message->message }}
-        </div>
-    @endforeach
+    <div class="row">
+        <h2 class="page-header">Statikus Üzenetek</h2>
+        <input class="btn btn-primary" type="button" data-toggle="modal" data-target="#new_message" value="Új üzenet"><br><br>
+        @foreach($messages as $message)
+            <div class="alert alert-{{ $message_types[$message->type] }}">
+                <a class="close" href="#" data-toggle="modal" data-target="#delete_message_{{ $message->id }}">
+                    <i class="fa fa-trash"></i>
+                </a>
+                <a class="close" href="#" data-toggle="modal" data-target="#edit_message_{{ $message->id }}">
+                    <i class="fa fa-edit"></i>&nbsp;&nbsp;
+                </a>
+                <h4><i class="fa {{ $message_icons[$message->type] }}"></i>&nbsp;&nbsp;{{ $message->title }}</h4><br>
+                {{ $message->message }}
+            </div>
+        @endforeach
+    </div>
+
 @endsection
 
 @section('modals')
