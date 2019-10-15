@@ -95,4 +95,13 @@ class UsersController extends Controller
 
         return redirect()->back();
     }
+
+    public function helps()
+    {
+        $helps = Auth::user()->myHelps();
+
+        return view('users.helps',[
+            'helps' => $helps
+        ]);
+    }
 }

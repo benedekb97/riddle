@@ -80,6 +80,9 @@ $('#answer').keypress(function (e) {
                         $('#answer').val("");
                         $('#answer').removeAttr('readonly');
                     },1000);
+                    if(d.guesses>5){
+                        $('#help_form').css('display','inline');
+                    }
                 }
             },
             error:function(e){

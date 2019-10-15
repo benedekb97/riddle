@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Duplicate;
 use App\Models\Guess;
+use App\Models\Help;
 use App\Models\Hint;
 use App\Models\Riddle;
 use Faker\Provider\Image;
@@ -177,14 +178,6 @@ class RiddleController extends Controller
         $answer_given = $request->input('answer');
 
 
-        if($last_guess !=null){
-
-            $last_guess_time =  strtotime($last_guess);
-            if(time()-$last_guess_time<2){
-                abort(403);
-            }
-
-        }
 
         $same_guess = Auth::user()->guesses()->where('riddle_id',$riddle->id)->where('guess',$answer_given)->first();
 
@@ -195,41 +188,26 @@ class RiddleController extends Controller
             $same_guess->save();
         }else{
             $guess = new Guess();
-            $guess->guess = $answer_given;
+            $guess->guess = Riddle::normalise($answer_given);
             $guess->user_id = Auth::user()->id;
             $guess->riddle_id = $riddle->id;
             $guess->count = 1;
             $guess->save();
         }
 
-        $answer_given = strtolower($answer_given);
 
-        $answer_given = str_replace('é','e',$answer_given);
-        $answer_given = str_replace('á','a',$answer_given);
-        $answer_given = str_replace('í','i',$answer_given);
-        $answer_given = str_replace('ó','o',$answer_given);
-        $answer_given = str_replace('ő','o',$answer_given);
-        $answer_given = str_replace('ö','o',$answer_given);
-        $answer_given = str_replace('ú','u',$answer_given);
-        $answer_given = str_replace('ü','u',$answer_given);
-        $answer_given = str_replace('ű','u',$answer_given);
+        if($last_guess !=null){
 
-        $answer = $riddle->answer;
-        $answer = strtolower($answer);
-        $answer = str_replace(' ','',$answer);
-        $answer = str_replace('é','e',$answer);
-        $answer = str_replace('á','a',$answer);
-        $answer = str_replace('í','i',$answer);
-        $answer = str_replace('ó','o',$answer);
-        $answer = str_replace('ő','o',$answer);
-        $answer = str_replace('ö','o',$answer);
-        $answer = str_replace('ú','u',$answer);
-        $answer = str_replace('ü','u',$answer);
-        $answer = str_replace('ű','u',$answer);
+            $last_guess_time =  strtotime($last_guess);
+            if(time()-$last_guess_time<2){
+                abort(403);
+            }
+
+        }
 
         $point_multiplier = max(1,5-Auth::user()->usedHints($riddle)->count());
 
-        if(str_replace(' ','',$answer_given) == $answer) {
+        if($riddle->check($answer_given)) {
             Auth::user()->solvedRiddles()->attach($riddle);
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setUpdatedAt(time());
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setCreatedAt(time());
@@ -240,7 +218,7 @@ class RiddleController extends Controller
             Auth::user()->save();
             return response()->json(['guess' => 'correct']);
         }else{
-            return response()->json(['guess' => 'wrong']);
+            return response()->json(['guess' => 'wrong', 'guesses' => $riddle->guesses->count()]);
         }
     }
 
@@ -506,6 +484,38 @@ class RiddleController extends Controller
         }else{
             $riddle->delete();
         }
+
+        return redirect()->back();
+    }
+
+    public function help()
+    {
+        $user = Auth::user();
+        $riddle = $user->riddle;
+
+        if($riddle->helps()->where('user_id',$user->id)->count()>0){
+            abort(403);
+        }
+
+        if($riddle->guesses()->where('user_id',$user->id)->count()<6){
+            abort(403);
+        }
+
+        $help = new Help();
+        $help->user_id = $user->id;
+        $help->riddle_id = $riddle->id;
+        $help->save();
+
+        return redirect()->back();
+    }
+
+    public function sendHelp(Request $request)
+    {
+        $help = Help::find($request->input('help'));
+        $help->help = $request->input('help_text');
+        $help->helped_by = Auth::user()->id;
+        $help->helped_at = date('Y-m-d H:i:s');
+        $help->save();
 
         return redirect()->back();
     }

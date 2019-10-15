@@ -47,6 +47,18 @@
             </div>
         </div>
     @endif
+    @if($help!=null && $help->help!=null)
+        <div class="row">
+            <div class="col-md-4 col-md-push-4">
+                <div class="alert alert-dismissable alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <i class="fa fa-check"></i>&nbsp;&nbsp;Kaptál segítséget!<br>
+                    <br>
+                    <b>{{ $help->helper->name }}</b> ezt üzente: {{ $help->help }}
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-8 col-md-push-2">
             <div class="panel panel-default">
@@ -83,6 +95,10 @@
                         <form style="display:inline;" action="{{ route('riddles.hintme', ['riddle' => $riddle]) }}" method="POST">
                             {{ csrf_field() }}
                             <input type="submit" class="btn btn-default" value="Hint kérése ({{ $riddle->hints()->count()-Auth::user()->usedHints($riddle)->count() }})" @if($riddle->hints()->count()-Auth::user()->usedHints($riddle)->count()==0) disabled @endif>
+                        </form>
+                        <form @if($guesses<6 || $helped==true) style="display:none;" @endif id="help_form" style="display:inline;" action="{{ route('riddles.help') }}" method="POST">
+                            {{ csrf_field() }}
+                            <input data-toggle="tooltip" title="Ha segítséget kérsz nem kapsz pontot erre a riddle-re!" type="submit" class="btn btn-warning" value="Segítsééég!!">
                         </form>
                     </div>
                     @else

@@ -13,7 +13,12 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ route('index') }}">Home</a></li>
                 <li><a href="{{ route('riddles.all') }}">Eddigiek</a></li>
-                <li><a href="{{ route('riddles.current') }}">Aktuális</a></li>
+                <li><a href="{{ route('riddles.current') }}">
+                    @if(Auth::user()->helpsAsked()->where('riddle_id',Auth::user()->current_riddle)->where('help','!=',null)->where('seen',false)->count()>0)
+                        <span class="link-number-o">{{ Auth::user()->helpsAsked()->where('seen',false)->where('riddle_id',Auth::user()->current_riddle)->where('help','!=',null)->count() }}</span>
+                    @endif
+                        Aktuális
+                    </a></li>
                 <li><a href="{{ route('users.list') }}">Rangsor</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -50,8 +55,8 @@
                 @endif
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        @if(Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles()>0)
-                            <span class="link-number-o">{{ Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles() }}</span>
+                        @if(Auth::user()->myHelps()->count()+Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles()>0)
+                            <span class="link-number-o">{{ Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles()+Auth::user()->myHelps()->count() }}</span>
                         @endif
                         {{ Auth::user()->name }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -61,6 +66,13 @@
                                     <span class="link-number">{{ Auth::user()->unapprovedRiddles()+Auth::user()->blockedRiddles() }}</span>
                                 @endif
                             </a></li>
+                        <li>
+                            <a href="{{ route('users.helps') }}">Segítségkérések
+                                @if(Auth::user()->myHelps()->count()>0)
+                                    <span class="link-number">{{ Auth::user()->myHelps()->count() }}</span>
+                                @endif
+                            </a>
+                        </li>
                         <li><a href="{{ route('riddles.new') }}">Riddle feltöltése</a></li>
                         <li><a href="{{ route('logout') }}">Kijelentkezés</a></li>
                     </ul>

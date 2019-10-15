@@ -55,6 +55,30 @@ class Riddle extends Model
         return $this->hasMany(Duplicate::class,'riddle_id','id');
     }
 
+    public static function normalise(string $text)
+    {
+        $text = strtolower($text);
+        $replace = [
+            'this' => [
+                'á','é','í','ó','ú','ő','ö','ű','ü','Á','É','Í','Ő','Ó','Ö','Ű','Ú','Ü',' '
+            ],
+            'with' => [
+                'a','e','i','o','u','o','o','u','u','a','e','i','o','o','o','u','u','u',''
+            ]
+        ];
+        foreach($replace['this'] as $key => $letter){
+            $text = str_replace($replace['this'][$key],$replace['with'][$key],$text);
+        }
+
+        return $text;
+    }
+
+    public function check(string $answer)
+    {
+
+        return $this->normalise($answer)==$this->normalise($this->answer);
+    }
+
     public function compare(Riddle $riddle)
     {
         $answer1 = $this->answer;
@@ -86,5 +110,10 @@ class Riddle extends Model
         $answer2 = str_replace('ű','u',$answer2);
 
         return $answer1 == $answer2;
+    }
+
+    public function helps()
+    {
+        return $this->hasMany(Help::class);
     }
 }

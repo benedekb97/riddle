@@ -82,6 +82,13 @@ class HomeController extends Controller
 
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
+        $helped = $riddle->helps()->where('user_id',Auth::user()->id)->count() > 0;
+        $help = $riddle->helps()->where('user_id',Auth::user()->id)->first();
+        if($help!=null && $help->help!=null){
+            $help->seen = true;
+            $help->save();
+        }
+
         return view('riddle', [
             'riddle' => $riddle,
             'solved' => $solved,
@@ -90,7 +97,10 @@ class HomeController extends Controller
             'points' => $points,
             'difficulties' => $difficulties,
             'solved_riddles' => $solved_riddles,
-            'reported' => $reported
+            'reported' => $reported,
+            'guesses' => $riddle->guesses()->where('user_id',Auth::user()->id)->count(),
+            'helped' => $helped,
+            'help' => $help
         ]);
     }
 

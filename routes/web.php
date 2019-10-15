@@ -39,6 +39,9 @@ Route::group(['middleware' => 'auth'], function(){
 
         Route::get('creators','UsersController@creators')->name('creators')->middleware('moderator');
         Route::get('user/modify/{user}','UsersController@modify')->name('user.modify')->middleware('moderator');
+
+        Route::get('helps','UsersController@helps')->name('helps');
+        Route::post('help.send','RiddleController@sendHelp')->name('help.send');
     });
 
     Route::group(['prefix' => 'riddles', 'as' => 'riddles.'], function(){
@@ -46,6 +49,8 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('new','RiddleController@save')->name('save');
 
         Route::get('get/{riddle}', 'RiddleController@get')->name('get');
+
+        Route::post('help','RiddleController@help')->name('help');
 
         Route::post('duplicate','RiddleController@duplicate')->name('duplicate');
 

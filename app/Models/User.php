@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -87,5 +88,36 @@ class User extends Authenticatable
     public function blockedRiddles()
     {
         return $this->riddles->where('blocked','1')->count();
+    }
+
+    public function helpsAsked()
+    {
+        return $this->hasMany(Help::class,'user_id');
+    }
+
+    public function helpsAnswered()
+    {
+        return $this->hasMany(Help::class,'helped_by');
+    }
+
+    public function myHelps()
+    {
+        if($this->moderator==1){
+            $this_helps = Help::all()->where('help',null);
+        }else{
+            $this_helps = [];
+            $riddles = $this->riddles;
+            foreach($riddles as $riddle){
+                $helps = $riddle->helps;
+                foreach($helps as $help){
+                    if($help->help==null){
+                        $this_helps[] = $help;
+                    }
+                }
+            }
+            $this_helps = $this->newCollection($this_helps);
+        }
+
+        return $this_helps;
     }
 }
