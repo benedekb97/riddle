@@ -211,9 +211,19 @@ class RiddleController extends Controller
             Auth::user()->solvedRiddles()->attach($riddle);
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setUpdatedAt(time());
             Auth::user()->solvedRiddles()->find($riddle->id)->first()->setCreatedAt(time());
+            $help = $riddle->helps()->where('user_id',Auth::user()->id)->where('help','!=',null)->first();
+            if($help!=null){
+                $points = 0;
+            }else{
+                $points = $riddle->difficulty*$point_multiplier;
+            }
+            if($riddle->helps()->where('user_id',Auth::user()->id)->where('help',null)->count()>0){
+                $help = $riddle->helps()->where('user_id',Auth::user()->id)->where('help',null)->first();
+                $help->delete();
+            }
             Auth::user()->current_riddle = null;
             if($riddle->user_id != Auth::user()->id){
-                Auth::user()->points += $riddle->difficulty*$point_multiplier;
+                Auth::user()->points += $points;
             }
             Auth::user()->save();
             return response()->json(['guess' => 'correct']);
