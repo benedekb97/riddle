@@ -100,6 +100,16 @@ class User extends Authenticatable
         return $this->hasMany(Help::class,'helped_by');
     }
 
+    public function approvedRiddles()
+    {
+        return Riddle::all()->where('approved_by',$this->id);
+    }
+
+    public function riddlesBlockedBy()
+    {
+        return Riddle::all()->where('blocked_by',$this->id);
+    }
+
     public function myHelps()
     {
         if($this->moderator==1){

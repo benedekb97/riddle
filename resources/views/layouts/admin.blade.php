@@ -16,6 +16,9 @@
                 <ul class="nav nav-sidebar">
                     <li class="@yield('active.index')"><a href="{{ route('admin.index') }}">Áttekintés</a></li>
                     <li class="@yield('active.static_messages')"><a href="{{ route('admin.static_messages') }}">Statikus Üzenetek</a></li>
+                    <li class="@yield('active.moderators')">
+                        <a href="{{ route('admin.moderators.index') }}">Moderátorok</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-10 col-sm-9 main col-sm-offset-3 col-md-offset-2">

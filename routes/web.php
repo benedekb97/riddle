@@ -20,6 +20,13 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::post('new','AdminController@newStaticMEssage')->name('static_messages.new');
     });
 
+    Route::group(['prefix' => 'moderators','as'=>'moderators.'], function(){
+        Route::get('','AdminController@moderators')->name('index');
+        Route::post('add','AdminController@addModerator')->name('add');
+        Route::post('search','AdminController@search')->name('search');
+        Route::get('delelte/{user}','AdminController@deleteModerator')->name('delete');
+    });
+
 
     Route::get('settings','AdminController@settings')->name('settings');
 

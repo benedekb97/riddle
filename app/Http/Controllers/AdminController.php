@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\StaticMessage;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -52,6 +53,47 @@ class AdminController extends Controller
         $message->type = $request->input('type');
         $message->active = 1;
         $message->save();
+
+        return redirect()->back();
+    }
+
+    public function moderators()
+    {
+        $moderators = User::all()->where('moderator',true)->all();
+
+        return view('admin.moderators', [
+            'moderators' => $moderators
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $search_name = $request->input('search');
+        $users = User::where('name','like',"%$search_name%")->where('moderator',0)->get();
+        $users_array = [];
+        foreach($users as $user){
+            $users_array[] = [
+                'name' => $user->name,
+                'id' => $user->id
+            ];
+        }
+
+        return response()->json($users_array);
+    }
+
+    public function addModerator(Request $request)
+    {
+        $user = User::find($request->input('user_id'));
+        $user->moderator = 1;
+        $user->save();
+
+        return redirect()->back();
+    }
+
+    public function deleteModerator(User $user)
+    {
+        $user->moderator = 0;
+        $user->save();
 
         return redirect()->back();
     }
