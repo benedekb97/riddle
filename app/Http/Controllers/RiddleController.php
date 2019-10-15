@@ -409,12 +409,14 @@ class RiddleController extends Controller
     {
         $sequenced_riddles = Riddle::all()->where('number','!=',null)->sortByDesc('number');
         $unsequenced_riddles = Riddle::all()->diff($sequenced_riddles)->where('approved','1')->where('blocked','0');
+        $riddles = Riddle::all();
         $last_number = Riddle::all()->max('number');
 
         return view('riddles.sequence', [
             'sequenced_riddles' => $sequenced_riddles,
             'unsequenced_riddles' => $unsequenced_riddles,
-            'last_number' => $last_number
+            'last_number' => $last_number,
+            'riddles' => $riddles
         ]);
     }
 
