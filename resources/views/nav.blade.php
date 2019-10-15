@@ -20,6 +20,9 @@
                         Aktuális
                     </a></li>
                 <li><a href="{{ route('users.list') }}">Rangsor</a></li>
+                @if(Auth::user()->admin)
+                <li><a href="{{ route('admin.index') }}">Admin</a></li>
+                @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::user()->moderator)
