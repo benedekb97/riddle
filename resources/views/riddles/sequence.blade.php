@@ -25,7 +25,13 @@
                                         <i class="fa fa-image"></i>
                                     </a>
                                 </td>
-                                <td>{{ $riddle->hints()->count() }}</td>
+                                <td>
+                                    <span data-toggle="tooltip" title="Hintek">
+                                        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#hints_{{ $riddle->d }}">
+                                            <i class="fa fa-lightbulb"></i>
+                                        </button>
+                                    </span>
+                                </td>
                                 <td style="text-align:right;">
                                     <a data-toggle="tooltip" title="Sorrendhez hozzáadás" href="{{ route('riddles.sequence.add', ['riddle' => $riddle]) }}" class="btn btn-sm btn-default">
                                         <i class="fa fa-caret-down"></i>
@@ -53,7 +59,7 @@
                             <th>Kép</th>
                             <th>Nehézség</th>
                             <th>Készítő</th>
-                            <th>Hintek száma</th>
+                            <th>Hintek</th>
                             <th style="text-align:right";>Műveletek</th>
                         </tr>
                         @foreach($sequenced_riddles as $riddle)
@@ -67,7 +73,13 @@
                                 </td>
                                 <td>{{ $riddle->difficulty }}</td>
                                 <td>{{ $riddle->user->name }}</td>
-                                <td>{{ $riddle->hints()->count() }}</td>
+                                <td>
+                                    <span data-toggle="tooltip" title="Hintek">
+                                        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#hints_{{ $riddle->d }}">
+                                            <i class="fa fa-lightbulb"></i>
+                                        </button>
+                                    </span>
+                                </td>
                                 <td style="text-align:right;">
                                     @if($riddle->number != 1)
                                         <a data-toggle="tooltip" title="Előre" href="{{ route('riddles.sequence.down',['riddle' => $riddle]) }}" class="btn btn-xs btn-default">
@@ -90,4 +102,34 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('modals')
+    @foreach($riddles as $riddle)
+        <div class="modal fade" id="hints_{{ $riddle->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Hintek</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Hint</th>
+                            </tr>
+                            @foreach($riddle->hints as $hint)
+                                <tr>
+                                    <td>{{ $hint->hint }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Bezárás</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection
