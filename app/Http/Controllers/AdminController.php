@@ -25,21 +25,20 @@ class AdminController extends Controller
         ]);
     }
 
-    public function deleteStaticMessage(Request $request)
+    public function deleteStaticMessage(StaticMessage $message, Request $request)
     {
-        $id = $request->input('id');
+        $id = $message->id;
         StaticMessage::all()->find($id)->first()->delete();
 
         return redirect()->back();
     }
 
-    public function editStaticMessage(Request $request)
+    public function editStaticMessage(StaticMessage $message, Request $request)
     {
-        $id = $request->input('id');
-        $message = StaticMessage::all()->find($id)->first();
-        $message->title = $request->input('title');
-        $message->message = $request->input('message');
-        $message->type = $request->input('type');
+        $id = $message->id;
+        $message->title = $request->input('title'.$id);
+        $message->message = $request->input('message'.$id);
+        $message->type = $request->input('type'.$id);
         $message->save();
 
         return redirect()->back();

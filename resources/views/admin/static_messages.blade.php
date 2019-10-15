@@ -23,8 +23,7 @@
 @section('modals')
     @foreach($messages as $message)
         <div class="modal fade" id="edit_message_{{ $message->id }}">
-            <form action="{{ route('admin.static_messages.edit') }}" method="POST">
-                <input type="hidden" name="id" value="{{ $message->id }}">
+            <form action="{{ route('admin.static_messages.edit', ['message' => $message]) }}" method="POST">
                 {{ csrf_field() }}
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -36,19 +35,19 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <label class="input-group-addon" for="title">Cím</label>
-                                    <input type="text" class="form-control" id="title" name="title" value="{{ $message->title }}" required>
+                                    <input type="text" class="form-control" id="title" name="title{{ $message->id }}" value="{{ $message->title }}" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <label class="input-group-addon" for="message">Üzenet</label>
-                                    <textarea style="resize:vertical;" class="form-control" id="message" name="message" required>{{ $message->message }}</textarea>
+                                    <textarea style="resize:vertical;" class="form-control" id="message" name="message{{ $message->id }}" required>{{ $message->message }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <label class="input-group-addon" for="type">Típus</label>
-                                    <select name="type" id="type" class="form-control" required>
+                                    <select name="type{{ $message->id }}" id="type" class="form-control" required>
                                         <option value="0" @if($message->type==0) selected @endif>Információ</option>
                                         <option value="1" @if($message->type==1) selected @endif>Figyelmeztetés</option>
                                         <option value="2" @if($message->type==2) selected @endif>Sárga figyelmeztetés</option>
@@ -68,8 +67,7 @@
             </form>
         </div>
         <div class="modal fade" id="delete_message_{{ $message->id }}">
-            <form action="{{ route('admin.static_messages.delete') }}" method="POST">
-                <input type="hidden" name="id" value="{{ $message->id }}">
+            <form action="{{ route('admin.static_messages.delete', ['message' => $message]) }}" method="POST">
                 {{ csrf_field() }}
                 <div class="modal-dialog">
                     <div class="modal-content">

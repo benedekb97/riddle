@@ -15,8 +15,8 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
 
     Route::group(['prefix'=>'static_messages'], function(){
         Route::get('','AdminController@staticMessages')->name('static_messages');
-        Route::post('edit','AdminController@editStaticMessage')->name('static_messages.edit');
-        Route::post('delete','AdminController@deleteStaticMessage')->name('static_messages.delete');
+        Route::post('edit/{message}','AdminController@editStaticMessage')->name('static_messages.edit');
+        Route::post('delete/{message}','AdminController@deleteStaticMessage')->name('static_messages.delete');
         Route::post('new','AdminController@newStaticMEssage')->name('static_messages.new');
     });
 
