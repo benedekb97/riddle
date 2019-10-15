@@ -10,7 +10,8 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-md-push-6">
+            <br><br><br>
+            <div class="col-md-6 col-md-push-3">
                 <div class="alert alert-danger">
                     <h4>
                         <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;Hozzáférés megtagadva
