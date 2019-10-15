@@ -22,6 +22,9 @@
                     <li class="@yield('active.moderators')">
                         <a href="{{ route('admin.moderators.index') }}">Moderátorok</a>
                     </li>
+                    <li class="@yield('active.functions')">
+                        <a href="{{ route('admin.functions.index') }}">Speciális funkciók</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-10 col-sm-9 main col-sm-offset-3 col-md-offset-2">

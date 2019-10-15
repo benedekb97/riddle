@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riddle;
 use App\Models\StaticMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -94,6 +95,38 @@ class AdminController extends Controller
     {
         $user->moderator = 0;
         $user->save();
+
+        return redirect()->back();
+    }
+
+    public function functions()
+    {
+        return view('admin.functions');
+    }
+
+    public function resetCurrentRiddles()
+    {
+        $users = User::all();
+        foreach($users as $user)
+        {
+            $riddles = Riddle::all();
+            $solvedRiddles = $user->solvedRiddles()->get();
+            $unapproved_riddles = Riddle::all()->where('approved','0');
+            $blocked_riddles = Riddle::all()->where('blocked','1');
+            $unsequenced_riddles = Riddle::all()->where('number',null);
+            $unsolved_riddles = $riddles->diff($solvedRiddles);
+            $unsolved_riddles = $unsolved_riddles->diff($unapproved_riddles);
+            $unsolved_riddles = $unsolved_riddles->diff($blocked_riddles);
+            $unsolved_riddles = $unsolved_riddles->diff($unsequenced_riddles);
+
+            if($unsolved_riddles->count()!=0){
+                $unsolved_riddles = $unsolved_riddles->sortBy('number');
+                $next_riddle = $unsolved_riddles->first();
+
+                $user->current_riddle = $next_riddle->id;
+                $user->save();
+            }
+        }
 
         return redirect()->back();
     }
