@@ -72,7 +72,7 @@
                                 <th>Cím</th>
                                 <td>{{ $help->riddle->title }}</td>
                             </tr>
-                            @if($help->riddle->user_id==Auth::user()->id || $help->riddle->approved_by == Auth::user()->id || Auth::user()->solvedRiddles()->all()->contains($help->riddle))
+                            @if($help->riddle->user_id==Auth::user()->id || $help->riddle->approved_by == Auth::user()->id || Auth::user()->solvedRiddles()->get()->contains($help->riddle))
                             <tr>
                                 <th>Megoldás</th>
                                 <td>{{ $help->riddle->answer }}</td>
