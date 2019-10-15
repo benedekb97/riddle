@@ -28,12 +28,16 @@ body {
 /*
  * Sidebar
  */
-
+@media(max-width:768px){
+    .sidebar{
+        left:-140px;
+    }
+}
 .sidebar {
     position: fixed;
     top: 51px;
     bottom: 0;
-    left: -140px;
+    left:0;
     z-index: 1000;
     display: block;
     padding: 20px;
@@ -42,6 +46,12 @@ body {
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
     transition:left 0.3s linear;
+}
+@media(max-width:768px) {
+    .page-header {
+        position: relative;
+        left: 15px;
+    }
 }
 @media(min-width:768px){
     .sidebar-show{
@@ -54,6 +64,7 @@ body {
         position:absolute;
         top:0;
         right:0;
+        font-size:12pt;
     }
 }
 /* Sidebar navigation */
