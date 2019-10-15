@@ -12,7 +12,10 @@
     @include('admin.nav')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2 col-sm-3 sidebar">
+            <div class="col-md-2 col-sm-3 sidebar" id="sidebar">
+                <div class="sidebar-show" id="sidebar-show">
+                    <i class="fa fa-arrow-right"></i>
+                </div>
                 <ul class="nav nav-sidebar">
                     <li class="@yield('active.index')"><a href="{{ route('admin.index') }}">Áttekintés</a></li>
                     <li class="@yield('active.static_messages')"><a href="{{ route('admin.static_messages') }}">Statikus Üzenetek</a></li>
@@ -30,5 +33,6 @@
     </body>
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
+<script src="{{ asset('js/admin.js') }}"></script>
 @yield('scripts')
 </html>
