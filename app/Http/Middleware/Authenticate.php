@@ -24,9 +24,8 @@ class Authenticate extends Middleware
 
     public function handle($request, $next, ...$guards)
     {
-        if(!Auth::check()){
-            return redirect(route('login'));
-        }
+
+        $this->authenticate($request, $guards);
 
         if(Setting::where('name','lockdown')->where('setting','true')->count()>0){
             if(!Auth::user()->moderator) {
