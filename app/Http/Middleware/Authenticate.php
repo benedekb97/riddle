@@ -21,23 +21,4 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
-
-    public function handle($request, $next, ...$guards)
-    {
-
-        $this->authenticate($request, $guards);
-
-        if(Setting::where('name','lockdown')->where('setting','true')->count()>0){
-            if(!Auth::user()->moderator) {
-                return abort(405);
-            }
-        }
-
-        if(Auth::user()->blocked)
-        {
-            return abort(402);
-        }
-
-        return $next($request);
-    }
 }
