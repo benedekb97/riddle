@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Setting;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\Closure;
 
 class Authenticate extends Middleware
@@ -18,5 +20,16 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
+    }
+
+    public function handle($request, $next, ...$guards)
+    {
+        if(Setting::where('name','lockdown')->where('setting','true')->count()>0){
+            if(!Auth::user()->moderator) {
+                return abort(405);
+            }
+        }
+
+        return $next($request);
     }
 }

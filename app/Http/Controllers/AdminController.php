@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Riddle;
 use App\Models\StaticMessage;
 use App\Models\User;
+use App\Setting;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -101,7 +102,29 @@ class AdminController extends Controller
 
     public function functions()
     {
-        return view('admin.functions');
+        $lockdown = Setting::where('name','lockdown')->where('setting','true')->count()>0;
+
+        return view('admin.functions',[
+            'lockdown' => $lockdown
+        ]);
+    }
+
+    public function enableLockdown()
+    {
+        $setting = Setting::where('name','lockdown')->first();
+        $setting->setting = "true";
+        $setting->save();
+
+        return redirect()->back();
+    }
+
+    public function disableLockdown()
+    {
+        $setting = Setting::where('name','lockdown')->first();
+        $setting->setting = "false";
+        $setting->save();
+
+        return redirect()->back();
     }
 
     public function resetCurrentRiddles()

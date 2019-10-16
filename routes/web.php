@@ -1,9 +1,6 @@
 <?php
 
 
-Route::get('','HomeController@index')->name('index');
-Route::get('login/{error?}','HomeController@login')->name('login');
-
 Route::post('login/check/user','LoginController@check')->name('login.check');
 Route::post('register','LoginController@register')->name('register');
 
@@ -30,6 +27,9 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
     Route::group(['prefix' => 'functions', 'as' => 'functions.'], function(){
         Route::get('', 'AdminController@functions')->name('index');
         Route::get('reset_current_riddles','AdminController@resetCurrentRiddles')->name('reset_current_riddles');
+
+        Route::get('lockdown/enable','AdminController@enableLockdown')->name('lockdown.enable');
+        Route::get('lockdown/disable','AdminController@disableLockdown')->name('lockdown.disable');
     });
 
 
@@ -40,6 +40,11 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
 
 
 Route::group(['middleware' => 'auth'], function(){
+
+    Route::get('','HomeController@index')->name('index');
+    Route::get('login/{error?}','HomeController@login')->name('login');
+
+
     Route::group(['prefix' => 'users','as' => 'users.'], function(){
         Route::get('list','UsersController@list')->name('list');
         Route::get('riddles/{riddle?}/{option?}', 'UsersController@riddles')->name('riddles');
