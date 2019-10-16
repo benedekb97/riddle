@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guess;
+use App\Models\Log;
 use App\Models\Riddle;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ class UsersController extends Controller
 {
     public function list()
     {
+        Log::create('page.view','','users.list',Auth::user());
+
         $users = User::all()->sortByDesc('points');
 
         return view('users.list', [
@@ -21,11 +24,15 @@ class UsersController extends Controller
 
     public function profile()
     {
+        Log::create('page.view','','users.profile',Auth::user());
+
         return view('users.profile');
     }
 
     public function riddles(Riddle $riddle = null, $option = null)
     {
+        Log::create('page.view','','users.riddles',Auth::user());
+
         $riddles = Auth::user()->riddles;
         $guesses = Guess::all()->groupBy('riddle_id');
 
@@ -39,6 +46,8 @@ class UsersController extends Controller
 
     public function edit($error = null)
     {
+        Log::create('page.view','','users.edit.profile',Auth::user());
+
         $user = Auth::user();
 
         $error_messages = [
@@ -59,6 +68,8 @@ class UsersController extends Controller
 
     public function save(Request $request)
     {
+        Log::create('profile.edit','','users.profile.edit',Auth::user());
+
         Auth::user()->nickname = $request->input('nickname');
 
         $password = $request->input('password');
@@ -81,6 +92,8 @@ class UsersController extends Controller
 
     public function creators()
     {
+        Log::create('page.view','','users.creators',Auth::user());
+
         $users = User::all();
 
         return view('users.creators', [
@@ -90,6 +103,8 @@ class UsersController extends Controller
 
     public function modify(User $user)
     {
+        Log::create('user.modify',$user->id,'users.modify',Auth::user());
+
         $user->approved = !$user->approved;
         $user->save();
 
@@ -98,6 +113,8 @@ class UsersController extends Controller
 
     public function helps()
     {
+        Log::create('page.view','','users.helps',Auth::user());
+
         $helps = Auth::user()->myHelps();
 
         return view('users.helps',[

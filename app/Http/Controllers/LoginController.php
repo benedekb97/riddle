@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Riddle;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ class LoginController extends Controller
 {
     public function authSchRedirect(Request $request)
     {
+        Log::create('auth.sch.redirect','','authsch.redirect');
+
         $auth_sch_id = env('AUTH_SCH_ID');
         $auth_sch_key = env('AUTH_SCH_KEY');
         $ip = md5($request->ip());
@@ -38,6 +41,8 @@ class LoginController extends Controller
 
     public function authSchCallback(Request $request)
     {
+        Log::create('auth.sch.callback','','authsch.callback');
+
         $code = $request->get('code');
 
         $auth_sch_id = env('AUTH_SCH_ID');
@@ -98,6 +103,7 @@ class LoginController extends Controller
 
     public function register(Request $request)
     {
+
         if(Auth::check()){
             abort(403);
         }
@@ -125,11 +131,15 @@ class LoginController extends Controller
         $user->save();
         Auth::login($user);
 
+        Log::create('register',$user->id,'register',$user->id);
+
         return redirect(route('index'));
     }
 
     public function logout()
     {
+        Log::create('page.view',Auth::user()->id,'logout',Auth::user());
+
         Auth::logout();
 
         return redirect(route('login'));
@@ -137,6 +147,8 @@ class LoginController extends Controller
 
     public function check(Request $request)
     {
+        Log::create('page.view','','login.check');
+
         if(Auth::check()){
             abort(403);
         }

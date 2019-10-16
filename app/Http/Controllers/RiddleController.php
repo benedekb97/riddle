@@ -6,6 +6,7 @@ use App\Models\Duplicate;
 use App\Models\Guess;
 use App\Models\Help;
 use App\Models\Hint;
+use App\Models\Log;
 use App\Models\Riddle;
 use Faker\Provider\Image;
 use File;
@@ -59,6 +60,8 @@ class RiddleController extends Controller
 
     public function new($error = null)
     {
+        Log::create('page.view','','riddles.new',Auth::user());
+
         if(!Auth::user()->approved){
             $approved=false;
         }else{
@@ -104,6 +107,8 @@ class RiddleController extends Controller
             }
 
             if($error>0){
+                Log::create('new.riddle.attempt',$error,'riddles.save',Auth::user());
+
                 return redirect(route('riddles.new', ['error' => $error]));
             }
 
@@ -129,9 +134,12 @@ class RiddleController extends Controller
 
             $riddle->save();
 
+            Log::create('new.riddle','','riddles.save',Auth::user(),$riddle);
 
             return redirect(route('users.riddles'));
         }else{
+            Log::create('new.riddle',8,'riddles.save',Auth::user());
+
             return redirect(Route('riddles.new', ['error' => 8]));
         }
     }
@@ -166,7 +174,6 @@ class RiddleController extends Controller
 
     public function check(Riddle $riddle, Request $request)
     {
-
         if(Auth::user()->current_riddle != $riddle->id && !Auth::user()->moderator) {
             abort(403);
         }
@@ -186,6 +193,8 @@ class RiddleController extends Controller
             $same_guess->count++;
             $same_guess->updated_at = date("Y-m-d H:i:s",time());
             $same_guess->save();
+
+            Log::create('guess.riddle',$same_guess->guess,'riddles.check',Auth::user(),$riddle);
         }else{
             $guess = new Guess();
             $guess->guess = Riddle::normalise($answer_given);
@@ -193,6 +202,7 @@ class RiddleController extends Controller
             $guess->riddle_id = $riddle->id;
             $guess->count = 1;
             $guess->save();
+            Log::create('guess.riddle',$guess->guess,'riddles.check',Auth::user(),$riddle);
         }
 
 
@@ -200,6 +210,8 @@ class RiddleController extends Controller
 
             $last_guess_time =  strtotime($last_guess);
             if(time()-$last_guess_time<2){
+                Log::create('guess.riddle.fail','timeout','riddles.check',Auth::user(),$riddle);
+
                 abort(403);
             }
 
@@ -226,6 +238,8 @@ class RiddleController extends Controller
                 Auth::user()->points += $points;
             }
             Auth::user()->save();
+
+            Log::create('riddle.solve','','riddles.check',Auth::user(),$riddle);
             return response()->json(['guess' => 'correct']);
         }else{
             return response()->json(['guess' => 'wrong', 'guesses' => $riddle->guesses->count()]);
@@ -234,6 +248,7 @@ class RiddleController extends Controller
 
     public function hint(Riddle $riddle)
     {
+
         $user = Auth::user();
 
         if($user->usedHints($riddle) == null) {
@@ -244,9 +259,11 @@ class RiddleController extends Controller
 
         if($user->usedHints($riddle)->count() < $riddle->hints()->count())
         {
+            Log::create('hint.ask',$next_hint->id,'riddles.hint',Auth::user(),$riddle);
             $user->hints()->attach($next_hint->id);
             $user->save();
         }else{
+            Log::create('hint.ask.fal','','riddles.hint',Auth::user(),$riddle);
             abort(403);
         }
 
@@ -255,6 +272,8 @@ class RiddleController extends Controller
 
     public function deleteHint(Riddle $riddle, Hint $hint)
     {
+        Log::create('delete.hint',$hint->id,'riddles.hint.delete',Auth::user(),$riddle->id);
+
         if($riddle->user == Auth::user())
         {
             $hint->delete();
@@ -276,7 +295,11 @@ class RiddleController extends Controller
             $hint->hint = $request->input('hint');
             $hint->number = $hint_number;
             $hint->save();
+
+            Log::create('add.hint',$hint->id,'riddles.hint.add',Auth::user(),$riddle->id);
         }else{
+
+            Log::create('add.hint.attempt','','riddles.hint.add',Auth::user(),$riddle->id);
             abort(403);
         }
 
@@ -285,6 +308,8 @@ class RiddleController extends Controller
 
     public function approve(Riddle $riddle, $return = null)
     {
+        Log::create('riddle.approve','','riddles.approve',Auth::user(),$riddle);
+
         if(Auth::user()->moderator!=1)
         {
             abort(403);
@@ -311,6 +336,8 @@ class RiddleController extends Controller
 
     public function block(Riddle $riddle, Request $request, $return = null)
     {
+        Log::create('riddle.block',$request->input('reason'),'riddles.block',Auth::user(),$riddle);
+
         if(Auth::user()->moderator!=1)
         {
             abort(403);
@@ -332,10 +359,14 @@ class RiddleController extends Controller
 
     public function edit(Riddle $riddle, Request $request)
     {
+
         if(Auth::user()->moderator!=1 && Auth::user()->id != $riddle->user_id)
         {
+            Log::create('riddle.edit.attempt','','riddle.edit',Auth::user(),$riddle);
+
             abort(403);
         }
+        Log::create('riddle.edit','','riddle.edit',Auth::user(),$riddle);
 
         $riddle->title = $request->input('title'.$riddle->id);
         $riddle->answer = str_replace(' ','',strtolower($request->input('answer'.$riddle->id)));
@@ -387,6 +418,8 @@ class RiddleController extends Controller
 
     public function all()
     {
+        Log::create('page.view','','riddles.all',Auth::user());
+
         $riddles = Auth::user()->solvedRiddles()->get();
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
@@ -395,6 +428,8 @@ class RiddleController extends Controller
 
     public function sequence()
     {
+        Log::create('page.view','','riddles.sequence',Auth::user());
+
         $sequenced_riddles = Riddle::all()->where('number','!=',null)->sortByDesc('number');
         $unsequenced_riddles = Riddle::all()->diff($sequenced_riddles)->where('approved','1')->where('blocked','0');
         $riddles = Riddle::all();
@@ -410,6 +445,8 @@ class RiddleController extends Controller
 
     public function addToSequence(Riddle $riddle)
     {
+        Log::create('sequence.add.riddle','','riddle.add.sequence',Auth::user());
+
         $last_number = Riddle::all()->max('number');
 
         $riddle->number = $last_number + 1;
@@ -420,6 +457,8 @@ class RiddleController extends Controller
 
     public function sequenceUp(Riddle $riddle)
     {
+        Log::create('sequence.move.riddle.up','','riddles.move.up',Auth::user(),$riddle);
+
         $next_riddle = Riddle::where('number',$riddle->number+1)->first();
         $next_number = $riddle->number+1;
         $next_riddle->number = null;
@@ -434,6 +473,8 @@ class RiddleController extends Controller
 
     public function sequenceDown(Riddle $riddle)
     {
+        Log::create('sequence.move.riddle.down','','riddles.move.down',Auth::user(),$riddle);
+
         $prev_riddle = Riddle::where('number',$riddle->number-1)->first();
         $prev_number = $riddle->number-1;
         $prev_riddle->number = Null;
@@ -449,6 +490,9 @@ class RiddleController extends Controller
     public function duplicate(Request $request)
     {
         $riddle = $request->input('riddle_id');
+
+        Log::create('add.duplicate','','riddles.duplicate.add',Auth::user(),$riddle);
+
         if(!Auth::user()->solvedRiddles->contains($riddle) || !Auth::user()->solvedRiddles->contains($request->input('similar_to'))) {
             abort(403);
         }
@@ -464,6 +508,8 @@ class RiddleController extends Controller
 
     public function duplicates()
     {
+        Log::create('page.view','','riddles.duplicates',Auth::user());
+
         $duplicates = Duplicate::all()->groupBy('duplicate_id','riddle_id')->all();
 
         return view('riddles.duplicates',[
@@ -473,6 +519,8 @@ class RiddleController extends Controller
 
     public function deleteReport(Duplicate $duplicate)
     {
+        Log::create('delete.duplicate.report',$duplicate->id,'riddles.delete.duplicate',Auth::user());
+
         $duplicates = Duplicate::all()->where('riddle_id',$duplicate->riddle_id)->where('duplicate_id',$duplicate->duplicate_id)->all();
         foreach($duplicates as $duplicate){
             $duplicate->delete();
@@ -483,6 +531,8 @@ class RiddleController extends Controller
 
     public function deleteRiddle(Riddle $riddle)
     {
+        Log::create('delete.riddle','','riddles.delete',Auth::user(),$riddle);
+
         if($riddle->number!=null)
         {
             $riddles_after = Riddle::all()->where('number','>',$riddle->number)->all();
@@ -500,14 +550,18 @@ class RiddleController extends Controller
 
     public function help()
     {
+
         $user = Auth::user();
         $riddle = $user->riddle;
 
         if($riddle->helps()->where('user_id',$user->id)->count()>0){
+            Log::create('riddle.help.attempt','','riddles.help',Auth::user(),$riddle);
+
             abort(403);
         }
 
         if($riddle->guesses()->where('user_id',$user->id)->count()<6){
+            Log::create('riddle.help.attempt','','riddles.help',Auth::user(),$riddle);
             abort(403);
         }
 
@@ -516,17 +570,20 @@ class RiddleController extends Controller
         $help->riddle_id = $riddle->id;
         $help->save();
 
+        Log::create('riddle.help',$help->id,'riddles.help',Auth::user(),$riddle);
         return redirect()->back();
     }
 
     public function sendHelp(Request $request)
     {
+
         $help = Help::find($request->input('help'));
         $help->help = $request->input('help_text');
         $help->helped_by = Auth::user()->id;
         $help->helped_at = date('Y-m-d H:i:s');
         $help->save();
 
+        Log::create('send.help',$help->id,'riddles.send.help',Auth::user());
         return redirect()->back();
     }
 }

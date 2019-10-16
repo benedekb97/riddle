@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Riddle;
 use App\Models\StaticMessage;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ class HomeController extends Controller
 {
     public function index()
     {
+        Log::create('page.view','','index',Auth::user());
+
         if(!Auth::check())
         {
             return redirect(route('login'));
@@ -29,6 +32,8 @@ class HomeController extends Controller
 
     public function login($error = null)
     {
+        Log::create('page.view','','index',Auth::user());
+
         if(Auth::check()){
             abort(403);
         }
@@ -54,6 +59,8 @@ class HomeController extends Controller
 
     public function riddle(Riddle $riddle)
     {
+        Log::create('page.view','','riddle',Auth::user(),$riddle->id);
+
         if($riddle->approved==0 && (Auth::user()->id != $riddle->user_id || !Auth::user()->moderator)) {
             abort(403);
         }
@@ -106,6 +113,8 @@ class HomeController extends Controller
 
     public function current()
     {
+        Log::create('page.view','','current',Auth::user());
+
         if(Auth::user()->current_riddle == null) {
             return redirect(route('riddles.next'));
         }else{
@@ -116,6 +125,8 @@ class HomeController extends Controller
 
     public function noneLeft()
     {
+        Log::create('page.view','','none_left', Auth::user());
+
         return view('noneleft');
     }
 }
