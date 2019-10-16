@@ -45,13 +45,13 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
     Route::get('profile','AdminControler@profile')->name('profile');
 });
 
+Route::get('login/{error?}','HomeController@login')->name('login');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::group(['middleware' => 'settings'], function(){
 
 
         Route::get('','HomeController@index')->name('index');
-        Route::get('login/{error?}','HomeController@login')->name('login');
 
 
         Route::group(['prefix' => 'users','as' => 'users.'], function(){
