@@ -1,5 +1,7 @@
 @extends('layouts.home')
 
+@section('title','Riddle.sch - A legjobb közösségi riddle megoldó weboldal a leghosszabb címmel')
+
 @section('content')
     @foreach($messages as $message)
         <div class="row">
