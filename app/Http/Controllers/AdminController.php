@@ -216,7 +216,7 @@ class AdminController extends Controller
     {
         Log::create('page.view','','admin.logs',Auth::user());
 
-        $logs = Log::all()->sortByDesc('id');
+        $logs = Log::all()->where('page','!=','admin.logs')->sortByDesc('id');
 
         return view('admin.logs', ['logs' => $logs]);
     }
