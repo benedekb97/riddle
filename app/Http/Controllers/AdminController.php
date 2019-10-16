@@ -218,6 +218,6 @@ class AdminController extends Controller
 
         $logs = Log::all();
 
-        return view('admin.logs');
+        return view('admin.logs', ['logs' => $logs]);
     }
 }
