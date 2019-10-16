@@ -272,7 +272,7 @@ class RiddleController extends Controller
 
     public function deleteHint(Riddle $riddle, Hint $hint)
     {
-        Log::create('delete.hint',$hint->id,'riddles.hint.delete',Auth::user(),$riddle->id);
+        Log::create('delete.hint',$hint->id,'riddles.hint.delete',Auth::user(),$riddle);
 
         if($riddle->user == Auth::user())
         {
@@ -296,10 +296,10 @@ class RiddleController extends Controller
             $hint->number = $hint_number;
             $hint->save();
 
-            Log::create('add.hint',$hint->id,'riddles.hint.add',Auth::user(),$riddle->id);
+            Log::create('add.hint',$hint->id,'riddles.hint.add',Auth::user(),$riddle);
         }else{
 
-            Log::create('add.hint.attempt','','riddles.hint.add',Auth::user(),$riddle->id);
+            Log::create('add.hint.attempt','','riddles.hint.add',Auth::user(),$riddle);
             abort(403);
         }
 
