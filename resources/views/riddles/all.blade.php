@@ -34,7 +34,7 @@
                                 {{ Auth::user()->solvedRiddles()->where('riddle_id',$riddle->id)->first()->created_at }}
                             </td>
                             <td>{{ $riddle->guesses()->where('user_id',Auth::user()->id)->count() }}</td>
-                            <td>{{ $user->usedHints()->where('riddle_id',$riddle->id)->count() }}</td>
+                            <td>{{ Auth::user()->usedHints()->where('riddle_id',$riddle->id)->count() }}</td>
                             <td>{{ $difficulties[$riddle->difficulty-1] }}</td>
                         </tr>
                     @endforeach
