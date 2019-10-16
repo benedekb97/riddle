@@ -26,8 +26,16 @@ class Log extends Model
         $log->type = $type;
         $log->data = $data;
         $log->page = $page;
-        $log->user_id = $user->id;
-        $log->riddle_id = $riddle->id;
+        if($user!=null){
+            $log->user_id = $user->id;
+        }else{
+            $log->user_id = null;
+        }
+        if($riddle!=null){
+            $log->riddle_id = $riddle->id;
+        }else{
+            $log->riddle_id = null;
+        }
         $log->save();
     }
 }
