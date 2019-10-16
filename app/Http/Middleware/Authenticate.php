@@ -30,6 +30,11 @@ class Authenticate extends Middleware
             }
         }
 
+        if(Auth::user()->blocked)
+        {
+            return abort(402);
+        }
+
         return $next($request);
     }
 }

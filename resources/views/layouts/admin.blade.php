@@ -25,6 +25,9 @@
                     <li class="@yield('active.functions')">
                         <a href="{{ route('admin.functions.index') }}">Speciális funkciók</a>
                     </li>
+                    <li class="@yield('active.users')">
+                        <a href="{{ route('admin.users.index') }}">Felhasználók</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-10 col-sm-9 main col-sm-offset-3 col-md-offset-2">
@@ -37,5 +40,12 @@
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 <script src="{{ asset('js/admin.js') }}"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 @yield('scripts')
 </html>

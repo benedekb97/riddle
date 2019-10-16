@@ -32,6 +32,13 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::get('lockdown/disable','AdminController@disableLockdown')->name('lockdown.disable');
     });
 
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function(){
+        Route::get('', 'AdminController@users')->name('index');
+
+        Route::get('block/{user}', 'AdminController@blockUser')->name('block');
+        Route::get('unblock/{user}', 'AdminController@unblockUser')->name('unblock');
+    });
+
 
     Route::get('settings','AdminController@settings')->name('settings');
 

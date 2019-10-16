@@ -7,6 +7,7 @@ use App\Models\StaticMessage;
 use App\Models\User;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
@@ -150,6 +151,31 @@ class AdminController extends Controller
                 $user->save();
             }
         }
+
+        return redirect()->back();
+    }
+
+    public function users()
+    {
+        $users = User::all();
+
+        return view('admin.users', [
+            'users' => $users
+        ]);
+    }
+
+    public function blockUser(User $user)
+    {
+        $user->blocked = true;
+        $user->save();
+
+        return redirect()->back();
+    }
+
+    public function unblockUser(User $user)
+    {
+        $user->blocked = false;
+        $user->save();
 
         return redirect()->back();
     }
