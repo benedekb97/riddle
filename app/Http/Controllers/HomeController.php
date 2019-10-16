@@ -59,7 +59,7 @@ class HomeController extends Controller
 
     public function riddle(Riddle $riddle)
     {
-        Log::create('page.view','','riddle',Auth::user(),$riddle->id);
+        Log::create('page.view','','riddle',Auth::user(),$riddle);
 
         if($riddle->approved==0 && (Auth::user()->id != $riddle->user_id || !Auth::user()->moderator)) {
             abort(403);
