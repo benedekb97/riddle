@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Log extends Model
+{
+    protected $fillable = [
+        'type','user_id','data','page','riddle_id'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function riddle()
+    {
+        return $this->belongsTo(Riddle::class);
+    }
+
+    public static function create($type, $data, $page,User $user=null,Riddle $riddle=null)
+    {
+        $log = new Log();
+        $log->type = $type;
+        $log->data = $data;
+        $log->page = $page;
+        $log->user_id = $user->id;
+        $log->riddle_id = $riddle->id;
+        $log->save();
+    }
+}

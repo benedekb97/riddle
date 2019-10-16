@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Riddle;
 use App\Models\StaticMessage;
 use App\Models\User;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
     public function index()
     {
+        Log::create('page.view','','admin.index', Auth::user());
+
         return view('admin.index');
     }
 
     public function staticMessages()
     {
+        Log::create('page.view','','admin.static_messages',Auth::user());
+
         $messages = StaticMessage::all()->where('active','1');
         $message_types = ['info','danger','warning','success','primary','default'];
         $message_icons = ['fa-info-circle','fa-exclamation-triangle','fa-exclamation-circle','fa-check','fa-info-circle','fa-info-circle'];
@@ -31,6 +37,8 @@ class AdminController extends Controller
 
     public function deleteStaticMessage(StaticMessage $message, Request $request)
     {
+        Log::create('delete.static_message',$message->id,'admin.static_messages.delete',Auth::user());
+
         $id = $message->id;
         StaticMessage::all()->find($id)->first()->delete();
 
@@ -39,6 +47,8 @@ class AdminController extends Controller
 
     public function editStaticMessage(StaticMessage $message, Request $request)
     {
+        Log::create('edit.static_message', $message->id, 'admin.static_messages.edit', Auth::user());
+
         $id = $message->id;
         $message->title = $request->input('title'.$id);
         $message->message = $request->input('message'.$id);
@@ -57,11 +67,15 @@ class AdminController extends Controller
         $message->active = 1;
         $message->save();
 
+        Log::create('new.static_message', $message->id,'admin.static_messages.new',Auth::user());
+
         return redirect()->back();
     }
 
     public function moderators()
     {
+        Log::create('page.view','','admin.moderators',Auth::user());
+
         $moderators = User::all()->where('moderator',true)->all();
 
         return view('admin.moderators', [
@@ -90,11 +104,15 @@ class AdminController extends Controller
         $user->moderator = 1;
         $user->save();
 
+        Log::create('new.moderator',$user->id,'admin.moderators.new',Auth::user());
+
         return redirect()->back();
     }
 
     public function deleteModerator(User $user)
     {
+        Log::create('delete.moderator',$user->id,'admin.moderators.delete',Auth::user());
+
         $user->moderator = 0;
         $user->save();
 
@@ -103,6 +121,8 @@ class AdminController extends Controller
 
     public function functions()
     {
+        Log::create('page.view','','admin.functions',Auth::user());
+
         $lockdown = Setting::where('name','lockdown')->where('setting','true')->count()>0;
 
         return view('admin.functions',[
@@ -112,6 +132,8 @@ class AdminController extends Controller
 
     public function enableLockdown()
     {
+        Log::create('lockdown','enable','admin.functions.lockdown.enable',Auth::user());
+
         $setting = Setting::where('name','lockdown')->first();
         $setting->setting = "true";
         $setting->save();
@@ -121,6 +143,8 @@ class AdminController extends Controller
 
     public function disableLockdown()
     {
+        Log::create('lockdown','disable','admin.functions.lockdown.disable',Auth::user());
+
         $setting = Setting::where('name','lockdown')->first();
         $setting->setting = "false";
         $setting->save();
@@ -130,6 +154,8 @@ class AdminController extends Controller
 
     public function resetCurrentRiddles()
     {
+        Log::create('reset_riddles','','admin.functions.reset_riddles',Auth::user());
+
         $users = User::all();
         foreach($users as $user)
         {
@@ -157,6 +183,8 @@ class AdminController extends Controller
 
     public function users()
     {
+        Log::create('page.view','','admin.users',Auth::user());
+
         $users = User::all();
 
         return view('admin.users', [
@@ -166,6 +194,8 @@ class AdminController extends Controller
 
     public function blockUser(User $user)
     {
+        Log::create('user.block',$user->id,'admin.users.block',Auth::user());
+
         $user->blocked = true;
         $user->save();
 
@@ -174,6 +204,8 @@ class AdminController extends Controller
 
     public function unblockUser(User $user)
     {
+        Log::create('user.unblock',$user->id,'admin.users.unblock',Auth::user());
+
         $user->blocked = false;
         $user->save();
 
