@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Riddle;
 use App\Models\StaticMessage;
 use App\Models\User;
-use App\Setting;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller

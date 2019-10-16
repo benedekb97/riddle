@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Setting;
+use App\Models\Setting;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\Closure;
