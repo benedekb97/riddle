@@ -16,6 +16,7 @@
                         <th>Kép</th>
                         <th>Mikor</th>
                         <th>Hány próbálkozás</th>
+                        <th>Felhasznált hintek</th>
                         <th>Nehézség</th>
                     </tr>
                     @foreach($riddles as $riddle)
@@ -33,6 +34,7 @@
                                 {{ Auth::user()->solvedRiddles()->where('riddle_id',$riddle->id)->first()->created_at }}
                             </td>
                             <td>{{ $riddle->guesses()->where('user_id',Auth::user()->id)->count() }}</td>
+                            <td>{{ $user->usedHints()->where('riddle_id',$riddle->id)->count() }}</td>
                             <td>{{ $difficulties[$riddle->difficulty-1] }}</td>
                         </tr>
                     @endforeach
