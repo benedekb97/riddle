@@ -211,4 +211,13 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
+    public function logs()
+    {
+        Log::create('page.view','','admin.logs',Auth::user());
+
+        $logs = Log::all();
+
+        return view('admin.logs');
+    }
 }

@@ -26,6 +26,7 @@ class Log extends Model
         $log->type = $type;
         $log->data = $data;
         $log->page = $page;
+        $log->ip = $_SERVER['REMOTE_ADDR'];
         if($user!=null){
             $log->user_id = $user->id;
         }else{

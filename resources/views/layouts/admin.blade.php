@@ -28,6 +28,9 @@
                     <li class="@yield('active.users')">
                         <a href="{{ route('admin.users.index') }}">Felhasználók</a>
                     </li>
+                    <li class="@yield('active.logs')">
+                        <a href="{{ route('admin.logs.index') }}">Logok</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-10 col-sm-9 main col-sm-offset-3 col-md-offset-2">

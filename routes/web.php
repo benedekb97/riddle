@@ -24,6 +24,10 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::get('delelte/{user}','AdminController@deleteModerator')->name('delete');
     });
 
+    Route::group(['prefix' => 'logs', 'as' => 'logs.'], function(){
+        Route::get('','AdminController@logs')->name('index');
+    });
+
     Route::group(['prefix' => 'functions', 'as' => 'functions.'], function(){
         Route::get('', 'AdminController@functions')->name('index');
         Route::get('reset_current_riddles','AdminController@resetCurrentRiddles')->name('reset_current_riddles');
