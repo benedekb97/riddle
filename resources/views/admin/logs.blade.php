@@ -21,6 +21,7 @@
                             <th>Felhasználó</th>
                             <th>IP</th>
                             <th>Riddle</th>
+                            <th>Date</th>
                         </tr>
                         @foreach($logs as $log)
                             <tr>
@@ -30,6 +31,7 @@
                                 <td>@if($log->user != null) {{ $log->user->name }} @endif</td>
                                 <td>{{ $log->ip }}</td>
                                 <td>@if($log->riddle!=null) {{ $log->riddle->id }} @endif</td>
+                                <td>{{ $log->created_at }}</td>
                             </tr>
                         @endforeach
                     </table>
