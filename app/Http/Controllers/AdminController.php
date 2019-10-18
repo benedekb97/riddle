@@ -229,8 +229,7 @@ class AdminController extends Controller
         foreach($users as $user){
             $riddles = $user->riddles()->count();
             $user->points += 15*$riddles;
+            $user->save();
         }
-
-        return;
     }
 }
