@@ -220,16 +220,4 @@ class AdminController extends Controller
 
         return view('admin.logs', ['logs' => $logs]);
     }
-
-
-
-    public function addPoints()
-    {
-        $users = User::all();
-        foreach($users as $user){
-            $riddles = $user->riddles()->count();
-            $user->points += 15*$riddles;
-            $user->save();
-        }
-    }
 }

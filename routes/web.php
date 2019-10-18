@@ -49,9 +49,6 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::get('generate_keys','AdminController@newApiTokens')->name('generate_keys');
     });
 
-    Route::get('addpoints','AdminController@addPoints')->name('addPoints');
-
-
     Route::get('settings','AdminController@settings')->name('settings');
 
     Route::get('profile','AdminControler@profile')->name('profile');
