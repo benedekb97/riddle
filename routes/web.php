@@ -43,6 +43,12 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::get('unblock/{user}', 'AdminController@unblockUser')->name('unblock');
     });
 
+    Route::group(['prefix' => 'api', 'as' => 'api.'], function(){
+        Route::get('','AdminController@api')->name('index');
+
+        Route::get('generate_keys', 'AdminController@newApiTokens')->name('generate_keys');
+    });
+
     Route::get('settings','AdminController@settings')->name('settings');
 
     Route::get('profile','AdminControler@profile')->name('profile');
