@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
@@ -219,5 +220,25 @@ class AdminController extends Controller
         $logs = Log::all()->where('page','!=','admin.logs')->sortByDesc('id');
 
         return view('admin.logs', ['logs' => $logs]);
+    }
+
+    public function api()
+    {
+        Log::create('page.view','','admin.api',Auth::user());
+
+        return view('admin.api');
+    }
+
+    public function newApiTokens()
+    {
+        Log::create('generate.api.tokens','','admin.api',Auth::user());
+
+        $users = User::all();
+        foreach($users as $user){
+            $user->api_key = Str::random(60);
+            $user->save();
+        }
+
+        return redirect()->back();
     }
 }

@@ -134,3 +134,7 @@ Route::group(['middleware' => 'auth'], function(){
 Route::get('auth/login','LoginController@authSchCallback')->name('auth_sch_callback');
 Route::get('auth/redirect','LoginController@authSchRedirect')->name('auth_sch_login');
 
+
+Route::group(['prefix' => 'api','as' => 'api.'], function(){
+    Route::get('user','ApiController@user')->name('user');
+});
