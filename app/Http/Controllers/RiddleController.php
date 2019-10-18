@@ -131,6 +131,7 @@ class RiddleController extends Controller
             $riddle->answer = $answer;
             $riddle->difficulty = $difficulty;
             $riddle->approved = Auth::user()->approved || Auth::user()->moderator;
+            $riddle->points += 15*(Auth::user()->approved || Auth::user()->moderator);
 
             $riddle->save();
 
@@ -318,6 +319,7 @@ class RiddleController extends Controller
         $riddle->approved = 1;
         $riddle->approved_by = Auth::user()->id;
         $riddle->approved_at = date("Y-m-d H:i:s");
+        $riddle->points += 15;
         $riddle->blocked = 0;
         $riddle->blocked_by = null;
         $riddle->blocked_at = null;
