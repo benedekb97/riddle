@@ -137,4 +137,5 @@ Route::get('auth/redirect','LoginController@authSchRedirect')->name('auth_sch_lo
 
 Route::group(['prefix' => 'api','as' => 'api.'], function(){
     Route::get('user','ApiController@user')->name('user');
+    Route::get('riddle','ApiController@riddle')->name('riddle');
 });
