@@ -32,6 +32,10 @@ php artisan serve
 
 And open `http://127.0.0.1:8000` in your browser.
 
+### Integrations
+
+Get an auth.sch client pointing to `http://127.0.0.1:8000/auth/login`
+
 ## Running the tests
 
 Explain how to run the automated tests for this system
