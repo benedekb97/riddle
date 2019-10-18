@@ -128,3 +128,8 @@ Route::group(['middleware' => 'auth'], function(){
 Route::get('auth/login','LoginController@authSchCallback')->name('auth_sch_callback');
 Route::get('auth/redirect','LoginController@authSchRedirect')->name('auth_sch_login');
 
+Route::group(['prefix' => 'api','as' => 'api.','middleware' => 'auth'], function(){ // needs to be auth:api when deployed
+    Route::get('user','ApiController@user')->name('user');
+    Route::get('riddle','ApiController@riddle')->name('riddle');
+    Route::get('next','ApiController@nextRiddle')->name('next');
+});
