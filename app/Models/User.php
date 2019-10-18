@@ -38,6 +38,9 @@ class User extends Authenticatable
     ];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function riddles()
     {
         return $this->hasMany(Riddle::class);
