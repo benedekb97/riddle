@@ -156,3 +156,13 @@ body {
     background:rgba(200,200,200,1);
     cursor:pointer;
 }
+
+.dataTables_length{
+    margin-top:5px;
+    margin-left:5px;
+}
+
+.dataTables_filter{
+    margin-top:5px;
+    margin-right:5px;
+}

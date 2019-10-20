@@ -13,30 +13,42 @@
                     <h3 class="panel-title">Logok</h3>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Log</th>
-                            <th>Adat</th>
-                            <th>Oldal</th>
-                            <th>Felhasználó</th>
-                            <th>IP</th>
-                            <th>Riddle</th>
-                            <th>Date</th>
-                        </tr>
-                        @foreach($logs as $log)
+                    <table id="logs" class="table table-striped">
+                        <thead>
                             <tr>
-                                <td>{{ $log->type }}</td>
-                                <td>{{ $log->data }}</td>
-                                <td>{{ $log->page }}</td>
-                                <td>@if($log->user != null) {{ $log->user->name }} @endif</td>
-                                <td>{{ $log->ip }}</td>
-                                <td>@if($log->riddle!=null) {{ $log->riddle->id }} @endif</td>
-                                <td>{{ $log->created_at }}</td>
+                                <th>Log</th>
+                                <th>Adat</th>
+                                <th>Oldal</th>
+                                <th>Felhasználó</th>
+                                <th>IP</th>
+                                <th>Riddle</th>
+                                <th>Date</th>
                             </tr>
-                        @endforeach
+
+                        </thead>
+                        <tbody>
+                            @foreach($logs as $log)
+                                <tr>
+                                    <td>{{ $log->type }}</td>
+                                    <td>{{ $log->data }}</td>
+                                    <td>{{ $log->page }}</td>
+                                    <td>@if($log->user != null) {{ $log->user->name }} @endif</td>
+                                    <td>{{ $log->ip }}</td>
+                                    <td>@if($log->riddle!=null) {{ $log->riddle->id }} @endif</td>
+                                    <td>{{ $log->created_at }}</td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    $('#logs').dataTable();
+</script>
 @endsection
