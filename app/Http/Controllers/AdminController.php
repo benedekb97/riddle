@@ -224,7 +224,7 @@ class AdminController extends Controller
 
     public function logData(DataTables $datatables)
     {
-        $query = Log::select(array('*'));
+        $query = Log::select(array('*'))->orderBy('id','desc');
 
         return $datatables->eloquent($query)
             ->addColumn('name', function(Log $log){
