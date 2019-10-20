@@ -15,6 +15,7 @@
                         <th>Név</th>
                         <th>Pontszám</th>
                         <th>Megoldott riddle-ök</th>
+                        <th>Feltöltött riddle-ök</th>
                     </tr>
                     <?php $i = 0; ?>
                     @foreach($users as $user)
@@ -24,6 +25,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->points }}</td>
                             <td>{{ $user->solvedRiddles()->count() }}</td>
+                            <td>{{ $user->approvedRiddles()->count() }}</td>
                         </tr>
                     @endforeach
                 </table>
