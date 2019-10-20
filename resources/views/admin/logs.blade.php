@@ -43,9 +43,9 @@
                     {data: 'type'},
                     {data: 'data'},
                     {data: 'page'},
-                    {data: 'name', name: 'users.name'},
+                    {data: 'user_id', name: 'user_id'},
                     {data: 'ip'},
-                    {data: 'id', name: 'riddles.id'},
+                    {data: 'riddle_id', name: 'riddle_id'},
                     {data: 'created_at'},
                 ]
             });

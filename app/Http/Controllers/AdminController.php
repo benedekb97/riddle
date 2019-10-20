@@ -227,14 +227,14 @@ class AdminController extends Controller
         $query = Log::select(array('*'))->orderBy('id','desc');
 
         return $datatables->eloquent($query)
-            ->addColumn('name', function(Log $log){
+            ->addColumn('user_id', function(Log $log){
                 if($log->user != null){
                     return $log->user->name;
                 }else{
                     return "";
                 }
             })
-            ->addColumn('id', function(Log $log){
+            ->addColumn('riddle_id', function(Log $log){
                 if($log->riddle != null){
                     return $log->riddle->id;
                 }else{
