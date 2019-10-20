@@ -10,7 +10,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Yajra\DataTables\Facades\DataTables;
+use Yajra\DataTables\DataTables;
 
 class AdminController extends Controller
 {
@@ -220,6 +220,28 @@ class AdminController extends Controller
         $logs = Log::all()->where('page','!=','admin.logs')->sortByDesc('id');
 
         return view('admin.logs', ['logs' => $logs]);
+    }
+
+    public function logData(DataTables $datatables)
+    {
+        $query = Log::select(array('*'));
+
+        return $datatables->eloquent($query)
+            ->addColumn('name', function(Log $log){
+                if($log->user != null){
+                    return $log->user->name;
+                }else{
+                    return "";
+                }
+            })
+            ->addColumn('id', function(Log $log){
+                if($log->riddle != null){
+                    return $log->riddle->id;
+                }else{
+                    return "";
+                }
+            })
+            ->make(true);
     }
 
     public function api()

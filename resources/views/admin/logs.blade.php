@@ -24,22 +24,7 @@
                                 <th>Riddle</th>
                                 <th>Date</th>
                             </tr>
-
                         </thead>
-                        <tbody>
-                            @foreach($logs as $log)
-                                <tr>
-                                    <td>{{ $log->type }}</td>
-                                    <td>{{ $log->data }}</td>
-                                    <td>{{ $log->page }}</td>
-                                    <td>@if($log->user != null) {{ $log->user->name }} @endif</td>
-                                    <td>{{ $log->ip }}</td>
-                                    <td>@if($log->riddle!=null) {{ $log->riddle->id }} @endif</td>
-                                    <td>{{ $log->created_at }}</td>
-                                </tr>
-                            @endforeach
-
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -48,7 +33,22 @@
 @endsection
 
 @section('scripts')
-<script>
-    $('#logs').dataTable();
-</script>
+    <script>
+        $(function () {
+            $('#logs').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: '/admin/logs/data',
+                columns: [
+                    {data: 'type'},
+                    {data: 'data'},
+                    {data: 'page'},
+                    {data: 'name', name: 'users.name'},
+                    {data: 'ip'},
+                    {data: 'id', name: 'riddles.id'},
+                    {data: 'created_at'},
+                ]
+            });
+        });
+    </script>
 @endsection

@@ -26,6 +26,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
 
     Route::group(['prefix' => 'logs', 'as' => 'logs.'], function(){
         Route::get('','AdminController@logs')->name('index');
+        Route::get('data','AdminController@logData')->name('data');
     });
 
     Route::group(['prefix' => 'functions', 'as' => 'functions.'], function(){
