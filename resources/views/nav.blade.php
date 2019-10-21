@@ -14,8 +14,8 @@
                 <li><a href="{{ route('index') }}">Home</a></li>
                 <li><a href="{{ route('riddles.all') }}">Eddigiek</a></li>
                 <li><a href="{{ route('riddles.current') }}">
-                    @if(Auth::user()->helpsAsked()->where('riddle_id',Auth::user()->current_riddle)->where('help','!=',null)->where('seen',false)->count()>0)
-                        <span class="link-number-o">{{ Auth::user()->helpsAsked()->where('seen',false)->where('riddle_id',Auth::user()->current_riddle)->where('help','!=',null)->count() }}</span>
+                    @if(Auth::user()->helpsAsked()->where('riddle_id',Auth::user()->current_riddle())->where('help','!=',null)->where('seen',false)->count()>0)
+                        <span class="link-number-o">{{ Auth::user()->helpsAsked()->where('seen',false)->where('riddle_id',Auth::user()->current_riddle())->where('help','!=',null)->count() }}</span>
                     @endif
                         Aktuális
                     </a></li>

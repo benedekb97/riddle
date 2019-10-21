@@ -8,6 +8,9 @@
             <div class="alert alert-info">
                 <h4><i class="fa fa-info-circle"></i> Sajnos elfogyott a ridli :'(</h4>
                 <p>Ezt a problémát könnyen lehet orvosolni, <a href="{{ route('riddles.new') }}">ridlik gyártásával</a> ;)</p>
+                @if($activeRiddles > 0)
+                  <p>Vagy akár meg is oldhatod azokat, amiket skippeltél</p>
+                @endif
             </div>
         </div>
     </div>

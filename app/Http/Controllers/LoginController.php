@@ -82,7 +82,6 @@ class LoginController extends Controller
             $user->email = $result->mail;
             $user->given_names = $result->givenName;
             $user->internal_id = $result->internal_id;
-            $user->current_riddle = null;
 
             $user->save();
         }elseif($user->first()->internal_id==null){

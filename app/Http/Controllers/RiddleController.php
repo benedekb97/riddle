@@ -147,7 +147,7 @@ class RiddleController extends Controller
 
     public function get(Riddle $riddle)
     {
-        if(Auth::user()->solvedRiddles->contains($riddle) || Auth::user()->moderator || Auth::user()->current_riddle == $riddle->id || Auth::user()->riddles->contains($riddle)){
+        if(Auth::user()->solvedRiddles->contains($riddle) || Auth::user()->moderator || Auth::user()->activeRiddles->contains($riddle->id) || Auth::user()->riddles->contains($riddle)){
             $path = $riddle->image;
             return response()->file(storage_path("app/" . $path));
         }else{
@@ -175,7 +175,7 @@ class RiddleController extends Controller
 
     public function check(Riddle $riddle, Request $request)
     {
-        if(Auth::user()->current_riddle != $riddle->id && !Auth::user()->moderator) {
+        if(!Auth::user()->activeRiddles->contains($riddle) && !Auth::user()->moderator) {
             abort(403);
         }
         if($riddle->approved!=1 && Auth::user()->moderator!=1){
@@ -234,7 +234,8 @@ class RiddleController extends Controller
                 $help = $riddle->helps()->where('user_id',Auth::user()->id)->where('help',null)->first();
                 $help->delete();
             }
-            Auth::user()->current_riddle = null;
+
+            Auth::user()->activeRiddles()->detach($riddle);
             if($riddle->user_id != Auth::user()->id){
                 Auth::user()->points += $points;
             }
@@ -390,42 +391,28 @@ class RiddleController extends Controller
 
     public function next()
     {
-        if(Auth::user()->current_riddle != null) {
-            return redirect(route('riddles.current'));
+        $next_riddle = Auth::user()->unlockNextRiddle();
+
+        if($next_riddle == null) {
+          return redirect(route('riddles.noneleft'));
+        } else {
+          return redirect(route('riddle', ['riddle' => $next_riddle]));
         }
-
-        $riddles = Riddle::all();
-        $solvedRiddles = Auth::user()->solvedRiddles()->get();
-        $unapproved_riddles = Riddle::all()->where('approved','0');
-        $blocked_riddles = Riddle::all()->where('blocked','1');
-        $unsequenced_riddles = Riddle::all()->where('number',null);
-        $unsolved_riddles = $riddles->diff($solvedRiddles);
-        $unsolved_riddles = $unsolved_riddles->diff($unapproved_riddles);
-        $unsolved_riddles = $unsolved_riddles->diff($blocked_riddles);
-        $unsolved_riddles = $unsolved_riddles->diff($unsequenced_riddles);
-        if($unsolved_riddles->count() != 0){
-
-            $unsolved_riddles = $unsolved_riddles->sortBy('number');
-            $next_riddle = $unsolved_riddles->first();
-
-            Auth::user()->current_riddle = $next_riddle->id;
-            Auth::user()->save();
-
-            return redirect(route('riddles.current'));
-        }else{
-            return redirect(route('riddles.noneleft'));
-        }
-
     }
 
     public function all()
     {
         Log::create('page.view','','riddles.all',Auth::user());
 
-        $riddles = Auth::user()->solvedRiddles()->get();
+        $active_riddles = Auth::user()->activeRiddles()->get();
+        $solved_riddles = Auth::user()->solvedRiddles()->get();
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
-        return view('riddles.all', ['riddles' => $riddles, 'difficulties' => $difficulties]);
+        return view('riddles.all', [
+          'active_riddles' => $active_riddles,
+          'solved_riddles' => $solved_riddles,
+          'difficulties' => $difficulties
+        ]);
     }
 
     public function sequence()
@@ -554,7 +541,7 @@ class RiddleController extends Controller
     {
 
         $user = Auth::user();
-        $riddle = $user->riddle;
+        $riddle = $user->current_riddle();
 
         if($riddle->helps()->where('user_id',$user->id)->count()>0){
             Log::create('riddle.help.attempt','','riddles.help',Auth::user(),$riddle);

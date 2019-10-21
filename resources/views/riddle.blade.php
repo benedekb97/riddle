@@ -96,10 +96,15 @@
                             {{ csrf_field() }}
                             <input type="submit" class="btn btn-default" value="Hint kérése ({{ $riddle->hints()->count()-Auth::user()->usedHints($riddle)->count() }})" @if($riddle->hints()->count()-Auth::user()->usedHints($riddle)->count()==0) disabled @endif>
                         </form>
-                        <form @if($guesses<6 || $helped==true) style="display:none;" @endif id="help_form" style="display:inline;" action="{{ route('riddles.help') }}" method="POST">
-                            {{ csrf_field() }}
-                            <input data-toggle="tooltip" title="Ha segítséget kérsz nem kapsz pontot erre a riddle-re!" type="submit" class="btn btn-warning" value="Segítsééég!!">
-                        </form>
+                        @if($show_help)
+                          <form id="help_form" style="display:inline;" action="{{ route('riddles.help') }}" method="POST">
+                              {{ csrf_field() }}
+                              <input data-toggle="tooltip" title="Ha segítséget kérsz nem kapsz pontot erre a riddle-re!" type="submit" class="btn btn-warning" value="Segítsééég!!">
+                          </form>
+                        @endif
+                        @if($show_skip==true)
+                          <a href="{{ route('riddles.next')}}" data-toggle="tooltip" title="Max 5 aktív riddle-öd lehet" class="btn btn-warning">Skippidi!</a>
+                        @endif
                     </div>
                     @else
                     Megoldás: <i data-toggle="tooltip" title="{{ $riddle->answer }}" class="fa fa-eye"></i>
@@ -176,7 +181,7 @@
                 </div>
                 <div class="modal-footer">
                     <button onclick="$('#success_modal').modal('toggle');" type="button" data-toggle="modal" data-target="#duplicate" class="btn btn-warning">Mótvá?</button>
-                    <a class="btn btn-primary" href="{{ route('riddles.next') }}">Következő</a>
+                    <a class="btn btn-primary" href="{{ route('riddles.current') }}">Következő</a>
                 </div>
             </div>
         </div>
