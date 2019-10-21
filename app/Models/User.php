@@ -59,7 +59,7 @@ class User extends Authenticatable
     public function unlockNextRiddle()
     {
       if ($this->activeRiddles()->count() >= 5) {
-        return $this->activeRiddles()->first();
+        return $this->activeRiddles()->orderBy('number', 'desc')->first();
       }
 
       $next_riddle = Riddle::query()

@@ -59,17 +59,18 @@ class HomeController extends Controller
 
     public function riddle(Riddle $riddle)
     {
-        Log::create('page.view','','riddle',Auth::user(),$riddle);
+        $user = Auth::user();
+        Log::create('page.view','','riddle',$user,$riddle);
 
-        if($riddle->approved==0 && (Auth::user()->id != $riddle->user_id || !Auth::user()->moderator)) {
+        if($riddle->approved==0 && ($user->id != $riddle->user_id || !$user->moderator)) {
             abort(403);
         }
 
-        if((!Auth::user()->activeRiddles->contains($riddle->id)) && (!Auth::user()->moderator)) {
+        if((!$user->activeRiddles->contains($riddle->id)) && (!$user->moderator)) {
             abort(403);
         }
 
-        if(Auth::user()->solvedRiddles()->find($riddle->id) != null){
+        if($user->solvedRiddles()->find($riddle->id) != null){
             $solved = true;
         }else{
             $solved = false;
@@ -77,20 +78,20 @@ class HomeController extends Controller
 
         $approved = $riddle->approved;
 
-        $hints = Auth::user()->usedHints($riddle)->get();
+        $hints = $user->usedHints($riddle)->get();
 
         $point_multiplier = max(1,5-$hints->count());
 
         $points = $riddle->difficulty * $point_multiplier;
 
-        $solved_riddles = Auth::user()->solvedRiddles;
+        $solved_riddles = $user->solvedRiddles;
 
-        $reported = Auth::user()->duplicates()->where('duplicate_id',$riddle->id)->count() != 0;
+        $reported = $user->duplicates()->where('duplicate_id',$riddle->id)->count() != 0;
 
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
-        $helped = $riddle->helps()->where('user_id',Auth::user()->id)->count() > 0;
-        $help = $riddle->helps()->where('user_id',Auth::user()->id)->first();
+        $helped = $riddle->helps()->where('user_id',$user->id)->count() > 0;
+        $help = $riddle->helps()->where('user_id',$user->id)->first();
         if($help!=null && $help->help!=null){
             $help->seen = true;
             $help->save();
@@ -105,9 +106,14 @@ class HomeController extends Controller
             'difficulties' => $difficulties,
             'solved_riddles' => $solved_riddles,
             'reported' => $reported,
-            'guesses' => $riddle->guesses()->where('user_id',Auth::user()->id)->count(),
             'helped' => $helped,
-            'help' => $help
+            'help' => $help,
+            'show_skip' => $user->activeRiddles()->get()->every(function($riddle) use ($user){
+                return $riddle->guesses()->where('user_id', $user->id)->count() >= 5;
+            }) && $user->activeRiddles()->count() < 5,
+            'show_help' => $user->activeRiddles()->get()->every(function($riddle) use ($user){
+                return $riddle->guesses()->where('user_id', $user->id)->count() >= 15;
+            }) && $user->activeRiddles()->count() == 5 && $helped==false
         ]);
     }
 
