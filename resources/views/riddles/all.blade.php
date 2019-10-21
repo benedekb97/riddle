@@ -6,6 +6,33 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
+                <h3 class="panel-title">Aktív riddle-jeim</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Cím</th>
+                        <th>Hány próbálkozás</th>
+                        <th>Felhasznált hintek</th>
+                        <th>Nehézség</th>
+                    </tr>
+                    @foreach($active_riddles as $riddle)
+                        <tr>
+                            <td>
+                                <a href="{{ route('riddle', ['riddle' => $riddle]) }}">
+                                    {{ $riddle->title }}
+                                </a>
+                            </td>
+                            <td>{{ $riddle->guesses()->where('user_id',Auth::user()->id)->count() }}</td>
+                            <td>{{ Auth::user()->usedHints($riddle)->count() }}</td>
+                            <td>{{ $difficulties[$riddle->difficulty-1] }}</td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
                 <h3 class="panel-title">Megoldott riddle-jeim</h3>
             </div>
             <div class="table-responsive">
@@ -19,7 +46,7 @@
                         <th>Felhasznált hintek</th>
                         <th>Nehézség</th>
                     </tr>
-                    @foreach($riddles as $riddle)
+                    @foreach($solved_riddles as $riddle)
                         <tr>
                             <td>{{ $riddle->title }}</td>
                             <td>

@@ -404,10 +404,15 @@ class RiddleController extends Controller
     {
         Log::create('page.view','','riddles.all',Auth::user());
 
-        $riddles = Auth::user()->solvedRiddles()->get();
+        $active_riddles = Auth::user()->activeRiddles()->get();
+        $solved_riddles = Auth::user()->solvedRiddles()->get();
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
-        return view('riddles.all', ['riddles' => $riddles, 'difficulties' => $difficulties]);
+        return view('riddles.all', [
+          'active_riddles' => $active_riddles,
+          'solved_riddles' => $solved_riddles,
+          'difficulties' => $difficulties
+        ]);
     }
 
     public function sequence()
