@@ -131,7 +131,7 @@ class LoginController extends Controller
         $user->save();
         Auth::login($user);
 
-        Log::create('register',$user->id,'register',$user->id);
+        Log::create('register',$user->id,'register',$user);
 
         return redirect(route('index'));
     }
