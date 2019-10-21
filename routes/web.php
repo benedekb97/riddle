@@ -50,6 +50,11 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::get('generate_keys', 'AdminController@newApiTokens')->name('generate_keys');
     });
 
+    Route::group(['prefix' => 'riddles', 'as' => 'riddles.'], function(){
+        Route::get('','AdminController@riddles')->name('index');
+        Route::get('data','AdminController@riddleData')->name('data');
+    });
+
     Route::get('settings','AdminController@settings')->name('settings');
 
     Route::get('profile','AdminControler@profile')->name('profile');

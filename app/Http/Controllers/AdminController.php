@@ -263,4 +263,64 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
+    public function riddles()
+    {
+        Log::create('page.view','','admin.riddles',Auth::user());
+
+        return view('admin.riddles');
+    }
+
+    public function riddleData(DataTables $datatables)
+    {
+        $query = Riddle::select(['*']);
+
+        return $datatables->eloquent($query)
+            ->addColumn('hint',function(Riddle $riddle){
+                return $riddle->hints->toArray();
+            })
+            ->addColumn('user_id', function(Riddle $riddle){
+                if($riddle->user!=null){
+                    return $riddle->user->name;
+                }else{
+                    return "";
+                }
+            })
+            ->addColumn('blocked',function(Riddle $riddle){
+                if($riddle->blocked==false){
+                    return "times";
+                }else{
+                    return "check";
+                }
+            })
+            ->addColumn('approved',function(Riddle $riddle){
+                if($riddle->approved==false){
+                    return "times";
+                }else{
+                    return "check";
+                }
+            })
+            ->addColumn('approved_by', function(Riddle $riddle){
+                if($riddle->approver!=null){
+                    return $riddle->approver->name;
+                }else{
+                    if($riddle->approved==true){
+                        return $riddle->user->name;
+                    }else{
+                        return "";
+                    }
+                }
+            })
+            ->addColumn('blocked_by', function(Riddle $riddle){
+                if($riddle->blocker!=null){
+                    return $riddle->blocker->name;
+                }else{
+                    return "";
+                }
+            })
+            ->addColumn('solved', function(Riddle $riddle){
+                return $riddle->solvedBy()->count();
+            })
+            ->make(true);
+    }
 }

@@ -35,6 +35,9 @@
                     <li class="@yield('active.api')">
                         <a href="{{ route('admin.api.index') }}">API</a>
                     </li>
+                    <li class="@yield('active.riddles')">
+                        <a href="{{ route('admin.riddles.index') }}">Riddles</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-10 col-sm-9 main col-sm-offset-3 col-md-offset-2">
