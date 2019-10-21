@@ -176,7 +176,7 @@ class RiddleController extends Controller
     public function check(Riddle $riddle, Request $request)
     {
         if(!Auth::user()->activeRiddles->contains($riddle) && !Auth::user()->moderator) {
-            abort(404);
+            abort(403);
         }
         if($riddle->approved!=1 && Auth::user()->moderator!=1){
             abort(403);
