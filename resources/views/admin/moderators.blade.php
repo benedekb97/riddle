@@ -56,7 +56,7 @@
                                 <i class="fa fa-times"></i>
                             @endif
                         </td>
-                        <td>{{ $moderator->approvedRiddles()->count() }}</td>
+                        <td>{{ $moderator->riddlesApprovedBy()->count() }}</td>
                         <td>{{ $moderator->riddlesBlockedBy()->count() }}</td>
                         <td>
                         <span data-toggle="tooltip" title="Törlés">
