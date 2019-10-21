@@ -105,7 +105,12 @@ class User extends Authenticatable
 
     public function approvedRiddles()
     {
-        return Riddle::all()->where('approved_by',$this->id);
+        return $this->riddles()->where('approved','1')->where('blocked','0');
+    }
+
+    public function riddlesApprovedBy()
+    {
+      return Riddle::all()->where('approved_by', $this->id);
     }
 
     public function riddlesBlockedBy()

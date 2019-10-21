@@ -20,7 +20,7 @@
                         @foreach($users as $user)
                             <tr>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->riddles()->count() }}</td>
+                                <td>{{ $user->approvedRiddles()->count()}} ({{ $user->riddles()->count() }})</td>
                                 <td>{{ $user->riddles()->average('difficulty') }}</td>
                                 <td>
                                     <a data-toggle="tooltip" title="@if($user->approved) Feltölthet jóváhagyás nélkül @else Jóvá kell minden szarját hagyni @endif" href="{{ route('users.user.modify', ['user' => $user]) }}" class="btn btn-xs @if($user->approved) btn-danger @else btn-primary @endif">
