@@ -51,6 +51,40 @@ class User extends Authenticatable
         return $this->belongsToMany(Riddle::class, 'user_riddle','user_id','riddle_id');
     }
 
+    public function activeRiddles()
+    {
+      return $this->belongsToMany(Riddle::class, 'active_riddles', 'user_id', 'riddle_id');
+    }
+
+    public function unlockNextRiddle()
+    {
+      if ($this->activeRiddles()->count() >= 5) {
+        return $this->activeRiddles()->first();
+      }
+
+      $next_riddle = Riddle::query()
+        ->where('approved', '1')
+        ->where('blocked', '0')
+        ->whereNotNull('number')
+        ->get()
+        ->diff($this->solvedRiddles)
+        ->diff($this->activeRiddles)
+        ->sortBy('number')
+        ->first();
+
+      if($next_riddle == null) {
+        return null;
+      } else {
+        $this->activeRiddles()->save($next_riddle);
+        return $next_riddle;
+      }
+    }
+
+    public function current_riddle()
+    {
+      return $this->activeRiddles()->orderBy('number', 'desc')->first();
+    }
+
     public function unsolvedRiddles()
     {
         $riddles = $this->riddles->count();
@@ -61,11 +95,6 @@ class User extends Authenticatable
     public function guesses()
     {
         return $this->hasMany(Guess::class);
-    }
-
-    public function riddle()
-    {
-        return $this->belongsTo(Riddle::class,'current_riddle');
     }
 
     public function usedHints(Riddle $riddle)

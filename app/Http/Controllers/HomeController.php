@@ -65,7 +65,7 @@ class HomeController extends Controller
             abort(403);
         }
 
-        if((Auth::user()->current_riddle != $riddle->id) && (!Auth::user()->moderator)) {
+        if((!Auth::user()->activeRiddles->contains($riddle->id)) && (!Auth::user()->moderator)) {
             abort(403);
         }
 
@@ -115,10 +115,11 @@ class HomeController extends Controller
     {
         Log::create('page.view','','current',Auth::user());
 
-        if(Auth::user()->current_riddle == null) {
+        if(Auth::user()->activeRiddles()->count() == 0) {
             return redirect(route('riddles.next'));
-        }else{
-            return redirect(route('riddle', ['riddle' => Auth::user()->current_riddle]));
+        } else {
+            $current_riddle = Auth::user()->activeRiddles()->orderBy('number', 'desc')->first();
+            return redirect(route('riddle', ['riddle' => $current_riddle]));
         }
 
     }
@@ -127,6 +128,8 @@ class HomeController extends Controller
     {
         Log::create('page.view','','none_left', Auth::user());
 
-        return view('noneleft');
+        return view('noneleft', [
+          'activeRiddles' => Auth::user()->activeRiddles()->count()
+        ]);
     }
 }
