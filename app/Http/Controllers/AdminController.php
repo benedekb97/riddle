@@ -217,7 +217,7 @@ class AdminController extends Controller
                 }
             })
             ->addColumn('blocked_riddles', function(User $user){
-                return $user->blockedRiddles()->count();
+                return $user->blockedRiddles();
             })
             ->addColumn('avg_diff', function(User $user){
                 return $user->riddles()->average('difficulty');
