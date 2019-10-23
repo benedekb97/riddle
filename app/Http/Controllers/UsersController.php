@@ -17,7 +17,11 @@ class UsersController extends Controller
 
         $users = User::all()
             ->sort(function($value, $key){
-                return $value->getPoints();
+                if($value->getPoints()==$key->getPoints()){
+                    return 0;
+                }
+
+                return $value->getPoints()<$key->getPoints() ? -1 : 1;
             })
             ->reverse();
 
