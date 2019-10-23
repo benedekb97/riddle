@@ -237,7 +237,7 @@ class RiddleController extends Controller
 
             Auth::user()->activeRiddles()->detach($riddle);
             if($riddle->user_id != Auth::user()->id){
-                Auth::user()->points += $points;
+                Auth::user()->points = Auth::user()->getPoints();
             }
             Auth::user()->save();
 

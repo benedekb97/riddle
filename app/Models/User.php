@@ -193,6 +193,12 @@ class User extends Authenticatable
 
         }
 
+        $uploaded_riddles = $this->riddles()->get();
+        foreach($uploaded_riddles as $riddle){
+            if($riddle->approved==true)
+                $score += 15;
+        }
+
         return $score;
     }
 }

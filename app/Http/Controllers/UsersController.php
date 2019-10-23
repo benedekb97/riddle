@@ -15,15 +15,7 @@ class UsersController extends Controller
     {
         Log::create('page.view','','users.list',Auth::user());
 
-        $users = User::all()
-            ->sort(function($value, $key){
-                if($value->getPoints()==$key->getPoints()){
-                    return 0;
-                }
-
-                return $value->getPoints()<$key->getPoints() ? -1 : 1;
-            })
-            ->reverse();
+        $users = User::all()->sortByDesc('points');
 
         return view('users.list', [
             'users' => $users

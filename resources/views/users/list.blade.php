@@ -25,7 +25,7 @@
                         <tr>
                             <td>{{ $i }}.</td>
                             <td>{{ $user->name }}</td>
-                            <td>{{ $user->getPoints() }}</td>
+                            <td>{{ $user->points }}</td>
                             <td>{{ $user->solvedRiddles()->count() }}</td>
                             <td>{{ $user->approvedRiddles()->count() }}</td>
                         </tr>
