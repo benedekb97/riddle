@@ -29,25 +29,7 @@
                                 <th>Műveletek</th>
                             </tr>
                         </thead>
-                        @foreach($users as $user)
-                            <tr>
-                                <td>
-                                    @if(!$user->blocked)
-                                    <span data-toggle="tooltip" title="Blokkolnám">
-                                        <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#block_{{ $user->id }}">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </span>
-                                    @else
-                                        <span data-toggle="tooltip" title="Unblokkolnám">
-                                        <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#unblock_{{ $user->id }}">
-                                            <i class="fa fa-check"></i>
-                                        </button>
-                                    </span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+
                     </table>
                 </div>
             </div>
