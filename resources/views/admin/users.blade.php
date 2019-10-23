@@ -16,6 +16,7 @@
                     <table id="users" class="table table-striped">
                         <thead>
                             <tr>
+                                <th>Id</th>
                                 <th>Email</th>
                                 <th>Név</th>
                                 <th>Megoldott riddle-ök</th>
@@ -89,9 +90,9 @@
                 processing: true,
                 ajax: '/admin/users/data',
                 columns: [
+                    {data: 'id'},
                     {data: 'email'},
                     {data: 'name'},
-                    {data: 'id'},
                     {
                         data: 'solved_riddles',
                         name: 'solved_riddles'
