@@ -32,6 +32,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
     Route::group(['prefix' => 'functions', 'as' => 'functions.'], function(){
         Route::get('', 'AdminController@functions')->name('index');
         Route::get('reset_current_riddles','AdminController@resetCurrentRiddles')->name('reset_current_riddles');
+        Route::get('set_points','AdminController@setPoints')->name('set_points');
 
         Route::get('lockdown/enable','AdminController@enableLockdown')->name('lockdown.enable');
         Route::get('lockdown/disable','AdminController@disableLockdown')->name('lockdown.disable');

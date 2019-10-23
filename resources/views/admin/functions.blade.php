@@ -16,7 +16,7 @@
                     <p>Mindenkinek visszaáll az aktuális riddle-je a legkisebb számúra a sorozatban.<br><i>Pl.: Sorrend rendezgetés után</i></p>
                 </div>
                 <div class="panel-footer">
-                    <a class="btn btn-danger" href="{{ route('admin.functions.reset_current_riddles') }}">Reset</a>
+                    <a disabled class="btn btn-danger">Reset</a>
                 </div>
             </div>
         </div>
@@ -34,6 +34,19 @@
                     @else
                         <a href="{{ route('admin.functions.lockdown.enable') }}" class="btn btn-danger">Lezárás</a>
                     @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Pontszámok újraszámolása</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Mindenkinek újraszámolja a pontszámait a weboldal.<br><i>Nem nagyon fog kelleni, de hasznos</i></p>
+                </div>
+                <div class="panel-footer">
+                    <a class="btn btn-danger" href="{{ route('admin.functions.set_points') }}">Reset</a>
                 </div>
             </div>
         </div>

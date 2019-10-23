@@ -358,4 +358,16 @@ class AdminController extends Controller
             })
             ->make(true);
     }
+
+
+    public function setPoints()
+    {
+        $users = User::all();
+        foreach($users as $user){
+            $user->points = $user->getPoints();
+            $user->save();
+        }
+
+        return redirect()->back();
+    }
 }
