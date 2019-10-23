@@ -40,6 +40,8 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
     Route::group(['prefix' => 'users', 'as' => 'users.'], function(){
         Route::get('', 'AdminController@users')->name('index');
 
+        Route::get('data','AdminController@userData')->name('data');
+
         Route::get('block/{user}', 'AdminController@blockUser')->name('block');
         Route::get('unblock/{user}', 'AdminController@unblockUser')->name('unblock');
     });

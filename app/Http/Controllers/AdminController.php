@@ -177,6 +177,57 @@ class AdminController extends Controller
         ]);
     }
 
+    public function userData(DataTables $datatables)
+    {
+        $query = User::select(['*']);
+
+        return $datatables->eloquent($query)
+            ->addColumn('solved_riddles', function(User $user){
+                return $user->solvedRiddles()->count();
+            })
+            ->addColumn('riddles', function(User $user){
+                return $user->riddles()->count();
+            })
+            ->addColumn('moderator', function(User $user){
+                if($user->moderator==true){
+                    return "check";
+                }else{
+                    return "times";
+                }
+            })
+            ->addColumn('admin', function(User $user){
+                if($user->admin==true){
+                    return "check";
+                }else{
+                    return "times";
+                }
+            })
+            ->addColumn('internal_id', function(User $user){
+                if($user->internal_id!=null){
+                    return "check";
+                }else{
+                    return "times";
+                }
+            })
+            ->addColumn('password', function(User $user){
+                if($user->password!=null){
+                    return "check";
+                }else{
+                    return "times";
+                }
+            })
+            ->addColumn('blocked_riddles', function(User $user){
+                return $user->blockedRiddles()->count();
+            })
+            ->addColumn('avg_diff', function(User $user){
+                return $user->riddles()->average('difficulty');
+            })
+            ->addColumn('block', function(User $user){
+                return $user->blocked==true;
+            })
+            ->make();
+    }
+
     public function blockUser(User $user)
     {
         Log::create('user.block',$user->id,'admin.users.block',Auth::user());

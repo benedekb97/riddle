@@ -14,59 +14,23 @@
                 </div>
                 <div class="table-responsive">
                     <table id="users_table" class="table table-striped">
-                        <tr>
-                            <th>Email</th>
-                            <th>Név</th>
-                            <th>Megoldott riddle-ök</th>
-                            <th>Feltöltött riddle-ök</th>
-                            <th>Moderátor</th>
-                            <th>Adminisztrátor</th>
-                            <th>AuthSCH</th>
-                            <th>Jelszó</th>
-                            <th>Tiltott riddle-ök</th>
-                            <th>Átlag riddle nehézség</th>
-                            <th>Műveletek</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Név</th>
+                                <th>Megoldott riddle-ök</th>
+                                <th>Feltöltött riddle-ök</th>
+                                <th>Moderátor</th>
+                                <th>Adminisztrátor</th>
+                                <th>AuthSCH</th>
+                                <th>Jelszó</th>
+                                <th>Tiltott riddle-ök</th>
+                                <th>Átlag riddle nehézség</th>
+                                <th>Műveletek</th>
+                            </tr>
+                        </thead>
                         @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->solvedRiddles()->count() }}</td>
-                                <td>{{ $user->riddles()->count() }}</td>
-                                <td>
-                                    @if($user->moderator)
-                                        <i class="fa fa-check"></i>
-                                    @else
-                                        <i class="fa fa-times"></i>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($user->admin)
-                                        <i class="fa fa-check"></i>
-                                    @else
-                                        <i class="fa fa-times"></i>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($user->internal_id!=null)
-                                        <i class="fa fa-check"></i>
-                                    @else
-                                        <i class="fa fa-times"></i>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($user->password!=null)
-                                        <i class="fa fa-check"></i>
-                                    @else
-                                        <i class="fa fa-times"></i>
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ $user->riddles()->where('blocked','1')->count() }}
-                                </td>
-                                <td>
-                                    {{ $user->riddles()->average('difficulty') }}
-                                </td>
                                 <td>
                                     @if(!$user->blocked)
                                     <span data-toggle="tooltip" title="Blokkolnám">
@@ -133,4 +97,84 @@
 
         @endif
     @endforeach
+@endsection
+
+@section('scripts')
+    <script>
+        $(function () {
+            $('#users_table').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: '/admin/users/data',
+                columns: [
+                    {data: 'email'},
+                    {data: 'name'},
+                    {data: 'id'},
+                    {
+                        data: 'solved_riddles',
+                        name: 'solved_riddles'
+                    },
+                    {
+                        data: 'riddles',
+                        name: 'riddles'
+                    },
+                    {
+                        data: 'moderator',
+                        name: 'moderator',
+                        render: function(val, _, obj){
+                            return "<i class='fa fa-" + val + "'></i>";
+                        }
+                    },
+                    {
+                        data: 'admin',
+                        name: 'admin',
+                        render: function(val, _, obj){
+                            return "<i class='fa fa-" + val + "'></i>";
+                        }
+                    },
+                    {
+                        data: 'internal_id',
+                        name: 'internal_id',
+                        render: function(val, _, obj){
+                            return "<i class='fa fa-" + val + "'></i>";
+                        }
+                    },
+                    {
+                        data: 'password',
+                        name: 'password',
+                        render: function(val, _, obj){
+                            return "<i class='fa fa-" + val + "'></i>";
+                        }
+                    },
+                    {
+                        data: 'blocked_riddles',
+                        name: 'blocked_riddles'
+                    },
+                    {
+                        data: 'avg_diff',
+                        name: 'avg_diff'
+                    },
+                    {
+                        data: 'block',
+                        name: 'block',
+                        render: function(val, _, obj){
+                            if(val===true){
+                                return "<span data-toggle=\"tooltip\" title=\"Blokkolnám\">\n" +
+                                    "                                        <button type=\"button\" class=\"btn btn-xs btn-danger\" data-toggle=\"modal\" data-target=\"#block_" + obj.id + "\">\n" +
+                                    "                                            <i class=\"fa fa-times\"></i>\n" +
+                                    "                                        </button>\n" +
+                                    "                                    </span>";
+                            }else{
+                                return "<span data-toggle=\"tooltip\" title=\"Unblokkolnám\">\n" +
+                                    "                                        <button type=\"button\" class=\"btn btn-xs btn-success\" data-toggle=\"modal\" data-target=\"#unblock_" + obj.id + "\">\n" +
+                                    "                                            <i class=\"fa fa-check\"></i>\n" +
+                                    "                                        </button>\n" +
+                                    "                                    </span>";
+                            }
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
 @endsection
