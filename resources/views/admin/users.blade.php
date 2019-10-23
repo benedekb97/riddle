@@ -141,7 +141,7 @@
                         data: 'block',
                         name: 'block',
                         render: function(val, _, obj){
-                            if(val===true){
+                            if(val===false){
                                 return "<span data-toggle=\"tooltip\" title=\"Blokkolnám\">\n" +
                                     "                                        <button type=\"button\" class=\"btn btn-xs btn-danger\" data-toggle=\"modal\" data-target=\"#block_" + obj.id + "\">\n" +
                                     "                                            <i class=\"fa fa-times\"></i>\n" +
