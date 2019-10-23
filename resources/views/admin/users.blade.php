@@ -13,7 +13,7 @@
                     <h3 class="panel-title">Összes felhasználó</h3>
                 </div>
                 <div class="table-responsive">
-                    <table id="users_table" class="table table-striped">
+                    <table id="users" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Email</th>
@@ -84,7 +84,7 @@
 @section('scripts')
     <script>
         $(function () {
-            $('#users_table').DataTable({
+            $('#users').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: '/admin/users/data',
