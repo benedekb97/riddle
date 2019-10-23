@@ -167,4 +167,32 @@ class User extends Authenticatable
 
         return $this_helps;
     }
+
+    public function getPoints()
+    {
+        $score = 0;
+
+        $solved_riddles = $this->solvedRiddles()->get();
+        foreach($solved_riddles as $riddle){
+
+            $used_hints = $this->usedHints($riddle)->count();
+
+            $add_to_score = $riddle->difficulty*(max(1,5-$used_hints));
+
+
+            if($riddle->user_id == $this->id){
+                $add_to_score = 0;
+            }elseif($riddle->approved_by == $this->id){
+                $add_to_score = 0;
+            }
+            if($this->helpsAsked()->where('riddle_id',$riddle->id)->where('help','!=',null)->count()>0){
+                $add_to_score = 0;
+            }
+
+            $score += $add_to_score;
+
+        }
+
+        return $score;
+    }
 }

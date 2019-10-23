@@ -176,8 +176,8 @@
                 </div>
                 <div class="modal-body">
                     Sikerült megoldanod ezt a rendkívül nehéz riddle-t!
-                    <p>Kaptál érte @if(Auth::user()->id == $riddle->user_id) <strong>0</strong> @else <strong>{{ $points }}</strong> @endif pontot</p>
-                    <p>Így a pontszámod: @if(Auth::user()->id == $riddle->user_id) {{ Auth::user()->points }} @else {{ Auth::user()->points + $points }} @endif </p>
+                    <p>Kaptál érte @if(Auth::user()->id == $riddle->user_id || $riddle->approved_by == Auth::user()->id || $helped) <strong>0</strong> @else <strong>{{ $points }}</strong> @endif pontot</p>
+                    <p>Így a pontszámod: @if(Auth::user()->id == $riddle->user_id || $riddle->approved_by == Auth::user()->id || $helped) {{ Auth::user()->getPoints() }} @else {{ Auth::user()->getPoints() + $points }} @endif </p>
                 </div>
                 <div class="modal-footer">
                     <button onclick="$('#success_modal').modal('toggle');" type="button" data-toggle="modal" data-target="#duplicate" class="btn btn-warning">Mótvá?</button>
