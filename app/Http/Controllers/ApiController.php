@@ -256,7 +256,7 @@ class ApiController extends Controller
                 'name' => $user_loop->name,
                 'points' => $user_loop->points,
                 'riddles' => $user_loop->solvedRiddles()->count(),
-                'uploaded_riddles' => $user_loop->approved_riddles()->count()
+                'uploaded_riddles' => $user_loop->approvedRiddles()->count()
             ];
         }
 
