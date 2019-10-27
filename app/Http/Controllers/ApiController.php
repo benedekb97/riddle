@@ -36,7 +36,12 @@ class ApiController extends Controller
             abort(403);
         }
 
-        $next_riddle = $user->unlockNextRiddle();
+        if($user->current_riddle()==null){
+            $next_riddle = $user->unlockNextRiddle();
+        }else{
+            return response()->json(['success' => false]);
+        }
+
 
         if($next_riddle == null) {
           return response()->json(['success' => false]);
@@ -227,6 +232,10 @@ class ApiController extends Controller
         $user = User::where('api_key', $request->input('api_key'))->first();
         if($user==null){
             abort(403);
+        }
+
+        if($user->current_riddle()==null){
+            return response()->json(['has_hints' => false]);
         }
 
         if($user->current_riddle()->hints()->count()-$user->usedHints($user->current_riddle())->count()>0){
