@@ -57,30 +57,34 @@ class ApiController extends Controller
         }
 
         $riddle = $user->current_riddle();
-        $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
+        if($riddle==null){
+            return response()->json(['riddle' => null]);
+        }else{
+            $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
 
-        $riddle_difficulty = $difficulties[$riddle->difficulty-1];
-        $hints = $user->usedHints($riddle)->get();
+            $riddle_difficulty = $difficulties[$riddle->difficulty-1];
+            $hints = $user->usedHints($riddle)->get();
 
-        $send_hints = [];
+            $send_hints = [];
 
-        foreach($hints as $hint){
-            $send_hints[] = $hint->hint;
+            foreach($hints as $hint){
+                $send_hints[] = $hint->hint;
+            }
+
+            $unused_hints = $riddle->hints_count - $hints->count();
+
+            $response = [
+                'id' => $riddle->id,
+                'title' => $riddle->title,
+                'creator' => $riddle->user->name,
+                'difficulty' => $riddle_difficulty,
+                'hints' => $send_hints,
+                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $user->api_key]),
+                'unused_hints' => $unused_hints
+            ];
+
+            return response()->json($response);
         }
-
-        $unused_hints = $riddle->hints_count - $hints->count();
-
-        $response = [
-            'id' => $riddle->id,
-            'title' => $riddle->title,
-            'creator' => $riddle->user->name,
-            'difficulty' => $riddle_difficulty,
-            'hints' => $send_hints,
-            'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $user->api_key]),
-            'unused_hints' => $unused_hints
-        ];
-
-        return response()->json($response);
     }
 
     public function checkRiddle(Request $request)
