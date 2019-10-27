@@ -92,6 +92,9 @@ class ApiController extends Controller
         if($request->input('api_key')==null){
             abort(403);
         }
+        if($request->input('answer')==null){
+            abort(403);
+        }
 
         $user = User::where('api_key',$request->input('api_key'))->first();
         if($user==null){
@@ -121,7 +124,7 @@ class ApiController extends Controller
 
         if($last_guess!=null){
             $last_guess_time = strtotime($last_guess);
-            if(time()-$last_guess_time>2){
+            if(time()-$last_guess_time<2){
                 abort(403);
             }
         }
