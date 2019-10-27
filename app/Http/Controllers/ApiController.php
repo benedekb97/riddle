@@ -231,4 +231,35 @@ class ApiController extends Controller
             return response()->json(['has_hints' => false]);
         }
     }
+
+
+    public function scores(Request $request)
+    {
+        if($request->input('api_key')==null){
+            abort(403);
+        }
+        $user = User::where('api_key',$request->input('api_key'))->first();
+
+        if($user==null){
+            abort(403);
+        }
+
+        $scores = [];
+        $users = User::all()->sortByDesc('points');
+
+        $i = 0;
+
+        foreach($users as $user_loop){
+            $i++;
+            $scores[] = [
+                'rank' => $i,
+                'name' => $user_loop->name,
+                'points' => $user_loop->points,
+                'riddles' => $user_loop->solvedRiddles()->count(),
+                'uploaded_riddles' => $user_loop->approved_riddles()->count()
+            ];
+        }
+
+
+    }
 }
