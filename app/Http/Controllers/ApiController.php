@@ -280,6 +280,9 @@ class ApiController extends Controller
         }
 
         $riddle = $user->current_riddle();
+        if($riddle==null){
+            return response()->json(['success' => false]);
+        }
         $used_hints_count = $user->usedHints($riddle)->count();
         $total_hints_count = $riddle->hints()->count();
 
