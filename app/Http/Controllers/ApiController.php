@@ -260,6 +260,7 @@ class ApiController extends Controller
             ];
         }
 
+        return $scores;
 
     }
 }
