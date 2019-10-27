@@ -152,6 +152,7 @@ Route::group(['prefix' => 'api','as' => 'api.'], function(){ // needs to be auth
     Route::post('previous', 'ApiController@previous')->name('previous');
     Route::post('hasHintsLeft','ApiController@hasHintsLeft')->name('hasHintsLeft');
     Route::post('scores','ApiController@scores')->name('scores');
+    Route::post('nextHint','ApiController@nextHint')->name('nextHint');
 
     Route::get('get/riddle/{riddle}/api_key/{api_key}', 'ApiController@getRiddle')->name('get.riddle');
 

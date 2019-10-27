@@ -263,7 +263,7 @@ class RiddleController extends Controller
             $user->hints()->attach($next_hint->id);
             $user->save();
         }else{
-            Log::create('hint.ask.fal','','riddles.hint',Auth::user(),$riddle);
+            Log::create('hint.ask.fail','','riddles.hint',Auth::user(),$riddle);
             abort(403);
         }
 

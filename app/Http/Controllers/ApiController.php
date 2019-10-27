@@ -103,6 +103,10 @@ class ApiController extends Controller
 
         $riddle = $user->current_riddle();
 
+        if($riddle==null){
+            return response()->json(['success' => false]);
+        }
+
         $last_guess = $riddle->guesses()->where('user_id',$user->id)->max('updated_at');
 
         $answer_given = $request->input('answer');
@@ -261,6 +265,37 @@ class ApiController extends Controller
         }
 
         return $scores;
+
+    }
+
+    public function nextHint(Request $request)
+    {
+        if($request->input('api_key')==null){
+            abort(403);
+        }
+
+        $user = User::where('api_key', $request->input('api_key'))->first();
+        if($user==null){
+            abort(403);
+        }
+
+        $riddle = $user->current_riddle();
+        $used_hints_count = $user->usedHints($riddle)->count();
+        $total_hints_count = $riddle->hints()->count();
+
+        if($user->usedHints($riddle) == null){
+            $next_hint = $riddle->hints()->where('number',1)->first();
+        }else{
+            $next_hint = $riddle->hints()->where('number', $user->usedHints($riddle)->max('number')+1)->first();
+        }
+
+        if($total_hints_count>$used_hints_count){
+            $user->hints()->attach($next_hint->id);
+            $user->save();
+            return response()->json(['hint' => $next_hint->hint]);
+        }else{
+            return response()->json(['success' => false]);
+        }
 
     }
 }
