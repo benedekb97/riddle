@@ -17,5 +17,11 @@ class SettingSeeder extends Seeder
         $setting->description = "If site is on lockdown only moderators and admins can view anything";
         $setting->setting = "false";
         $setting->save();
+
+        $setting = new Setting();
+        $setting->name = 'mobile_text';
+        $setting->description = 'The text displayed on the home page of the mobile app';
+        $setting->setting = "Üdv a Riddle.sch-n!";
+        $setting->save();
     }
 }

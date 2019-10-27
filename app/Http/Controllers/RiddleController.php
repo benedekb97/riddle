@@ -185,8 +185,6 @@ class RiddleController extends Controller
 
         $answer_given = $request->input('answer');
 
-
-
         $same_guess = Auth::user()->guesses()->where('riddle_id',$riddle->id)->where('guess',$answer_given)->first();
 
         if($same_guess!=null)

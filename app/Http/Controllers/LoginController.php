@@ -164,4 +164,83 @@ class LoginController extends Controller
         return redirect(route('index'));
     }
 
+    public function apiLogin(Request $request)
+    {
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        $credentials = [
+            'email' => $email,
+            'password' => $password
+        ];
+
+        $user = User::all()
+            ->where('email',$email)
+            ->first();
+
+        if($user!=null){
+            if($user->password == null){
+                return response()->json([
+                    'success' => false,
+                    'password' => false
+                ]);
+            }
+        }
+
+        Auth::attempt($credentials);
+
+        if(Auth::check()){
+            return response()->json(['api_key' => Auth::user()->api_key]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'password' => true
+            ]);
+        }
+    }
+
+    public function apiRegister(Request $request)
+    {
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $password2 = $request->input('password2');
+
+        if($password != $password2){
+            return response()->json([
+                'success' => false,
+                'reason' => 'password_not_match'
+            ]);
+        }
+
+        if(strlen($password)<8){
+            return response()->json([
+                'success' => false,
+                'reason' => 'password_length'
+            ]);
+        }
+
+        $users = User::all()
+            ->where('email',$email)
+            ->count();
+
+        if($users>0){
+            return response()->json([
+                'success' => false,
+                'reason' => 'email_exists'
+            ]);
+        }
+
+        $user = new User();
+        $user->email = $email;
+        $user->password = bcrypt($password);
+        $user->given_names = $request->input('given_names');
+        $user->surname = $request->input('surname');
+        $user->name = $request->input('surname') . " " . $request->input('given_names');
+        $user->save();
+
+        return response()->json([
+            'api_key' => $user->generateNewApiKey()
+        ]);
+    }
+
 }

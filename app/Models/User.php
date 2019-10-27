@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Str;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','internal_id','points','moderator','approved','nickname','admin','blocked','api_key'
+        'name', 'email', 'password','internal_id','points','moderator','approved','nickname','admin','blocked','api_key','given_names','surname'
     ];
 
     /**
@@ -80,6 +81,9 @@ class User extends Authenticatable
       }
     }
 
+    /**
+     * @return Riddle $riddle
+     */
     public function current_riddle()
     {
       return $this->activeRiddles()->orderBy('number', 'desc')->first();
@@ -200,5 +204,26 @@ class User extends Authenticatable
         }
 
         return $score;
+    }
+
+    public function generateNewApiKey()
+    {
+        $this->api_key = Str::random(60);
+        $this->save();
+
+        return $this->api_key;
+    }
+
+    public function guessesCount(Riddle $riddle)
+    {
+        $guesses = $this->guesses()->where('riddle_id',$riddle->id)->get();
+
+        $count = 0;
+
+        foreach($guesses as $guess){
+            $count += $guess->count;
+        }
+
+        return $count;
     }
 }
