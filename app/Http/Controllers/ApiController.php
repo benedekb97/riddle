@@ -298,4 +298,9 @@ class ApiController extends Controller
         }
 
     }
+
+    public function description()
+    {
+        return view('api_description');
+    }
 }
