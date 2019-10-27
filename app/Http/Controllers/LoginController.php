@@ -201,6 +201,10 @@ class LoginController extends Controller
 
     public function apiRegister(Request $request)
     {
+        if(!$request->input('email') || !$request->input('password') || !$request->input('password2') || !$request->input('given_names') || !$request->input('surname')){
+            abort(403);
+        }
+
         $email = $request->input('email');
         $password = $request->input('password');
         $password2 = $request->input('password2');
