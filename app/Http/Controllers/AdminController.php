@@ -232,7 +232,7 @@ class AdminController extends Controller
 //        $user->delete();
 //
 //        return redirect()->back();
-    }
+//    }
 
     public function blockUser(User $user)
     {
