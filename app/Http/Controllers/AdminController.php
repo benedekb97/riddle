@@ -25,7 +25,7 @@ class AdminController extends Controller
     {
         Log::create('page.view','','admin.static_messages',Auth::user());
 
-        $messages = StaticMessage::all()->where('active','1');
+        $messages = StaticMessage::all()->where('active','1')->sortBy('number');
         $message_types = ['info','danger','warning','success','primary','default'];
         $message_icons = ['fa-info-circle','fa-exclamation-triangle','fa-exclamation-circle','fa-check','fa-info-circle','fa-info-circle'];
 
@@ -34,6 +34,32 @@ class AdminController extends Controller
             'message_types' => $message_types,
             'message_icons' => $message_icons
         ]);
+    }
+
+    public function moveStaticMessageUp(StaticMessage $message)
+    {
+        $message_before = StaticMessage::where('number','<',$message->number)->get()->sortBy('number')->last();
+        $number = $message->number;
+        $number_before = $message_before->number;
+        $message_before->number = $number;
+        $message->number = $number_before;
+        $message->save();
+        $message_before->save();
+
+        return redirect()->back();
+    }
+
+    public function moveStaticMessageDown(StaticMessage $message)
+    {
+        $message_before = StaticMessage::where('number','>',$message->number)->get()->sortBy('number')->first();
+        $number = $message->number;
+        $number_before = $message_before->number;
+        $message_before->number = $number;
+        $message->number = $number_before;
+        $message->save();
+        $message_before->save();
+
+        return redirect()->back();
     }
 
     public function deleteStaticMessage(StaticMessage $message, Request $request)

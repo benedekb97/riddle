@@ -10,11 +10,21 @@
         @foreach($messages as $message)
             <div class="alert alert-{{ $message_types[$message->type] }}">
                 <a class="close" href="#" data-toggle="modal" data-target="#delete_message_{{ $message->id }}">
-                    <i class="fa fa-trash"></i>
+                    <i class="fa fa-trash"></i>&nbsp;&nbsp;
                 </a>
                 <a class="close" href="#" data-toggle="modal" data-target="#edit_message_{{ $message->id }}">
                     <i class="fa fa-edit"></i>&nbsp;&nbsp;
                 </a>
+                @if($message->number!=$messages->count())
+                    <a href="{{ route('admin.static_messages.move_down', ['message' => $message]) }}" class="close">
+                        <i class="fa fa-arrow-down"></i>&nbsp;&nbsp;
+                    </a>
+                @endif
+                @if($message->number!=1)
+                    <a href="{{ route('admin.static_messages.move_up', ['message' => $message]) }}" class="close">
+                        <i class="fa fa-arrow-up"></i>&nbsp;&nbsp;
+                    </a>
+                @endif
                 <h4><i class="fa {{ $message_icons[$message->type] }}"></i>&nbsp;&nbsp;{{ $message->title }}</h4><br>
                 {{ $message->message }}
             </div>

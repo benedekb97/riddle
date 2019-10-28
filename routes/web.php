@@ -1,9 +1,5 @@
 <?php
 
-Route::group(['prefix' => 'mail', 'as' => 'mail.'], function(){
-    Route::post('receive','MailController@receive')->name('receive');
-});
-
 
 Route::post('login/check/user','LoginController@check')->name('login.check');
 Route::post('register','LoginController@register')->name('register');
@@ -19,6 +15,9 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::post('edit/{message}','AdminController@editStaticMessage')->name('static_messages.edit');
         Route::post('delete/{message}','AdminController@deleteStaticMessage')->name('static_messages.delete');
         Route::post('new','AdminController@newStaticMEssage')->name('static_messages.new');
+
+        Route::get('move/up/{message}','AdminController@moveStaticMessageUp')->name('static_messages.move_up');
+        Route::get('move/down/{message}', 'AdminController@moveStaticMessageDown')->name('static_messages.move_down');
     });
 
     Route::group(['prefix' => 'moderators','as'=>'moderators.'], function(){

@@ -19,7 +19,7 @@ class HomeController extends Controller
             return redirect(route('login'));
         }
 
-        $messages = StaticMessage::all();
+        $messages = StaticMessage::all()->sortBy('number');
         $message_types = ['info','danger','warning','success','primary','default'];
         $message_icons = ['fa-info-circle','fa-exclamation-triangle','fa-exclamation-circle','fa-check','fa-info-circle','fa-info-circle'];
 
