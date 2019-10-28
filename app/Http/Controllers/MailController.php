@@ -8,6 +8,6 @@ class MailController extends Controller
 {
     public function receive(Request $request)
     {
-        dd($request);
+        var_dump($request);
     }
 }
