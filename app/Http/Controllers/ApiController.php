@@ -10,6 +10,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -359,13 +360,13 @@ class ApiController extends Controller
             return redirect()->route('login');
         }
 
-        if(Auth::user()->apiKeys()->count()==0){
+        if(Auth::user()->apiKeys()->where('valid','>','CURRENT_TIME')->count()==0){
             $api_key = Auth::user()->generateNewApiKey();
         }else{
-            $api_key = Auth::user()->apiKeys()->first();
+            $api_key = Auth::user()->apiKeys()->where('valid','<','CURRENT_TIME')->first();
         }
 
         Log::create('page.view','','api.description',Auth::user());
-        return view('api_description', ['api_key' => $api_key]);
+        return view('api_description', ['api_key' => $api_key->key]);
     }
 }

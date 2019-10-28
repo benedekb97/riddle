@@ -213,7 +213,7 @@ class User extends Authenticatable
         $new_key = new ApiKey();
         $new_key->key = Str::random(60);
         $new_key->user_id = $this->id;
-        $new_key->valid = date('Y-m-d H:i:s', time()+60*60*24);
+        $new_key->valid = date('Y-m-d H:i:s', time()+60*60);
         $new_key->ip = $_SERVER['REMOTE_ADDR'];
         $new_key->save();
 
