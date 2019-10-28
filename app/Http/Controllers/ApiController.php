@@ -360,10 +360,10 @@ class ApiController extends Controller
             return redirect()->route('login');
         }
 
-        if(Auth::user()->apiKeys()->where('valid','>','CURRENT_TIME')->count()==0){
+        if(Auth::user()->apiKeys()->where('valid','>',date("Y-m-d H:i:s"))->count()==0){
             $api_key = Auth::user()->generateNewApiKey();
         }else{
-            $api_key = Auth::user()->apiKeys()->where('valid','<','CURRENT_TIME')->first();
+            $api_key = Auth::user()->apiKeys()->where('valid','>',date("Y-m-d H:i:s"))->first();
         }
 
         Log::create('page.view','','api.description',Auth::user());
