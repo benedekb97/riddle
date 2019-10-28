@@ -40,6 +40,23 @@
 
 @section('modals')
     @foreach($users as $user)
+        <div class="modal fade" id="delete_{{ $user->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                        <h4 class="modal-title">Felhasználó törlése</h4>
+                    </div>
+                    <div class="modal-body">
+                        Biztosan törlöd {{ $user->name }} felhasználóját?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ route('admin.users.delete', ['user' => $user]) }}" class="btn btn-danger">Igen</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Nem</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         @if($user->blocked)
             <div class="modal fade" id="unblock_{{ $user->id }}">
                 <div class="modal-dialog">
@@ -147,12 +164,19 @@
                                     "                                            <i class=\"fa fa-times\"></i>\n" +
                                     "                                        </button>\n" +
                                     "                                    </span>";
+                                    // "<button type=\"button\" class=\"btn btn-xs btn-danger\" data-toggle=\"modal\" data-target=\"#delete_" + obj.id + "\">\n" +
+                                    // "<i class=\"fa fa-trash\"></i>\n" +
+                                    // "</button>";
+
                             }else{
                                 return "<span data-toggle=\"tooltip\" title=\"Unblokkolnám\">\n" +
                                     "                                        <button type=\"button\" class=\"btn btn-xs btn-success\" data-toggle=\"modal\" data-target=\"#unblock_" + obj.id + "\">\n" +
                                     "                                            <i class=\"fa fa-check\"></i>\n" +
                                     "                                        </button>\n" +
                                     "                                    </span>";
+                                    // "<button type=\"button\" class=\"btn btn-xs btn-danger\" data-toggle=\"modal\" data-target=\"#delete_" + obj.id + "\">\n" +
+                                    // "<i class=\"fa fa-trash\"></i>\n" +
+                                    // "</button>";
                             }
                         }
                     }

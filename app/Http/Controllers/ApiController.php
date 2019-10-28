@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApiKey;
 use App\Models\Guess;
 use App\Models\Riddle;
 use App\Models\Setting;
@@ -17,7 +18,7 @@ class ApiController extends Controller
             abort(403);
         }
 
-        $user = User::where('api_key',$request->input('api_key'))->first();
+        $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
             abort(403);
         }
@@ -31,7 +32,7 @@ class ApiController extends Controller
             abort(403);
         }
 
-        $user = User::where('api_key',$request->input('api_key'))->first();
+        $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
             abort(403);
         }
@@ -56,7 +57,7 @@ class ApiController extends Controller
             abort(403);
         }
 
-        $user = User::where('api_key',$request->input('api_key'))->first();
+        $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
             abort(403);
         }
@@ -101,7 +102,7 @@ class ApiController extends Controller
             abort(403);
         }
 
-        $user = User::where('api_key',$request->input('api_key'))->first();
+        $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
             abort(403);
         }
@@ -183,7 +184,7 @@ class ApiController extends Controller
             abort(403);
         }
 
-        $user = User::where('api_key',$request->input('api_key'))->first();
+        $user = ApiKey::getUser($request->input('api_key'));
 
         $return = [];
 
@@ -205,13 +206,11 @@ class ApiController extends Controller
 
     public function getRiddle(Request $request, Riddle $riddle, $api_key)
     {
-
-
         if($api_key==null){
             abort(403);
         }
 
-        $user = User::where('api_key', $api_key)->first();
+        $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
             abort(403);
         }
@@ -229,7 +228,8 @@ class ApiController extends Controller
         if($request->input('api_key')==null){
             abort(403);
         }
-        $user = User::where('api_key', $request->input('api_key'))->first();
+
+        $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
             abort(403);
         }
@@ -251,7 +251,7 @@ class ApiController extends Controller
         if($request->input('api_key')==null){
             abort(403);
         }
-        $user = User::where('api_key',$request->input('api_key'))->first();
+        $user = ApiKey::getUser($request->input('api_key'));
 
         if($user==null){
             abort(403);
@@ -283,7 +283,7 @@ class ApiController extends Controller
             abort(403);
         }
 
-        $user = User::where('api_key', $request->input('api_key'))->first();
+        $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
             abort(403);
         }
@@ -313,6 +313,10 @@ class ApiController extends Controller
 
     public function description()
     {
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
+
         return view('api_description');
     }
 }

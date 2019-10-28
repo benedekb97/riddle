@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,7 @@ use Str;
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -208,10 +210,14 @@ class User extends Authenticatable
 
     public function generateNewApiKey()
     {
-        $this->api_key = Str::random(60);
-        $this->save();
+        $new_key = new ApiKey();
+        $new_key->key = Str::random(60);
+        $new_key->user_id = $this->id;
+        $new_key->valid = date('Y-m-d H:i:s', time()+60*60*24);
+        $new_key->ip = $_SERVER['REMOTE_ADDR'];
+        $new_key->save();
 
-        return $this->api_key;
+        return $new_key;
     }
 
     public function guessesCount(Riddle $riddle)
@@ -225,5 +231,13 @@ class User extends Authenticatable
         }
 
         return $count;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function apiKeys()
+    {
+        return $this->hasMany(ApiKey::class);
     }
 }

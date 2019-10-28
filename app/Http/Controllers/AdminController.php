@@ -228,6 +228,12 @@ class AdminController extends Controller
             ->make();
     }
 
+//    public function deleteUser(User $user){
+//        $user->delete();
+//
+//        return redirect()->back();
+    }
+
     public function blockUser(User $user)
     {
         Log::create('user.block',$user->id,'admin.users.block',Auth::user());
@@ -292,8 +298,10 @@ class AdminController extends Controller
 
         $users = User::all();
         foreach($users as $user){
-            $user->api_key = Str::random(60);
-            $user->save();
+            $keys = $user->apiKeys();
+            foreach($keys as $key){
+                $key->delete();
+            }
         }
 
         return redirect()->back();

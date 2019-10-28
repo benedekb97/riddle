@@ -7,12 +7,13 @@
 @section('content')
     <div class="row">
         <div class="col-md-4">
-            <div class="panel panel-info">
+            <div class="panel panel-danger">
                 <div class="panel-heading">
-                    <h3 class="panel-title">API kulcsok újragenerálása</h3>
+                    <h3 class="panel-title">API kulcsok törlése</h3>
                 </div>
                 <div class="panel-body">
-                    Újragenerálja az összes felhasználó API kulcsát
+                    Törli az összes felhasználó összes API kulcsát<br>
+                    <i>Kiléptet mindenkit ha API-ról van belépve</i>
                 </div>
                 <div class="panel-footer">
                     <a href="{{ route('admin.api.generate_keys') }}" class="btn btn-primary">GO!</a>

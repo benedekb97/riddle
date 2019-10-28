@@ -74,6 +74,12 @@ class LoginController extends Controller
 
         $user = User::where('email',$result->mail)->get();
 
+        $deleted_user = User::onlyTrashed()->where('email',$result->mail)->first();
+
+        if($deleted_user!=null){
+            abort(401);
+        }
+
         if($user->isEmpty()) {
             $user = new User();
 
@@ -114,7 +120,7 @@ class LoginController extends Controller
         if($password!=$password2){
             return redirect(route('login', ['error' => 1]));
         }
-        if(User::where('email',$email)->count()!=0) {
+        if(User::where('email',$email)->count()!=0 || User::onlyTrashed()->where('email',$email)->count()!=0) {
             return redirect(route('login',['error' => 2]));
         }
         if(strlen($password)<8){
@@ -190,7 +196,7 @@ class LoginController extends Controller
         Auth::attempt($credentials);
 
         if(Auth::check()){
-            return response()->json(['api_key' => Auth::user()->api_key]);
+            return response()->json(['api_key' => Auth::user()->generateNewApiKey()->key]);
         }else{
             return response()->json([
                 'success' => false,
@@ -223,7 +229,7 @@ class LoginController extends Controller
             ]);
         }
 
-        $users = User::all()
+        $users = User::withTrashed()
             ->where('email',$email)
             ->count();
 
@@ -243,7 +249,7 @@ class LoginController extends Controller
         $user->save();
 
         return response()->json([
-            'api_key' => $user->generateNewApiKey()
+            'api_key' => $user->generateNewApiKey()->key
         ]);
     }
 
