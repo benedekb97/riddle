@@ -1,5 +1,9 @@
 <?php
 
+Route::group(['prefix' => 'mail', 'as' => 'mail.'], function(){
+    Route::post('receive','MailController@receive')->name('receive');
+});
+
 
 Route::post('login/check/user','LoginController@check')->name('login.check');
 Route::post('register','LoginController@register')->name('register');
