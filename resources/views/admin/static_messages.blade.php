@@ -15,12 +15,12 @@
                 <a class="close" href="#" data-toggle="modal" data-target="#edit_message_{{ $message->id }}">
                     <i class="fa fa-edit"></i>&nbsp;&nbsp;
                 </a>
-                @if($message->number!=$messages->count())
+                @if($message->number!=$messages->max('number'))
                     <a href="{{ route('admin.static_messages.move_down', ['message' => $message]) }}" class="close">
                         <i class="fa fa-arrow-down"></i>&nbsp;&nbsp;
                     </a>
                 @endif
-                @if($message->number!=1)
+                @if($message->number!=$messages->min('number'))
                     <a href="{{ route('admin.static_messages.move_up', ['message' => $message]) }}" class="close">
                         <i class="fa fa-arrow-up"></i>&nbsp;&nbsp;
                     </a>

@@ -38,6 +38,10 @@ class AdminController extends Controller
 
     public function moveStaticMessageUp(StaticMessage $message)
     {
+        if($message->number==StaticMessage::all()->min('number')){
+            abort(403);
+        }
+
         $message_before = StaticMessage::where('number','<',$message->number)->get()->sortBy('number')->last();
         $number = $message->number;
         $number_before = $message_before->number;
@@ -51,6 +55,10 @@ class AdminController extends Controller
 
     public function moveStaticMessageDown(StaticMessage $message)
     {
+        if($message->number==StaticMessage::all()->max('number')){
+            abort(403);
+        }
+
         $message_before = StaticMessage::where('number','>',$message->number)->get()->sortBy('number')->first();
         $number = $message->number;
         $number_before = $message_before->number;
