@@ -23,6 +23,10 @@ class ApiKey extends Model
     {
         $key = ApiKey::all()->where('key',$key)->first();
 
+        if($key==null){
+            return null;
+        }
+
         $valid = strtotime($key->valid);
         if(time()<$valid){
             $key->valid = date("Y-m-d H:i:s",time()+60*60);
