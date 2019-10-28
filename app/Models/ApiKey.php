@@ -15,6 +15,12 @@ class ApiKey extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function isValid()
+    {
+        $valid = strtotime($this->valid);
+        return time()<$valid;
+    }
+
     /**
      * @param $key
      * @return User $user

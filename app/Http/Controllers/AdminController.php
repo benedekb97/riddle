@@ -332,9 +332,25 @@ class AdminController extends Controller
 
         $users = User::all();
         foreach($users as $user){
-            $keys = $user->apiKeys();
+            $keys = $user->apiKeys()->get();
             foreach($keys as $key){
                 $key->delete();
+            }
+        }
+
+        return redirect()->back();
+    }
+
+    public function deleteInvalidApiKeys()
+    {
+        Log::create('delete.api.tokens','','admin.api',Auth::user());
+        $users = User::all();
+        foreach($users as $user){
+            $keys = $user->apiKeys()->get();
+            foreach($keys as $key){
+                if(!$key->isValid()){
+                    $key->delete();
+                }
             }
         }
 

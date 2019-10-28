@@ -56,6 +56,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
         Route::get('','AdminController@api')->name('index');
 
         Route::get('generate_keys', 'AdminController@newApiTokens')->name('generate_keys');
+        Route::get('delete_invalid_keys','AdminController@deleteInvalidApiKeys')->name('delete_invalid_keys');
     });
 
     Route::group(['prefix' => 'riddles', 'as' => 'riddles.'], function(){
