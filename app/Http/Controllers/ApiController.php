@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ApiKey;
 use App\Models\Guess;
+use App\Models\Log;
 use App\Models\Riddle;
 use App\Models\Setting;
 use App\Models\User;
@@ -20,9 +21,11 @@ class ApiController extends Controller
 
         $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
+            Log::create('api.request','fail:api_key','api.user');
             abort(403);
         }
 
+        Log::create('api.request',$user->name,'api.user',$user);
         return response()->json($user);
     }
 
@@ -34,19 +37,23 @@ class ApiController extends Controller
 
         $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
+            Log::create('api.request','fail:api_key','api.nextRiddle');
             abort(403);
         }
 
         if($user->current_riddle()==null){
             $next_riddle = $user->unlockNextRiddle();
         }else{
+            Log::create('api.request','fail:current_riddle','api.nextRiddle',$user);
             return response()->json(['success' => false]);
         }
 
 
         if($next_riddle == null) {
+          Log::create('api.request','fail:no_new_riddle','api.nextRiddle',$user);
           return response()->json(['success' => false]);
         } else {
+          Log::create('api.request','success','api.nextRiddle',$user);
           return response()->json(['success' => true]);
         }
     }
@@ -59,11 +66,13 @@ class ApiController extends Controller
 
         $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
+            Log::create('api.request','fail:api_key','api.riddle');
             abort(403);
         }
 
         $riddle = $user->current_riddle();
         if($riddle==null){
+            Log::create('api.request', 'fail:no_riddle','api.riddle',$user);
             return response()->json(['riddle' => null]);
         }else{
             $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
@@ -89,6 +98,7 @@ class ApiController extends Controller
                 'unused_hints' => $unused_hints
             ];
 
+            Log::create('api.request','success','api.riddle',$user,$riddle);
             return response()->json($response);
         }
     }
@@ -104,12 +114,14 @@ class ApiController extends Controller
 
         $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
+            Log::create('api.request','fail:api_key','api.check');
             abort(403);
         }
 
         $riddle = $user->current_riddle();
 
         if($riddle==null){
+            Log::create('api.request','fail:no_riddle','api.check',$user);
             return response()->json(['success' => false]);
         }
 
@@ -135,6 +147,7 @@ class ApiController extends Controller
         if($last_guess!=null){
             $last_guess_time = strtotime($last_guess);
             if(time()-$last_guess_time<2){
+                Log::create('api.request','fail:timeout','api.check',$user);
                 abort(403);
             }
         }
@@ -161,9 +174,11 @@ class ApiController extends Controller
             $user->activeRiddles()->detach($riddle);
             $user->points = $user->getPoints();
             $user->save();
+            Log::create('api.request','success','api.check', $user, $riddle);
             return response()->json(['success' => true]);
 
         }else{
+            Log::create('api.request','fail:wrong_answer','api.check', $user, $riddle);
             return response()->json(['success' => false]);
         }
 
@@ -171,6 +186,17 @@ class ApiController extends Controller
 
     public function home(Request $request)
     {
+        if($request->input('api_key')==null){
+            abort(403);
+        }
+
+        $user = ApiKey::getUser($request->input('api_key'));
+        if($user==null){
+            Log::create('api.request','fail:api_key','api.home');
+            abort(403);
+        }
+
+        Log::create('api.request','success','api.home',$user);
         $text = Setting::all()->where('name','mobile_text')->first();
 
         $text = $text->setting;
@@ -185,6 +211,11 @@ class ApiController extends Controller
         }
 
         $user = ApiKey::getUser($request->input('api_key'));
+
+        if($user==null){
+            Log::create('api.request','fail:api_key','api.previous');
+            abort(403);
+        }
 
         $return = [];
 
@@ -201,6 +232,7 @@ class ApiController extends Controller
             ];
         }
 
+        Log::create('api.request','success','api.previous',$user);
         return response()->json($return);
     }
 
@@ -231,16 +263,20 @@ class ApiController extends Controller
 
         $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
+            Log::create('api.request','fail:api_key','api.hasHintsLeft');
             abort(403);
         }
 
         if($user->current_riddle()==null){
+            Log::create('api.request','fail:no_riddle','api.hasHintsLeft',$user);
             return response()->json(['has_hints' => false]);
         }
 
         if($user->current_riddle()->hints()->count()-$user->usedHints($user->current_riddle())->count()>0){
+            Log::create('api.request','success:true','api.hasHintsLeft',$user,$user->current_riddle());
             return response()->json(['has_hints' => true]);
         }else{
+            Log::create('api.request','success:false','api.hasHintsLeft',$user,$user->current_riddle());
             return response()->json(['has_hints' => false]);
         }
     }
@@ -254,6 +290,7 @@ class ApiController extends Controller
         $user = ApiKey::getUser($request->input('api_key'));
 
         if($user==null){
+            Log::create('api.request','fail:api_key','api.scores');
             abort(403);
         }
 
@@ -273,6 +310,7 @@ class ApiController extends Controller
             ];
         }
 
+        Log::create('api.request','success','api.scores',$user);
         return $scores;
 
     }
@@ -285,11 +323,13 @@ class ApiController extends Controller
 
         $user = ApiKey::getUser($request->input('api_key'));
         if($user==null){
+            Log::create('api.request','fail:api_key','api.nextHint');
             abort(403);
         }
 
         $riddle = $user->current_riddle();
         if($riddle==null){
+            Log::create('api.request','fail:no_riddle','api.nextHint',$user);
             return response()->json(['success' => false]);
         }
         $used_hints_count = $user->usedHints($riddle)->count();
@@ -304,8 +344,10 @@ class ApiController extends Controller
         if($total_hints_count>$used_hints_count){
             $user->hints()->attach($next_hint->id);
             $user->save();
+            Log::create('api.request','success','api.nextHint',$user,$riddle);
             return response()->json(['hint' => $next_hint->hint]);
         }else{
+            Log::create('api.request','success:no_hints','api.nextHint',$user,$riddle);
             return response()->json(['success' => false]);
         }
 
@@ -317,6 +359,7 @@ class ApiController extends Controller
             return redirect()->route('login');
         }
 
+        Log::create('page.view','','api.description',Auth::user());
         return view('api_description');
     }
 }

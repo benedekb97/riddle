@@ -186,6 +186,7 @@ class LoginController extends Controller
 
         if($user!=null){
             if($user->password == null){
+                Log::create('api.login','fail.password_not_exist','api.login',$user);
                 return response()->json([
                     'success' => false,
                     'password' => false
@@ -216,6 +217,7 @@ class LoginController extends Controller
         $password2 = $request->input('password2');
 
         if($password != $password2){
+            Log::create('api.register','fail.password_not_match','api.register');
             return response()->json([
                 'success' => false,
                 'reason' => 'password_not_match'
@@ -223,6 +225,7 @@ class LoginController extends Controller
         }
 
         if(strlen($password)<8){
+            Log::create('api.register','fail.password_length','api.register');
             return response()->json([
                 'success' => false,
                 'reason' => 'password_length'
@@ -234,6 +237,7 @@ class LoginController extends Controller
             ->count();
 
         if($users>0){
+            Log::create('api.register','fail.user_exists','api.register');
             return response()->json([
                 'success' => false,
                 'reason' => 'email_exists'
@@ -247,6 +251,8 @@ class LoginController extends Controller
         $user->surname = $request->input('surname');
         $user->name = $request->input('surname') . " " . $request->input('given_names');
         $user->save();
+
+        Log::create('api.register',$email.", ".$user->name,"api.register",$user);
 
         return response()->json([
             'api_key' => $user->generateNewApiKey()->key
