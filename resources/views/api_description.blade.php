@@ -132,7 +132,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.user') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" value="Példa" class="btn btn-primary">
                     </form>
                 </div>
@@ -173,7 +173,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.next') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" value="Példa" class="btn btn-primary">
                     </form>
                 </div>
@@ -215,7 +215,7 @@
                 </div>
                 <div class="panel-footer">
                     <form class="form-inline" action="{{ route('api.check') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="text" class="form-control" name="answer" placeholder="answer">
                         <input type="submit" class="btn btn-primary" value="Példa">
                     </form>
@@ -263,7 +263,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.riddle') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" class="btn btn-primary" value="Példa">
                     </form>
                 </div>
@@ -304,7 +304,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.home') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" class="btn btn-primary" value="Példa">
                     </form>
                 </div>
@@ -345,7 +345,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.hasHintsLeft') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" class="btn btn-primary" value="Példa">
                     </form>
                 </div>
@@ -395,7 +395,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.previous') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" value="Példa" class="btn btn-primary">
                     </form>
                 </div>
@@ -445,7 +445,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.scores') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" value="Példa" class="btn btn-primary">
                     </form>
                 </div>
@@ -487,7 +487,7 @@
                 </div>
                 <div class="panel-footer">
                     <form action="{{ route('api.nextHint') }}" method="POST">
-                        <input type="hidden" name="api_key" value="{{ Auth::user()->api_key }}">
+                        <input type="hidden" name="api_key" value="{{ $api_key }}">
                         <input type="submit" class="btn btn-primary" value="Példa">
                     </form>
                 </div>

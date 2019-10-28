@@ -359,7 +359,13 @@ class ApiController extends Controller
             return redirect()->route('login');
         }
 
+        if(Auth::user()->apiKeys()->count()==0){
+            $api_key = Auth::user()->generateNewApiKey();
+        }else{
+            $api_key = Auth::user()->apiKeys()->first();
+        }
+
         Log::create('page.view','','api.description',Auth::user());
-        return view('api_description');
+        return view('api_description', ['api_key' => $api_key]);
     }
 }
