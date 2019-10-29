@@ -40,7 +40,7 @@
                 processing: true,
                 ajax: '/admin/logs/data',
                 columns: [
-                    {data: 'type'},
+                    {data: 'type', name:'type'},
                     {data: 'data'},
                     {data: 'page'},
                     {data: 'user_id', name: 'user_id'},

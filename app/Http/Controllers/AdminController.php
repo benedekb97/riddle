@@ -309,6 +309,9 @@ class AdminController extends Controller
                     return "";
                 }
             })
+            ->addColumn('type', function(Log $log){
+                return $log->getType->description;
+            })
             ->addColumn('riddle_id', function(Log $log){
                 if($log->riddle != null){
                     return $log->riddle->id;

@@ -39,4 +39,9 @@ class Log extends Model
         }
         $log->save();
     }
+
+    public function getType()
+    {
+        return $this->belongsTo(LogType::class,'type','name','log_types');
+    }
 }
