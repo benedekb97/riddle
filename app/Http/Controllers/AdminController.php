@@ -340,6 +340,12 @@ class AdminController extends Controller
             ->addColumn('created_at_lol', function(Log $log){
                 return $log->created_at;
             })
+            ->addColumn('description', function(Log $log){
+                return $log->getType->description;
+            })
+            ->addColumn('page', function(Log $log){
+                return $log->page;
+            })
             ->addColumn('riddle_id', function(Log $log){
                 if($log->riddle!=null){
                     return $log->riddle->title;
