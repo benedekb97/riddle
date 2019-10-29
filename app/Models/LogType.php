@@ -14,4 +14,9 @@ class LogType extends Model
     {
         return $this->hasMany(Log::class,'type','name');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(LogCategory::class);
+    }
 }

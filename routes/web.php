@@ -29,7 +29,15 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], f
 
     Route::group(['prefix' => 'logs', 'as' => 'logs.'], function(){
         Route::get('','AdminController@logs')->name('index');
-        Route::get('data','AdminController@logData')->name('data');
+
+        Route::get('api','AdminController@logsApi')->name('api');
+        Route::get('api/data','AdminController@logsApiData')->name('api.data');
+        Route::get('admin','AdminController@logsAdmin')->name('admin');
+        Route::get('admin/data', 'AdminController@logsAdminData')->name('admin.data');
+        Route::get('moderator', 'AdminController@logsModerator')->name('moderator');
+        Route::get('moderator/data','AdminController@logsModeratorData')->name('moderator.data');
+        Route::get('user', 'AdminController@logsUser')->name('user');
+        Route::get('user/data', 'AdminController@logsUserData')->name('user.data');
     });
 
     Route::group(['prefix' => 'functions', 'as' => 'functions.'], function(){

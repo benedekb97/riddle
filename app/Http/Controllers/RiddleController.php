@@ -159,6 +159,8 @@ class RiddleController extends Controller
     {
         $riddles = Riddle::all()->where('approved','0')->where('blocked','0')->all();
 
+        Log::create('moderator.page.view','','riddles.unapproved',Auth::user());
+
         return view('riddles.unapproved', [
             'riddles' => $riddles
         ]);
@@ -167,6 +169,8 @@ class RiddleController extends Controller
     public function blocked()
     {
         $riddles = Riddle::all()->where('blocked','1')->all();
+
+        Log::create('moderator.page.view','','riddles.blocked',Auth::user());
 
         return view('riddles.blocked', [
             'riddles' => $riddles
@@ -415,7 +419,7 @@ class RiddleController extends Controller
 
     public function sequence()
     {
-        Log::create('page.view','','riddles.sequence',Auth::user());
+        Log::create('moderator.page.view','','riddles.sequence',Auth::user());
 
         $sequenced_riddles = Riddle::all()->where('number','!=',null)->sortByDesc('number');
         $unsequenced_riddles = Riddle::all()->diff($sequenced_riddles)->where('approved','1')->where('blocked','0');
@@ -495,7 +499,7 @@ class RiddleController extends Controller
 
     public function duplicates()
     {
-        Log::create('page.view','','riddles.duplicates',Auth::user());
+        Log::create('moderator.page.view','','riddles.duplicates',Auth::user());
 
         $duplicates = Duplicate::all()->groupBy('duplicate_id','riddle_id')->all();
 

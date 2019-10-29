@@ -51,7 +51,7 @@
                         Biztosan törlöd {{ $user->name }} felhasználóját?
                     </div>
                     <div class="modal-footer">
-                        <a href="{{ route('admin.users.delete', ['user' => $user]) }}" class="btn btn-danger">Igen</a>
+{{--                        <a href="{{ route('admin.users.delete', ['user' => $user]) }}" class="btn btn-danger">Igen</a>--}}
                         <button type="button" class="btn btn-default" data-dismiss="modal">Nem</button>
                     </div>
                 </div>

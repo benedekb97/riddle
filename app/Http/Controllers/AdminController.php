@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Log;
+use App\Models\LogCategory;
 use App\Models\Riddle;
 use App\Models\StaticMessage;
 use App\Models\User;
@@ -10,20 +11,21 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Symfony\Component\VarDumper\Cloner\Data;
 use Yajra\DataTables\DataTables;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        Log::create('page.view','','admin.index', Auth::user());
+        Log::create('admin.page.view','','admin.index', Auth::user());
 
         return view('admin.index');
     }
 
     public function staticMessages()
     {
-        Log::create('page.view','','admin.static_messages',Auth::user());
+        Log::create('admin.page.view','','admin.static_messages',Auth::user());
 
         $messages = StaticMessage::all()->where('active','1')->sortBy('number');
         $message_types = ['info','danger','warning','success','primary','default'];
@@ -109,7 +111,7 @@ class AdminController extends Controller
 
     public function moderators()
     {
-        Log::create('page.view','','admin.moderators',Auth::user());
+        Log::create('admin.page.view','','admin.moderators',Auth::user());
 
         $moderators = User::all()->where('moderator',true)->all();
 
@@ -156,7 +158,7 @@ class AdminController extends Controller
 
     public function functions()
     {
-        Log::create('page.view','','admin.functions',Auth::user());
+        Log::create('admin.page.view','','admin.functions',Auth::user());
 
         $lockdown = Setting::where('name','lockdown')->where('setting','true')->count()>0;
 
@@ -202,7 +204,7 @@ class AdminController extends Controller
 
     public function users()
     {
-        Log::create('page.view','','admin.users',Auth::user());
+        Log::create('admin.page.view','','admin.users',Auth::user());
 
         $users = User::all();
 
@@ -290,11 +292,90 @@ class AdminController extends Controller
 
     public function logs(Request $request)
     {
-        Log::create('page.view','','admin.logs',Auth::user());
+        Log::create('admin.page.view','','admin.logs',Auth::user());
 
-        $logs = Log::all()->where('page','!=','admin.logs')->sortByDesc('id');
+        $api = LogCategory::find(1);
+        $admin = LogCategory::find(2);
+        $moderator = LogCategory::find(3);
+        $user = LogCategory::find(4);
 
-        return view('admin.logs', ['logs' => $logs]);
+        return view('admin.logs', [
+            'api' => $api,
+            'admin' => $admin,
+            'moderator' => $moderator,
+            'user' => $user
+        ]);
+    }
+
+    public function logsApi(Request $request)
+    {
+        return view('admin.logs.api');
+    }
+
+    public function logsUser(Request $request)
+    {
+        return view('admin.logs.user');
+    }
+
+    public function logsAdmin(Request $request)
+    {
+        return view('admin.logs.admin');
+    }
+
+    public function logsModerator(Request $request)
+    {
+        return view('admin.logs.moderator');
+    }
+
+    protected function getData(DataTables $datatables, $query)
+    {
+        return $datatables->eloquent($query)
+            ->addColumn('user_id', function(Log $log){
+                if($log->user!=null){
+                    return $log->user->name;
+                }else{
+                    return "";
+                }
+            })
+            ->addColumn('created_at_lol', function(Log $log){
+                return $log->created_at;
+            })
+            ->addColumn('riddle_id', function(Log $log){
+                if($log->riddle!=null){
+                    return $log->riddle->title;
+                }else{
+                    return "";
+                }
+            })
+            ->make();
+    }
+
+    public function logsApiData(DataTables $datatables)
+    {
+        $query = LogCategory::find(1)->logs()->select(['logs.*','log_types.description']);
+
+        return $this->getData($datatables, $query);
+    }
+
+    public function logsAdminData(DataTables $dataTables)
+    {
+        $query = LogCategory::find(2)->logs()->select(['logs.*','log_types.description']);
+
+        return $this->getData($dataTables,$query);
+    }
+
+    public function logsModeratorData(DataTables $dataTables)
+    {
+        $query = LogCategory::find(3)->logs()->select(['logs.*', 'log_types.description']);
+
+        return $this->getData($dataTables,$query);
+    }
+
+    public function logsUserData(DataTables $dataTables)
+    {
+        $query = LogCategory::find(4)->logs()->select(['logs.*', 'log_types.description']);
+
+        return $this->getData($dataTables, $query);
     }
 
     public function logData(DataTables $datatables)
@@ -324,7 +405,7 @@ class AdminController extends Controller
 
     public function api()
     {
-        Log::create('page.view','','admin.api',Auth::user());
+        Log::create('admin.page.view','','admin.api',Auth::user());
 
         return view('admin.api');
     }
@@ -362,7 +443,7 @@ class AdminController extends Controller
 
     public function riddles()
     {
-        Log::create('page.view','','admin.riddles',Auth::user());
+        Log::create('admin.page.view','','admin.riddles',Auth::user());
 
         return view('admin.riddles');
     }
