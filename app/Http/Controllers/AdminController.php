@@ -358,28 +358,28 @@ class AdminController extends Controller
 
     public function logsApiData(DataTables $datatables)
     {
-        $query = LogCategory::find(1)->logs()->select(['logs.*','log_types.description']);
+        $query = LogCategory::find(1)->logs()->select(['logs.*','log_types.description'])->orderByDesc('logs.created_at');
 
         return $this->getData($datatables, $query);
     }
 
     public function logsAdminData(DataTables $dataTables)
     {
-        $query = LogCategory::find(2)->logs()->select(['logs.*','log_types.description']);
+        $query = LogCategory::find(2)->logs()->select(['logs.*','log_types.description'])->orderByDesc('logs.created_at');
 
         return $this->getData($dataTables,$query);
     }
 
     public function logsModeratorData(DataTables $dataTables)
     {
-        $query = LogCategory::find(3)->logs()->select(['logs.*', 'log_types.description']);
+        $query = LogCategory::find(3)->logs()->select(['logs.*', 'log_types.description'])->orderByDesc('logs.created_at');
 
         return $this->getData($dataTables,$query);
     }
 
     public function logsUserData(DataTables $dataTables)
     {
-        $query = LogCategory::find(4)->logs()->select(['logs.*', 'log_types.description']);
+        $query = LogCategory::find(4)->logs()->select(['logs.*', 'log_types.description'])->orderByDesc('logs.created_at');
 
         return $this->getData($dataTables, $query);
     }
