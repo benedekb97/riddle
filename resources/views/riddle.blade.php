@@ -80,6 +80,12 @@
                             <td>Nehézség:</td>
                             <td style="text-align:right; font-weight:bold;">{{ $difficulties[$riddle->difficulty-1] }}</td>
                         </tr>
+                        @if($solved_by!=null)
+                        <tr>
+                            <td>Első megoldó:</td>
+                            <td style="text-align:right; font-weight:bold;">{{ $solved_by->name }}</td>
+                        </tr>
+                        @endif
                     </table>
                 </div>
                 <div class="panel-footer">

@@ -86,6 +86,8 @@ class HomeController extends Controller
 
         $solved_riddles = $user->solvedRiddles;
 
+        $solved_by = $riddle->solvedBy()->first();
+
         $reported = $user->duplicates()->where('duplicate_id',$riddle->id)->count() != 0;
 
         $difficulties = ['Egy perces riddle','Easy','Elgondolkodtató','Nehéz','Kenyér'];
@@ -105,6 +107,7 @@ class HomeController extends Controller
             'points' => $points,
             'difficulties' => $difficulties,
             'solved_riddles' => $solved_riddles,
+            'solved_by' => $solved_by,
             'reported' => $reported,
             'helped' => $helped,
             'help' => $help,
