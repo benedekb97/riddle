@@ -17,3 +17,4 @@ _ide_helper_models.php
 .idea
 .idea/*
 composer.phar
+.phpstorm.meta.php

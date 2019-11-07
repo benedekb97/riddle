@@ -197,7 +197,10 @@ class LoginController extends Controller
         Auth::attempt($credentials);
 
         if(Auth::check()){
-            return response()->json(['api_key' => Auth::user()->generateNewApiKey()->key]);
+            return response()->json([
+                'api_key' => Auth::user()->generateNewApiKey()->key,
+                'success' => true
+            ]);
         }else{
             return response()->json([
                 'success' => false,
