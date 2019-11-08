@@ -243,9 +243,8 @@ class ApiController extends Controller
             abort(403);
         }
         
-        dd($api_key);
-
         $user = ApiKey::getUser($api_key);
+        dd($user);
         if($user==null){
             abort(403);
         }
