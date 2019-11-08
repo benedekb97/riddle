@@ -95,7 +95,7 @@ class ApiController extends Controller
                 'creator' => $riddle->user->name,
                 'difficulty' => $riddle_difficulty,
                 'hints' => $send_hints,
-                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $user->api_key]),
+                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $request->input('api_key')]),
                 'unused_hints' => $unused_hints
             ];
 
