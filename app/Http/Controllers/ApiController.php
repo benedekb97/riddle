@@ -225,7 +225,7 @@ class ApiController extends Controller
             $return[] = [
                 'title' => $riddle->title,
                 'answer' => $riddle->answer,
-                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $user->api_key]),
+                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $request->input('api_key')]),
                 'solved_at' => $user->solvedRiddles()->where('riddle_id',$riddle->id)->first()->created_at,
                 'tries' => $user->guessesCount($riddle),
                 'used_hints' => $user->usedHints($riddle)->count(),
