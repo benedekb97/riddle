@@ -237,11 +237,13 @@ class ApiController extends Controller
         return response()->json($return);
     }
 
-    public function getRiddle(Request $request, Riddle $riddle, $api_key)
+    public function getRiddle(Riddle $riddle, $api_key)
     {
         if($api_key==null){
             abort(403);
         }
+        
+        dd($api_key);
 
         $user = ApiKey::getUser($api_key);
         if($user==null){
