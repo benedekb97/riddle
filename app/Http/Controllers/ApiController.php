@@ -95,7 +95,7 @@ class ApiController extends Controller
                 'creator' => $riddle->user->name,
                 'difficulty' => $riddle_difficulty,
                 'hints' => $send_hints,
-                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $user->api_key]),
+                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $request->input('api_key')]),
                 'unused_hints' => $unused_hints
             ];
 
@@ -225,7 +225,7 @@ class ApiController extends Controller
             $return[] = [
                 'title' => $riddle->title,
                 'answer' => $riddle->answer,
-                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $user->api_key]),
+                'image' => route('api.get.riddle', ['riddle' => $riddle, 'api_key' => $request->input('api_key')]),
                 'solved_at' => $user->solvedRiddles()->where('riddle_id',$riddle->id)->first()->created_at,
                 'tries' => $user->guessesCount($riddle),
                 'used_hints' => $user->usedHints($riddle)->count(),
@@ -237,13 +237,13 @@ class ApiController extends Controller
         return response()->json($return);
     }
 
-    public function getRiddle(Request $request, Riddle $riddle, $api_key)
+    public function getRiddle(Riddle $riddle, $api_key)
     {
         if($api_key==null){
             abort(403);
         }
-
-        $user = ApiKey::getUser($request->input('api_key'));
+        
+        $user = ApiKey::getUser($api_key);
         if($user==null){
             abort(403);
         }
