@@ -258,6 +258,7 @@ class LoginController extends Controller
         Log::create('api.register',$email.", ".$user->name,"api.register",$user);
 
         return response()->json([
+            'success' => true,
             'api_key' => $user->generateNewApiKey()->key
         ]);
     }
