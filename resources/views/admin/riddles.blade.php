@@ -23,6 +23,7 @@
                                 <th>Készítő</th>
                                 <th>Elfogadva</th>
                                 <th>Elfogadta</th>
+                                <th>Kép</th>
                                 <th>Tiltva</th>
                                 <th>Tiltotta</th>
                                 <th>Megoldva</th>
@@ -67,6 +68,13 @@
                         }
                     },
                     {data: 'approved_by', name: 'approved_by'},
+                    {
+                        data: 'image',
+                        name: 'image',
+                        render: function(val, _, obj){
+                            return "<a target='_blank' class='btn btn-xs btn-primary' href='http://riddle.sch.bme.hu/riddles/get/" + val + "'><i class='fa fa-image'></i></a>";
+                        }
+                    },
                     {
                         data: 'blocked',
                         name:'blocked',

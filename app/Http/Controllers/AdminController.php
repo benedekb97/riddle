@@ -469,6 +469,9 @@ class AdminController extends Controller
                     return "";
                 }
             })
+            ->addColumn('image', function(Riddle $riddle) {
+                return $riddle->id;
+            })
             ->addColumn('blocked',function(Riddle $riddle){
                 if($riddle->blocked==false){
                     return "times";
